@@ -7,17 +7,16 @@ require "agile_board/version"
 Gem::Specification.new do |s|
   s.name        = "agile_board"
   s.version     = AgileBoard::VERSION
-  s.authors     = ["TODO: Your name"]
+  s.authors     = ["Nicolas Meylan"]
   s.email       = ["TODO: Your email"]
   s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of AgileBoard."
-  s.description = "TODO: Description of AgileBoard."
+  s.summary     = "An agile board plugin for RORganize app."
+  s.description = "This agile board allow projects' members to write user stories, define sprint, link user stories with issues, group stories into epics..."
   s.license     = "MIT"
 
-  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 4.1.6"
 
-  s.add_development_dependency "sqlite3"
 end
