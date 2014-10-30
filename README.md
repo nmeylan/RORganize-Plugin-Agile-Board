@@ -1,0 +1,3 @@
+= AgileBoard
+An agile board plugin for RORganize app.
+This agile board allow projects' members to write user stories, define sprint, link user stories with issues, group stories into epics...
