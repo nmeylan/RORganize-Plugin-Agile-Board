@@ -19,6 +19,12 @@ class StoryStatusDecorator < ApplicationDecorator
                                project, nil, {remote: true, method: :delete, class: 'button danger', confirm: h.t(:text_delete_item)})
   end
 
+  def display_caption
+    h.content_tag :span, {class: 'issue-status', style: "background-color: #{model.color}"} do
+      model.caption
+    end
+  end
+
   def <=>(other)
     self.position <=> other.position
   end

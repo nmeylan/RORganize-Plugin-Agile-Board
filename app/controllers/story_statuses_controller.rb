@@ -9,7 +9,7 @@ class StoryStatusesController < ApplicationController
 
   # GET /story_statuses/new
   def new
-    @story_status = StoryStatus.new
+    @story_status = StoryStatus.new(color: '#6cc644')
     respond_to do |format|
       format.js { respond_to_js locals: {new: true} }
     end
@@ -58,6 +58,6 @@ class StoryStatusesController < ApplicationController
 
   # Only allow a trusted parameter "white list" through.
   def story_status_params
-    params.require(:story_status).permit(:name)
+    params.require(:story_status).permit(:name, :color)
   end
 end

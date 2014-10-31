@@ -16,11 +16,19 @@ class BoardsController < ApplicationController
 
   def create
     @board_decorator = Board.create(project_id: @project.id).decorate(context: {project: @project})
-    index
+    respond_to do |format|
+      format.js { js_redirect_to agile_board_plugin::agile_board_index_path(@project.slug) }
+    end
   end
 
   def plan
-
+    @backlog = Sprint.new(name: 'Backlog')
+    @backlog.stories = UserStory.where(sprint_id: nil)
+    @backlog.stories << UserStory.new(title: 'My Story', tracker_id: 1, status_id: StoryStatus.find_by_board_id_and_position(@board_decorator.id, 0).id)
+    @backlog = @backlog.decorate(context: {project: @project})
+    @sprints_decorator = Sprint.where(board_id: @board_decorator.id).includes(:stories).decorate(context: {project: @project})
+    @sprints_decorator << Sprint.new(name: 'Sprint 1', id: 1).decorate(context: {project: @project})
+    @sprints_decorator << Sprint.new(name: 'Sprint 2', id: 2).decorate(context: {project: @project})
   end
 
   def work
@@ -40,7 +48,7 @@ class BoardsController < ApplicationController
     end
     @board_decorator.context.merge!({points: StoryPoint.where(board_id: @board_decorator.id).decorate})
     respond_to do |format|
-      format.js { respond_to_js action: 'add_points', locals: { addition: addition}, response_header: addition ? '' : :success, response_content: t(:successful_creation)}
+      format.js { respond_to_js action: 'add_points', locals: {addition: addition}, response_header: addition ? '' : :success, response_content: t(:successful_creation) }
     end
   end
 

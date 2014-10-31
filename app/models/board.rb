@@ -11,9 +11,10 @@ class Board < ActiveRecord::Base
   def set_board_default_configuration
     points = [1, 2, 3, 4, 5]
     statuses = ['To Do', 'In Progress', 'In Review', 'Done']
+    colors = ['#6cc644', '#fbca04', '#207de5', '#bd2c00']
     points.each { |point| StoryPoint.create(value: point, board_id: self.id) }
     i = 0
-    statuses.each { |status| StoryStatus.create(name: status, board_id: self.id, position: i); i += 1 }
+    statuses.each { |status| StoryStatus.create(name: status, board_id: self.id, position: i, color: colors[i]); i += 1 }
   end
 
 

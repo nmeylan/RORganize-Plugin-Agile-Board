@@ -11,6 +11,9 @@ Rorganize::Managers::PluginManager.register :agile_board do |plugin|
 
   plugin.add_to_always_enabled_modules([
       {controller: 'story_points', action: 'index'},
-      {controller: 'story_statuses', action: 'index'}])
+      {controller: 'story_statuses', action: 'index'},
+      {controller: 'user_stories', action: 'index'},
+      {controller: 'sprints', action: 'index'},
+      {controller: 'epics', action: 'index'}])
 
 end

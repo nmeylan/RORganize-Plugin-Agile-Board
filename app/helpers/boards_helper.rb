@@ -1,6 +1,7 @@
 module BoardsHelper
   include StoryPointsHelper
   include StoryStatusesHelper
+  include SprintsHelper
 
   def agile_board_menu
     subnav_tag('agile-board-menu', 'agile-board-menu',
@@ -59,8 +60,8 @@ module BoardsHelper
 
   def create_link
     link_to_with_permissions(t(:label_create),
-                               agile_board_plugin::agile_board_index_path(@project.slug),
-                               @project, nil, {remote: true, class: 'button', method: :post})
+                             agile_board_plugin::agile_board_index_path(@project.slug),
+                             @project, nil, {remote: true, class: 'button', method: :post})
   end
 
   def work_content
@@ -68,7 +69,11 @@ module BoardsHelper
   end
 
   def plan_content
-    content_tag :p, 'bb'
+    safe_concat clear_both
+    safe_concat content_tag :div, class: 'agile-board-plan', &Proc.new {
+      safe_concat render_sprints(@sprints_decorator)
+      safe_concat render_sprint(@backlog, 'backlog splitcontentright')
+    }
   end
 
 end

@@ -49,6 +49,15 @@ class BoardDecorator < ApplicationDecorator
                                {remote: true, method: :get, class: 'button'})
   end
 
+  def new_sprint
+    h.link_to_with_permissions(h.glyph(h.t(:link_new_sprint), 'sprint'),
+                               h.agile_board_plugin::new_sprint_path(context[:project].slug),
+                               context[:project], nil,
+                               {remote: true,
+                                method: :get, class: 'button'}
+    )
+  end
+
   def save_points_link(path, method, id)
     h.link_to_with_permissions(h.t(:button_save),
                                path,

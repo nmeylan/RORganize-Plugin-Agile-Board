@@ -4,6 +4,7 @@ class CreateStoryStatuses < ActiveRecord::Migration
       t.string :name
       t.integer :board_id
       t.integer :position
+      t.string :color
       t.timestamps
     end
   end

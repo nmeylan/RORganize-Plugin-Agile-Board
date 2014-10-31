@@ -23,7 +23,7 @@ module StoryStatusesHelper
 
   def statuses_list_row(status)
     content_tag :li, class: "fancy-list-item status", id: "status-#{status.id}" do
-      safe_concat content_tag :span, status.caption
+      safe_concat content_tag :span, status.display_caption
       safe_concat statuses_list_button(status)
     end
   end
@@ -37,7 +37,10 @@ module StoryStatusesHelper
 
   def status_form(model, path, method)
     form_for model, url: path, html: {class: 'form', remote: true, method: method} do |f|
-      safe_concat content_tag :div, status_form_field(f, model), class: 'box'
+      safe_concat content_tag :div, class: 'box', &Proc.new {
+        safe_concat status_form_field(f, model)
+        safe_concat status_form_color_field(f, model)
+      }
       safe_concat submit_tag t(:button_submit)
     end
   end
@@ -46,6 +49,13 @@ module StoryStatusesHelper
     content_tag :p do
       status_form_name_label(f)
       safe_concat f.text_field :name, value: model.caption
+    end
+  end
+
+  def status_form_color_field(f, model)
+    content_tag :p do
+      safe_concat f.label :color, t(:label_color)
+      safe_concat color_field_tag f, :color
     end
   end
 
