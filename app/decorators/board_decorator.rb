@@ -7,18 +7,20 @@ class BoardDecorator < ApplicationDecorator
   delegate_all
 
   def plan_menu_item
-    h.agile_board_menu_nav_item(h.t(:lable_agile_board_plan), 'plan', :plan,
-                              h.agile_board_plugin::agile_board_index_path(context[:project].slug, agile_board_menu: :plan))
+    agile_board_menu(h.t(:lable_agile_board_plan), 'plan', :plan)
   end
 
   def work_menu_item
-    h.agile_board_menu_nav_item(h.t(:lable_agile_board_work), 'column', :work,
-                                h.agile_board_plugin::agile_board_index_path(context[:project].slug, agile_board_menu: :work))
+    agile_board_menu(h.t(:lable_agile_board_work), 'column', :work)
   end
 
   def configuration_menu_item
-    h.agile_board_menu_nav_item(h.t(:lable_agile_board_configuration), 'gear', :configuration,
-                                h.agile_board_plugin::agile_board_index_path(context[:project].slug, agile_board_menu: :configuration))
+    agile_board_menu(h.t(:lable_agile_board_configuration), 'gear', :configuration)
+  end
+
+  def agile_board_menu(label, glyph, param)
+    h.agile_board_menu_nav_item(label, glyph, param,
+                                h.agile_board_plugin::agile_board_index_path(context[:project].slug, agile_board_menu: param))
   end
 
   def delete_link
@@ -42,20 +44,24 @@ class BoardDecorator < ApplicationDecorator
 
   def add_points_link
     h.link_to_with_permissions(h.glyph(h.t(:link_add), 'plus'),
-                             h.agile_board_plugin::agile_board_add_points_path(context[:project].slug, model.id),
-                             context[:project], nil,
-                             {remote: true, method: :get, class: 'button'})
+                               h.agile_board_plugin::agile_board_add_points_path(context[:project].slug, model.id),
+                               context[:project], nil,
+                               {remote: true, method: :get, class: 'button'})
   end
 
   def save_points_link(path, method, id)
     h.link_to_with_permissions(h.t(:button_save),
-                             path,
-                             context[:project], nil,
-                             {target: 'self', method: method, class: 'button',
-                              id: id, 'data-link' => path})
+                               path,
+                               context[:project], nil,
+                               {target: 'self', method: method, class: 'button',
+                                id: id, 'data-link' => path})
   end
 
   def display_points
     context[:points].collect { |point| h.content_tag :span, point.point_edit_link(context[:project]), class: 'point' }.join(' ').html_safe
+  end
+
+  def sorted_statuses
+    context[:statuses].sort_by(&:position)
   end
 end

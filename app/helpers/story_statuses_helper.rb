@@ -13,9 +13,9 @@ module StoryStatusesHelper
   end
 
   def statuses_list
-    content_tag :ul, {class: "fancy-list fancy-list-mini story-statuses-list sortable",
-                      'data-link' => agile_board_plugin::story_status_change_position_path(@project.slug, '-1')} do
-      @board_decorator.context[:statuses].sort_by(&:position).collect do |status|
+    path = agile_board_plugin::story_status_change_position_path(@project.slug, '-1')
+    content_tag :ul, {class: "fancy-list fancy-list-mini story-statuses-list sortable", 'data-link' => path} do
+      @board_decorator.sorted_statuses.collect do |status|
         statuses_list_row(status)
       end.join.html_safe
     end
@@ -37,17 +37,23 @@ module StoryStatusesHelper
 
   def status_form(model, path, method)
     form_for model, url: path, html: {class: 'form', remote: true, method: method} do |f|
-      safe_concat content_tag :div, class: 'box', &Proc.new {
-        content_tag :p do
-          safe_concat f.label :name, &Proc.new{
-            safe_concat t(:field_name)
-            safe_concat content_tag(:span, '*', class: 'required')
-          }
-          safe_concat f.text_field :name, value: model.caption
-        end
-      }
+      safe_concat content_tag :div, status_form_field(f, model), class: 'box'
       safe_concat submit_tag t(:button_submit)
     end
+  end
+
+  def status_form_field(f, model)
+    content_tag :p do
+      status_form_name_label(f)
+      safe_concat f.text_field :name, value: model.caption
+    end
+  end
+
+  def status_form_name_label(f)
+    safe_concat f.label :name, &Proc.new {
+      safe_concat t(:field_name)
+      safe_concat content_tag(:span, '*', class: 'required')
+    }
   end
 
   def status_editor_overlay(model = nil, path = nil, method = nil)
