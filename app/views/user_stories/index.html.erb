@@ -1,0 +1,45 @@
+<h1>Listing user_stories</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Status</th>
+      <th>Points</th>
+      <th>Position</th>
+      <th>Author</th>
+      <th>Epic</th>
+      <th>Tracker</th>
+      <th>Sprint</th>
+      <th>Project</th>
+      <th>Category</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @user_stories.each do |user_story| %>
+      <tr>
+        <td><%= user_story.title %></td>
+        <td><%= user_story.description %></td>
+        <td><%= user_story.status_id %></td>
+        <td><%= user_story.points %></td>
+        <td><%= user_story.position %></td>
+        <td><%= user_story.author_id %></td>
+        <td><%= user_story.epic_id %></td>
+        <td><%= user_story.tracker_id %></td>
+        <td><%= user_story.sprint_id %></td>
+        <td><%= user_story.project_id %></td>
+        <td><%= user_story.category_id %></td>
+        <td><%= link_to 'Show', user_story %></td>
+        <td><%= link_to 'Edit', edit_user_story_path(user_story) %></td>
+        <td><%= link_to 'Destroy', user_story, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New User story', new_user_story_path %>

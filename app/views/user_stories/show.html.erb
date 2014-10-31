@@ -1,0 +1,59 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @user_story.title %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @user_story.description %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @user_story.status_id %>
+</p>
+
+<p>
+  <strong>Points:</strong>
+  <%= @user_story.points %>
+</p>
+
+<p>
+  <strong>Position:</strong>
+  <%= @user_story.position %>
+</p>
+
+<p>
+  <strong>Author:</strong>
+  <%= @user_story.author_id %>
+</p>
+
+<p>
+  <strong>Epic:</strong>
+  <%= @user_story.epic_id %>
+</p>
+
+<p>
+  <strong>Tracker:</strong>
+  <%= @user_story.tracker_id %>
+</p>
+
+<p>
+  <strong>Sprint:</strong>
+  <%= @user_story.sprint_id %>
+</p>
+
+<p>
+  <strong>Project:</strong>
+  <%= @user_story.project_id %>
+</p>
+
+<p>
+  <strong>Category:</strong>
+  <%= @user_story.category_id %>
+</p>
+
+<%= link_to 'Edit', edit_user_story_path(@user_story) %> |
+<%= link_to 'Back', user_stories_path %>

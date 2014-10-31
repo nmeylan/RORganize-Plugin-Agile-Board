@@ -1,0 +1,10 @@
+<%#=
+ * User: nmeylan
+ * Date: 31.10.14
+ * Time: 14:31
+ %>
+<% if edit %>
+    jQuery("#status-editor-overlay").replaceWith("<%= escape_javascript status_editor_overlay(@story_status, agile_board_plugin::story_status_path(@project.slug, @story_status.id),:put) %>");
+    createOverlay("#status-editor-overlay", 150);
+    jQuery('#status-editor-overlay').overlay().load();
+<% end %>

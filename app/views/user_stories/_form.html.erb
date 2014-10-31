@@ -1,0 +1,61 @@
+<%= form_for(@user_story) do |f| %>
+  <% if @user_story.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@user_story.errors.count, "error") %> prohibited this user_story from being saved:</h2>
+
+      <ul>
+      <% @user_story.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %><br>
+    <%= f.text_field :title %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_area :description %>
+  </div>
+  <div class="field">
+    <%= f.label :status_id %><br>
+    <%= f.number_field :status_id %>
+  </div>
+  <div class="field">
+    <%= f.label :points %><br>
+    <%= f.number_field :points %>
+  </div>
+  <div class="field">
+    <%= f.label :position %><br>
+    <%= f.number_field :position %>
+  </div>
+  <div class="field">
+    <%= f.label :author_id %><br>
+    <%= f.number_field :author_id %>
+  </div>
+  <div class="field">
+    <%= f.label :epic_id %><br>
+    <%= f.number_field :epic_id %>
+  </div>
+  <div class="field">
+    <%= f.label :tracker_id %><br>
+    <%= f.number_field :tracker_id %>
+  </div>
+  <div class="field">
+    <%= f.label :sprint_id %><br>
+    <%= f.number_field :sprint_id %>
+  </div>
+  <div class="field">
+    <%= f.label :project_id %><br>
+    <%= f.number_field :project_id %>
+  </div>
+  <div class="field">
+    <%= f.label :category_id %><br>
+    <%= f.number_field :category_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

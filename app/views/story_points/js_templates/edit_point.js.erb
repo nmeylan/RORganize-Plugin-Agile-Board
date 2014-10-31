@@ -1,0 +1,31 @@
+<%#=
+ * User: nmeylan
+ * Date: 30.10.14
+ * Time: 21:48
+ %>
+$("#edit-point-<%= point.id %>").replaceWith("<%= escape_javascript point_editor(point) %>");
+
+$('#submit-points-edition').click(function(e){
+    e.preventDefault();
+    var val = $('#point').val();
+    var link =  $(this).data("link");
+    if(val.trim() === ''){
+        apprise('Are you sure you want to delete this point?', {confirm: true}, function (response) {
+            if (response) {
+                edit_callback(val, link);
+            }
+        });
+    }else{
+        edit_callback(val, link);
+    }
+
+});
+
+function edit_callback(val, link){
+    jQuery.ajax({
+        url: link,
+        type: 'put',
+        dataType: 'script',
+        data: {point: val}
+    });
+}

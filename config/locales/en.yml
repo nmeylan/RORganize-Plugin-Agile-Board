@@ -1,2 +1,12 @@
 en:
   label_agile_board: Agile board
+  lable_agile_board_plan: Plan
+  lable_agile_board_work: Work
+  lable_agile_board_configuration: Configuration
+
+  link_story_points: Points
+  link_story_statuses: Statuses
+
+  text_no_agile_board: This project doesn't have agile board yet, do you want to create it?
+  text_delete_agile_board: Are you sure you want to destroy this agile board? you will lose ALL data.
+  info_edit_point: If you let the field blank, the point will be destroy.

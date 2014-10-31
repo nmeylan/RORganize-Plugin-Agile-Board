@@ -1,0 +1,14 @@
+@import 'utilities/variables';
+#points-tab, #statuses-tab{
+  margin-top: 10px;
+  margin-bottom: 50px;
+  .point{
+    margin-right: 10px;
+    color: $link-color;
+  }
+}
+
+#agile-board .subnav{
+  margin-top: 0px;
+  float: right;
+}

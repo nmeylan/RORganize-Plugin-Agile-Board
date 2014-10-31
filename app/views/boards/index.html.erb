@@ -1,1 +1,7 @@
-<%= contextual t(:label_agile_board) %>
+<%#= javascript_include_tag 'boards' %>
+<%= contextual t(:label_agile_board) do %>
+<%=  @board_decorator.delete_link if @board_decorator %>
+<% end %>
+<%= agile_board %>
+
+<%= status_editor_overlay %>

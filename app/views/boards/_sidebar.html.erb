@@ -1,0 +1,31 @@
+<%#
+# Author: Nicolas Meylan
+# Date: 15 août 2012
+# Encoding: UTF-8
+# File: sidebar.html.erb
+%>
+
+<%= content_for :sidebar do %>
+    <ul class="tabs">
+      <% if User.current.allowed_to?('index', 'Story_points', project) %>
+          <li class="story_points">
+            <%= link_to glyph(t(:link_story_points), 'coin'),
+                        agile_board_plugin::story_points_path(project.slug) %>
+          </li>
+      <% end %>
+      <% if User.current.allowed_to?('index', 'Story_statuses', project) %>
+          <li class="story_statuses">
+            <%= link_to glyph(t(:link_story_statuses), 'dashboard'),
+                        agile_board_plugin::story_statuses_path(project.slug) %>
+          </li>
+      <% end %>
+    </ul>
+<% end %>
+
+<script type="text/javascript">
+    <% if controller.controller_name.eql?('boards') %>
+    jQuery("#sidebar li[class='<%=controller.controller_name.tr('_','-')%>-<%=controller.action_name.tr('_','-')%>']").toggleClass("selected");
+    <% else %>
+    jQuery("#sidebar li[class='<%=controller.controller_name.tr('_','-')%>']").toggleClass("selected");
+    <%  end %>
+</script>

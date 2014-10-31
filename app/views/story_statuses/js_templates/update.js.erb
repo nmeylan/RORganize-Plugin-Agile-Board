@@ -1,0 +1,9 @@
+<%#=
+ * User: nmeylan
+ * Date: 31.10.14
+ * Time: 15:45
+ %>
+
+
+jQuery('#status-editor-overlay').overlay().close();
+$("#<%= "status-#{@story_status.id}" %>").replaceWith("<%= escape_javascript statuses_list_row(@story_status) %>");
