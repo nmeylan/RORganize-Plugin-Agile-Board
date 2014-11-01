@@ -15,16 +15,12 @@ class SprintsController < AgileBoardController
   # GET /sprints/new
   def new
     @sprint = Sprint.new
-    respond_to do |format|
-      format.js { respond_to_js locals: {path: agile_board_plugin::sprints_path(@project.slug), method: :post} }
-    end
+    agile_board_form_callback(agile_board_plugin::sprints_path(@project.slug), :post)
   end
 
   # GET /sprints/1/edit
   def edit
-    respond_to do |format|
-      format.js {  respond_to_js action: 'new', locals: {path: agile_board_plugin::sprint_path(@project.slug, @sprint.id), method: :put} }
-    end
+    agile_board_form_callback(agile_board_plugin::sprint_path(@project.slug, @sprint.id), :put)
   end
 
   # POST /sprints
@@ -53,22 +49,22 @@ class SprintsController < AgileBoardController
     count = Sprint.where(version_id: params[:value]).pluck('count(id)')
     @name = "Sprint #{count.first}"
     respond_to do |format|
-      format.js { respond_to_js  }
+      format.js { respond_to_js }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_sprint
-      @sprint = Sprint.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_sprint
+    @sprint = Sprint.find(params[:id])
+  end
 
   def set_sprints
     @sprints_decorator = Sprint.ordered_sprints(@board.id).decorate(context: {project: @project})
   end
 
-    # Only allow a trusted parameter "white list" through.
-    def sprint_params
-      params.require(:sprint).permit(:name, :start_date, :end_date, :version_id)
-    end
+  # Only allow a trusted parameter "white list" through.
+  def sprint_params
+    params.require(:sprint).permit(:name, :start_date, :end_date, :version_id)
+  end
 end

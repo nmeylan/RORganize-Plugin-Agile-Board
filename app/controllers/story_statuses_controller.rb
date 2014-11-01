@@ -10,16 +10,12 @@ class StoryStatusesController < AgileBoardController
   # GET /story_statuses/new
   def new
     @story_status = StoryStatus.new(color: '#6cc644')
-    respond_to do |format|
-      format.js { respond_to_js action: 'new', locals: {path: agile_board_plugin::story_statuses_path(@project.slug), method: :post} }
-    end
+    agile_board_form_callback(agile_board_plugin::story_statuses_path(@project.slug), :post)
   end
 
   # GET /story_statuses/1/edit
   def edit
-    respond_to do |format|
-      format.js { respond_to_js action: 'new', locals: {path: agile_board_plugin::story_status_path(@project.slug, @story_status.id), method: :put} }
-    end
+    agile_board_form_callback(agile_board_plugin::story_status_path(@project.slug, @story_status.id), :put)
   end
 
   # POST /story_statuses

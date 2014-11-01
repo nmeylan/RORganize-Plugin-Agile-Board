@@ -14,16 +14,12 @@ class EpicsController < AgileBoardController
   # GET /epics/new
   def new
     @epic = Epic.new(color: '#6cc644')
-    respond_to do |format|
-      format.js { respond_to_js action: 'new', locals: {path: agile_board_plugin::epics_path(@project.slug), method: :post} }
-    end
+    agile_board_form_callback(agile_board_plugin::epics_path(@project.slug), :post)
   end
 
   # GET /epics/1/edit
   def edit
-    respond_to do |format|
-      format.js { respond_to_js action: 'new', locals: {path: agile_board_plugin::epic_path(@project.slug, @epic.id), method: :put} }
-    end
+    agile_board_form_callback(agile_board_plugin::epic_path(@project.slug, @epic.id), :put)
   end
 
   # POST /epics
