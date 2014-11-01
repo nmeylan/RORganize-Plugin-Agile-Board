@@ -1,5 +1,7 @@
-class SprintsController < ApplicationController
+class SprintsController < AgileBoardController
+  include Rorganize::RichController::GenericCallbacks
   before_action :set_sprint, only: [:show, :edit, :update, :destroy]
+
 
   # GET /sprints
   def index
@@ -13,36 +15,46 @@ class SprintsController < ApplicationController
   # GET /sprints/new
   def new
     @sprint = Sprint.new
+    respond_to do |format|
+      format.js { respond_to_js locals: {path: agile_board_plugin::sprints_path(@project.slug), method: :post} }
+    end
   end
 
   # GET /sprints/1/edit
   def edit
+    respond_to do |format|
+      format.js {  respond_to_js action: 'new', locals: {path: agile_board_plugin::sprint_path(@project.slug, @sprint.id), method: :put} }
+    end
   end
 
   # POST /sprints
   def create
     @sprint = Sprint.new(sprint_params)
-
-    if @sprint.save
-      redirect_to @sprint, notice: 'Sprint was successfully created.'
-    else
-      render :new
-    end
+    @sprint.board = @board
+    result = @sprint.save
+    set_sprints
+    simple_js_callback(result, :create, @sprint, {new: false})
   end
 
   # PATCH/PUT /sprints/1
   def update
-    if @sprint.update(sprint_params)
-      redirect_to @sprint, notice: 'Sprint was successfully updated.'
-    else
-      render :edit
-    end
+    result = @sprint.update(sprint_params)
+    set_sprints
+    simple_js_callback(result, :update, @sprint)
   end
 
   # DELETE /sprints/1
   def destroy
-    @sprint.destroy
-    redirect_to sprints_url, notice: 'Sprint was successfully destroyed.'
+    simple_js_callback(@sprint.destroy, :delete, @sprint, {id: params[:id]})
+  end
+
+
+  def generate_sprint_name
+    count = Sprint.where(version_id: params[:value]).pluck('count(id)')
+    @name = "Sprint #{count.first}"
+    respond_to do |format|
+      format.js { respond_to_js  }
+    end
   end
 
   private
@@ -50,6 +62,10 @@ class SprintsController < ApplicationController
     def set_sprint
       @sprint = Sprint.find(params[:id])
     end
+
+  def set_sprints
+    @sprints_decorator = Sprint.ordered_sprints(@board.id).decorate(context: {project: @project})
+  end
 
     # Only allow a trusted parameter "white list" through.
     def sprint_params

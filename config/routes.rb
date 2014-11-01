@@ -1,7 +1,7 @@
 AgileBoard::Engine.routes.draw do
   RORganize::Application.routes.draw do
-    get 'projects/:project_id/agile_board/:action', controller: 'boards'
     mount AgileBoard::Engine => '/', as: 'agile_board_plugin'
+    get 'projects/:project_id/agile_board/:action', controller: 'boards'
   end
 
   scope 'projects/:project_id/' do
@@ -17,6 +17,8 @@ AgileBoard::Engine.routes.draw do
       resources :epics
       resources :sprints
       resources :user_stories
+
+      get :generate_sprint_name, controller: 'sprints'
     end
   end
 end

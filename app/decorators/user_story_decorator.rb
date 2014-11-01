@@ -11,7 +11,7 @@ class UserStoryDecorator < ApplicationDecorator
   end
 
   def display_points
-    points = self.points ? self.points : '-'
+    points = self.points ? self.points.value : '-'
     h.content_tag :span, points, {class: 'counter total-entries'}
   end
 

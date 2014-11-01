@@ -1,4 +1,5 @@
 module StoryStatusesHelper
+  include AgileBoardHelper
   def statuses_content
     content_tag :div, {id: 'statuses-tab', class: 'box', style: 'display:none'} do
       safe_concat statuses_list_header
@@ -36,18 +37,15 @@ module StoryStatusesHelper
   end
 
   def status_form(model, path, method)
-    form_for model, url: path, html: {class: 'form', remote: true, method: method} do |f|
-      safe_concat content_tag :div, class: 'box', &Proc.new {
-        safe_concat status_form_field(f, model)
-        safe_concat status_form_color_field(f, model)
-      }
-      safe_concat submit_tag t(:button_submit)
+    overlay_form(model, path, method) do |f|
+      safe_concat status_form_field(f, model)
+      safe_concat status_form_color_field(f, model)
     end
   end
 
   def status_form_field(f, model)
     content_tag :p do
-      status_form_name_label(f)
+      safe_concat required_form_label(f, :name,  t(:field_name))
       safe_concat f.text_field :name, value: model.caption
     end
   end
@@ -59,20 +57,9 @@ module StoryStatusesHelper
     end
   end
 
-  def status_form_name_label(f)
-    safe_concat f.label :name, &Proc.new {
-      safe_concat t(:field_name)
-      safe_concat content_tag(:span, '*', class: 'required')
-    }
-  end
-
   def status_editor_overlay(model = nil, path = nil, method = nil)
-    content_tag :div, {class: 'overlayOuter', id: 'status-editor-overlay'} do
-      content_tag :div, {style: 'width:600px'} do
-        content_tag :div, {class: 'overlayInner'} do
-          status_form(model, path, method) if model
-        end
-      end
+    overlay_tag('status-editor-overlay') do
+      status_form(model, path, method) if model
     end
   end
 

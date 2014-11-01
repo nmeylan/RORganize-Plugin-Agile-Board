@@ -1,4 +1,4 @@
-class UserStoriesController < ApplicationController
+class UserStoriesController < AgileBoardController
   before_action :set_user_story, only: [:show, :edit, :update, :destroy]
 
   # GET /user_stories

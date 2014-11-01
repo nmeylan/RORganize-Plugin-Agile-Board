@@ -1,0 +1,9 @@
+<%#=
+ * User: nmeylan
+ * Date: 01.11.14
+ * Time: 17:21
+ %>
+
+$('#sprint-editor-overlay').overlay().close();
+$('#sprints-list').replaceWith("<%= escape_javascript render_sprints(@sprints_decorator) %>");
+bind_stories_sortable();

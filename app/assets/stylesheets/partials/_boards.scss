@@ -17,14 +17,39 @@
 .agile-board-plan {
 }
 
-.story .right-content-list span{
+.sprint .header, .backlog .header {
+  > span > span, > div > span {
+    margin-right: 5px;
+  }
+  .info-square {
+    background-color: white;
+  }
+
+}
+
+.story .right-content-list span {
   margin-right: 5px;
 }
-.stories-list{
+
+.stories-list {
 
   min-height: 30px;
 }
-.stories-list.no-stories{
+
+.stories-list.no-stories {
   border: dashed 1px #e4e4e4;
   margin: 1px;
+}
+
+.sprint .header {
+  .sprint-dates-header.info-square {
+    position: relative;
+    font-size: 12px;
+    .sprint-dates-separator {
+      font-weight: bold;
+      margin-right: 5px;
+      margin-left: 5px;
+
+    }
+  }
 }

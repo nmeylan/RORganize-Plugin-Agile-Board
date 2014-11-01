@@ -1,0 +1,7 @@
+<%#=
+ * User: nmeylan
+ * Date: 01.11.14
+ * Time: 17:18
+ %>
+jQuery('#status-editor-overlay').overlay().close();
+$('.story-statuses-list').append("<%= escape_javascript statuses_list_row(@story_status) %>");

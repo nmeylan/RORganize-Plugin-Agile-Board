@@ -8,14 +8,8 @@ $(document).ready(function (e) {
 
 function initialize_board(){
     bind_tab_nav('configuration-tab');
-    jQuery(".stories-list.sortable").sortable({
-        connectWith: 'ul',
-        update:function( event, ui ){
-            var parent_list = ui.item.parent();
-            parent_list.removeClass('no-stories');
-            $(parent_list).parent().find('.no-data').remove();
-        }
-    });
+    bind_stories_sortable();
+    multi_toogle('.sprint-expand');
     jQuery(".story-statuses-list.sortable").sortable({
         update:function( event, ui ){
             var el = $(this);
@@ -33,6 +27,17 @@ function initialize_board(){
                 data: {ids: values}
             });
 
+        }
+    });
+}
+
+function bind_stories_sortable(){
+    jQuery(".stories-list.sortable").sortable({
+        connectWith: 'ul',
+        update:function( event, ui ){
+            var parent_list = ui.item.parent();
+            parent_list.removeClass('no-stories');
+            $(parent_list).parent().find('.no-data').remove();
         }
     });
 }

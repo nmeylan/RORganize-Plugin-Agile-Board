@@ -1,4 +1,4 @@
-class StoryPointsController < ApplicationController
+class StoryPointsController < AgileBoardController
   before_action :set_story_status, only: [:edit, :update]
   before_action :check_permission
 

@@ -1,4 +1,4 @@
-class BoardsController < ApplicationController
+class BoardsController < AgileBoardController
   before_action :set_board, only: [:index, :add_points, :destroy]
   before_action :check_permission
   include Rorganize::RichController::ProjectContext
@@ -22,13 +22,11 @@ class BoardsController < ApplicationController
   end
 
   def plan
-    @backlog = Sprint.new(name: 'Backlog')
+    @backlog = Sprint.new(id: -1, name: 'Backlog')
     @backlog.stories = UserStory.where(sprint_id: nil)
-    @backlog.stories << UserStory.new(title: 'My Story', tracker_id: 1, status_id: StoryStatus.find_by_board_id_and_position(@board_decorator.id, 0).id)
+    @backlog.stories << UserStory.new(points: StoryPoint.new(value: 10),title: 'My Story', tracker_id: 1, status_id: StoryStatus.find_by_board_id_and_position(@board_decorator.id, 0).id)
     @backlog = @backlog.decorate(context: {project: @project})
-    @sprints_decorator = Sprint.where(board_id: @board_decorator.id).includes(:stories).decorate(context: {project: @project})
-    @sprints_decorator << Sprint.new(name: 'Sprint 1', id: 1).decorate(context: {project: @project})
-    @sprints_decorator << Sprint.new(name: 'Sprint 2', id: 2).decorate(context: {project: @project})
+    @sprints_decorator = Sprint.ordered_sprints(@board.id).decorate(context: {project: @project})
   end
 
   def work
@@ -60,13 +58,7 @@ class BoardsController < ApplicationController
     end
   end
 
-
   private
-  # Use callbacks to share common setup or constraints between actions.
-  def set_board
-    @board_decorator = Board.find_by_project_id(@project.id)
-    @board_decorator = @board_decorator.decorate(context: {project: @project}) if @board_decorator
-  end
 
   def select_menu
     if @board_decorator

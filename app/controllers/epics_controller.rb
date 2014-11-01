@@ -1,4 +1,4 @@
-class EpicsController < ApplicationController
+class EpicsController < AgileBoardController
   before_action :set_epic, only: [:show, :edit, :update, :destroy]
 
   # GET /epics

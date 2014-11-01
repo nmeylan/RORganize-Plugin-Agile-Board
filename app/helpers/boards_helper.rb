@@ -71,9 +71,10 @@ module BoardsHelper
   def plan_content
     safe_concat clear_both
     safe_concat content_tag :div, class: 'agile-board-plan', &Proc.new {
-      safe_concat render_sprints(@sprints_decorator)
+      sprints_content(@sprints_decorator)
       safe_concat render_sprint(@backlog, 'backlog splitcontentright')
     }
   end
+
 
 end

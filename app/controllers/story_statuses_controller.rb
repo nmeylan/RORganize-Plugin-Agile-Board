@@ -1,5 +1,5 @@
-class StoryStatusesController < ApplicationController
-  include Rorganize::RichController
+class StoryStatusesController < AgileBoardController
+  include Rorganize::RichController::GenericCallbacks
   before_action :set_story_status, only: [:show, :edit, :update, :destroy]
 
   # GET /story_statuses
@@ -11,27 +11,27 @@ class StoryStatusesController < ApplicationController
   def new
     @story_status = StoryStatus.new(color: '#6cc644')
     respond_to do |format|
-      format.js { respond_to_js locals: {new: true} }
+      format.js { respond_to_js action: 'new', locals: {path: agile_board_plugin::story_statuses_path(@project.slug), method: :post} }
     end
   end
 
   # GET /story_statuses/1/edit
   def edit
     respond_to do |format|
-      format.js { respond_to_js locals: {edit: true} }
+      format.js { respond_to_js action: 'new', locals: {path: agile_board_plugin::story_status_path(@project.slug, @story_status.id), method: :put} }
     end
   end
 
   # POST /story_statuses
   def create
     @story_status = StoryStatus.new(story_status_params).decorate
-    @story_status.board = Board.find_by_project_id(@project.id)
-    js_callback(@story_status.save, [t(:successful_creation), "#{t(:failure_creation)} : #{@story_status.errors.full_messages.join(', ')}"], 'new', {new: false})
+    @story_status.board = @board
+    simple_js_callback(@story_status.save, :create, @story_status)
   end
 
   # PATCH/PUT /story_statuses/1
   def update
-    simple_js_callback(@story_status.update(story_status_params), :update)
+    simple_js_callback(@story_status.update(story_status_params), :update, @story_status)
   end
 
   def change_position
@@ -43,10 +43,7 @@ class StoryStatusesController < ApplicationController
 
   # DELETE /story_statuses/1
   def destroy
-    @story_status.destroy
-    respond_to do |format|
-      format.js { respond_to_js action: 'destroy', locals: {id: params[:id]}, response_header: :success, response_content: t(:successful_deletion) }
-    end
+    simple_js_callback(@story_status.destroy, :delete, @story_status, {id: params[:id]})
   end
 
   private
