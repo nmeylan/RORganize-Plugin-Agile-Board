@@ -23,7 +23,7 @@ module EpicsHelper
 
   def epics_list_row(epic)
     content_tag :li, class: "fancy-list-item epic", id: "epic-#{epic.id}" do
-      concat_span_tag epic.display_caption
+      safe_concat epic.display_caption
       concat_span_tag resize_text(epic.description, 150), class: 'epic-summary'
       safe_concat epics_list_button(epic)
     end
@@ -66,11 +66,8 @@ module EpicsHelper
   end
 
   def epic_editor_overlay(model = nil, path = nil, method = nil)
-    overlay_tag('epic-editor-overlay', 'width:800px') do
-      if model
-        safe_concat content_tag(:h1, method.eql?(:post) ? t(:link_new_epic) : model.caption)
-        safe_concat epic_form(model, path, method)
-      end
+    agile_board_overlay_editor('epic-editor-overlay', t(:link_new_epic), model) do
+      epic_form(model, path, method)
     end
   end
 end

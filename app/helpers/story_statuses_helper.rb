@@ -26,7 +26,7 @@ module StoryStatusesHelper
 
   def statuses_list_row(status)
     content_tag :li, class: "fancy-list-item status", id: "status-#{status.id}" do
-      safe_concat content_tag :span, status.display_caption
+      safe_concat status.display_caption
       safe_concat statuses_list_button(status)
     end
   end
@@ -60,11 +60,8 @@ module StoryStatusesHelper
   end
 
   def status_editor_overlay(model = nil, path = nil, method = nil)
-    overlay_tag('status-editor-overlay') do
-      if model
-        safe_concat content_tag(:h1, method.eql?(:post) ? t(:link_new_status) : model.caption)
-        safe_concat status_form(model, path, method)
-      end
+    agile_board_overlay_editor('status-editor-overlay', t(:link_new_status), model) do
+      status_form(model, path, method)
     end
   end
 
