@@ -1,0 +1,9 @@
+<%#=
+ * User: nmeylan
+ * Date: 31.10.14
+ * Time: 15:45
+ %>
+
+
+jQuery('#epic-editor-overlay').overlay().close();
+$("#<%= "epic-#{@epic.id}" %>").replaceWith("<%= escape_javascript epics_list_row(@epic) %>");

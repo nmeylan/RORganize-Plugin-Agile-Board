@@ -4,6 +4,7 @@ class CreateEpics < ActiveRecord::Migration
       t.string :name
       t.text :description
       t.integer :board_id
+      t.string :color
 
       t.timestamps
     end

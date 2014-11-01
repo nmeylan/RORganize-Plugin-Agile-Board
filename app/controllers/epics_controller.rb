@@ -1,4 +1,5 @@
 class EpicsController < AgileBoardController
+  include Rorganize::RichController::GenericCallbacks
   before_action :set_epic, only: [:show, :edit, :update, :destroy]
 
   # GET /epics
@@ -12,47 +13,45 @@ class EpicsController < AgileBoardController
 
   # GET /epics/new
   def new
-    @epic = Epic.new
+    @epic = Epic.new(color: '#6cc644')
+    respond_to do |format|
+      format.js { respond_to_js action: 'new', locals: {path: agile_board_plugin::epics_path(@project.slug), method: :post} }
+    end
   end
 
   # GET /epics/1/edit
   def edit
+    respond_to do |format|
+      format.js { respond_to_js action: 'new', locals: {path: agile_board_plugin::epic_path(@project.slug, @epic.id), method: :put} }
+    end
   end
 
   # POST /epics
   def create
-    @epic = Epic.new(epic_params)
-
-    if @epic.save
-      redirect_to @epic, notice: 'Epic was successfully created.'
-    else
-      render :new
-    end
+    @epic = Epic.new(epic_params).decorate
+    @epic.board = @board
+    simple_js_callback(@epic.save, :create, @epic)
   end
 
   # PATCH/PUT /epics/1
   def update
-    if @epic.update(epic_params)
-      redirect_to @epic, notice: 'Epic was successfully updated.'
-    else
-      render :edit
-    end
+    simple_js_callback(@epic.update(epic_params), :update, @epic)
   end
 
   # DELETE /epics/1
   def destroy
-    @epic.destroy
-    redirect_to epics_url, notice: 'Epic was successfully destroyed.'
+    simple_js_callback(@epic.destroy, :delete, @epic, {id: params[:id]})
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_epic
       @epic = Epic.find(params[:id])
+      @epic = @epic.decorate if @epic
     end
 
     # Only allow a trusted parameter "white list" through.
     def epic_params
-      params.require(:epic).permit(:name, :description)
+      params.require(:epic).permit(:name, :description, :color)
     end
 end

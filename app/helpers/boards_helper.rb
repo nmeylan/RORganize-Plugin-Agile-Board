@@ -1,6 +1,7 @@
 module BoardsHelper
   include StoryPointsHelper
   include StoryStatusesHelper
+  include EpicsHelper
   include SprintsHelper
 
   def agile_board_menu
@@ -50,12 +51,15 @@ module BoardsHelper
 
 
   def configuration_content
+    # TODO display or not tab (depending on permissions)
     safe_concat horizontal_tabs('configuration-tab',
-                                [{name: 'points-tab', element: glyph(t(:link_story_points), 'coin')},
-                                 {name: 'statuses-tab', element: glyph(t(:link_story_statuses), 'dashboard')}])
+                                [{name: 'epics-tab', element: medium_glyph(t(:link_epics), 'sword')},
+                                 {name: 'statuses-tab', element: glyph(t(:link_story_statuses), 'dashboard')},
+                                 {name: 'points-tab', element: glyph(t(:link_story_points), 'coin')}])
 
     safe_concat points_content
     safe_concat statuses_content
+    safe_concat epics_content
   end
 
   def create_link

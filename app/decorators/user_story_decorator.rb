@@ -3,7 +3,7 @@
 # Encoding: UTF-8
 # File: sprint_decorator.rb
 
-class UserStoryDecorator < ApplicationDecorator
+class UserStoryDecorator < AgileBoardDecorator
   decorates_association :status
   delegate_all
   def display_tracker

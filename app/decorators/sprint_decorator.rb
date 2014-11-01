@@ -3,7 +3,7 @@
 # Encoding: UTF-8
 # File: sprint_decorator.rb
 
-class SprintDecorator < ApplicationDecorator
+class SprintDecorator < AgileBoardDecorator
   decorates_association :stories
   delegate_all
 

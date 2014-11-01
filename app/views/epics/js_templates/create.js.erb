@@ -1,0 +1,7 @@
+<%#=
+ * User: nmeylan
+ * Date: 01.11.14
+ * Time: 17:18
+ %>
+jQuery('#epic-editor-overlay').overlay().close();
+$('.epics-list').append("<%= escape_javascript epics_list_row(@epic) %>");

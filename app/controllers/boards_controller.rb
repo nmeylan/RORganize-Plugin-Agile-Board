@@ -24,7 +24,7 @@ class BoardsController < AgileBoardController
   def plan
     @backlog = Sprint.new(id: -1, name: 'Backlog')
     @backlog.stories = UserStory.where(sprint_id: nil)
-    @backlog.stories << UserStory.new(points: StoryPoint.new(value: 10),title: 'My Story', tracker_id: 1, status_id: StoryStatus.find_by_board_id_and_position(@board_decorator.id, 0).id)
+    @backlog.stories << UserStory.new(points: StoryPoint.new(value: 10), title: 'My Story', tracker_id: 1, status_id: StoryStatus.find_by_board_id_and_position(@board_decorator.id, 0).id)
     @backlog = @backlog.decorate(context: {project: @project})
     @sprints_decorator = Sprint.ordered_sprints(@board.id).decorate(context: {project: @project})
   end
@@ -34,7 +34,9 @@ class BoardsController < AgileBoardController
   end
 
   def configuration
-    @board_decorator.context.merge!({points: StoryPoint.where(board_id: @board_decorator.id).decorate, statuses: StoryStatus.where(board_id: @board_decorator.id).decorate})
+    @board_decorator.context.merge!({points: StoryPoint.where(board_id: @board_decorator.id).decorate,
+                                     statuses: StoryStatus.where(board_id: @board_decorator.id).decorate,
+                                     epics: Epic.where(board_id: @board_decorator.id).decorate})
   end
 
   def add_points

@@ -1,9 +1,11 @@
 module StoryStatusesHelper
   include AgileBoardHelper
+
   def statuses_content
     content_tag :div, {id: 'statuses-tab', class: 'box', style: 'display:none'} do
       safe_concat statuses_list_header
       safe_concat statuses_list
+      safe_concat status_editor_overlay
     end
   end
 
@@ -45,7 +47,7 @@ module StoryStatusesHelper
 
   def status_form_field(f, model)
     content_tag :p do
-      safe_concat required_form_label(f, :name,  t(:field_name))
+      safe_concat required_form_label(f, :name, t(:field_name))
       safe_concat f.text_field :name, value: model.caption
     end
   end
@@ -59,7 +61,10 @@ module StoryStatusesHelper
 
   def status_editor_overlay(model = nil, path = nil, method = nil)
     overlay_tag('status-editor-overlay') do
-      status_form(model, path, method) if model
+      if model
+        safe_concat content_tag(:h1, method.eql?(:post) ? t(:link_new_status) : model.caption)
+        safe_concat status_form(model, path, method)
+      end
     end
   end
 

@@ -3,7 +3,7 @@
 # Encoding: UTF-8
 # File: board_decorator.rb
 
-class BoardDecorator < ApplicationDecorator
+class BoardDecorator < AgileBoardDecorator
   delegate_all
 
   def plan_menu_item
@@ -33,15 +33,6 @@ class BoardDecorator < ApplicationDecorator
     )
   end
 
-  def new_status_link
-    h.link_to_with_permissions(h.glyph(h.t(:link_new_status), 'plus'),
-                               h.agile_board_plugin::new_story_status_path(context[:project].slug),
-                               context[:project], nil,
-                               {remote: true,
-                                method: :get, class: 'button'}
-    )
-  end
-
   def add_points_link
     h.link_to_with_permissions(h.glyph(h.t(:link_add), 'plus'),
                                h.agile_board_plugin::agile_board_add_points_path(context[:project].slug, model.id),
@@ -49,9 +40,21 @@ class BoardDecorator < ApplicationDecorator
                                {remote: true, method: :get, class: 'button'})
   end
 
+  def new_status_link
+    agile_board_new_link(h.t(:link_new_status), 'plus', h.agile_board_plugin::new_story_status_path(context[:project].slug))
+  end
+
   def new_sprint
-    h.link_to_with_permissions(h.glyph(h.t(:link_new_sprint), 'sprint'),
-                               h.agile_board_plugin::new_sprint_path(context[:project].slug),
+    agile_board_new_link(h.t(:link_new_sprint), 'sprint', h.agile_board_plugin::new_sprint_path(context[:project].slug))
+  end
+
+  def new_epic_link
+    agile_board_new_link(h.t(:link_new_epic), 'plus', h.agile_board_plugin::new_epic_path(context[:project].slug))
+  end
+
+  def agile_board_new_link(label, glyph_name, path)
+    h.link_to_with_permissions(h.glyph(label, glyph_name),
+                               path,
                                context[:project], nil,
                                {remote: true,
                                 method: :get, class: 'button'}
@@ -72,5 +75,9 @@ class BoardDecorator < ApplicationDecorator
 
   def sorted_statuses
     context[:statuses].sort_by(&:position)
+  end
+
+  def decorated_epics
+    context[:epics]
   end
 end

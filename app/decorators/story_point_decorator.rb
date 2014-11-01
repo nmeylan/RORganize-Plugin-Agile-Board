@@ -3,7 +3,7 @@
 # Encoding: UTF-8
 # File: board_decorator.rb
 
-class StoryPointDecorator < ApplicationDecorator
+class StoryPointDecorator < AgileBoardDecorator
   delegate_all
 
   def point_edit_link(project)
