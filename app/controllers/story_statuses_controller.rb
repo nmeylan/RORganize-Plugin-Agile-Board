@@ -9,12 +9,13 @@ class StoryStatusesController < AgileBoardController
 
   # GET /story_statuses/new
   def new
-    @story_status = StoryStatus.new(color: '#6cc644')
+    @story_status = StoryStatus.new(color: '#6cc644').decorate(context: {issues_statuses: IssuesStatus.all.includes(:enumeration)})
     agile_board_form_callback(agile_board_plugin::story_statuses_path(@project.slug), :post)
   end
 
   # GET /story_statuses/1/edit
   def edit
+    @story_status.context = {issues_statuses: IssuesStatus.all.includes(:enumeration)}
     agile_board_form_callback(agile_board_plugin::story_status_path(@project.slug, @story_status.id), :put)
   end
 
@@ -51,6 +52,6 @@ class StoryStatusesController < AgileBoardController
 
   # Only allow a trusted parameter "white list" through.
   def story_status_params
-    params.require(:story_status).permit(:name, :color)
+    params.require(:story_status).permit(:name, :color, :issues_status_id)
   end
 end

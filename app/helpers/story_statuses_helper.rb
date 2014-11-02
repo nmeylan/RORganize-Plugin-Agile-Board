@@ -40,15 +40,16 @@ module StoryStatusesHelper
 
   def status_form(model, path, method)
     overlay_form(model, path, method) do |f|
-      safe_concat status_form_field(f, model)
+      safe_concat required_form_text_field(f, :name, t(:field_name))
       safe_concat status_form_color_field(f, model)
+      safe_concat status_form_issues_status_field(f, model)
     end
   end
 
-  def status_form_field(f, model)
-    content_tag :p do
-      safe_concat required_form_label(f, :name, t(:field_name))
-      safe_concat f.text_field :name, value: model.caption
+  def status_form_issues_status_field(f, model)
+    content_tag :div, class: 'autocomplete-combobox' do
+      safe_concat f.label :issues_status, t(:label_issues_status)
+      safe_concat f.select :issues_status_id, model.issues_status_options, {include_blank: true}, {class: 'chzn-select-deselect  cbb-medium search'}
     end
   end
 

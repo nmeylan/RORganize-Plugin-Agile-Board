@@ -38,16 +38,9 @@ module EpicsHelper
 
   def epic_form(model, path, method)
     overlay_form(model, path, method) do |f|
-      safe_concat epic_form_field(f, model)
+      safe_concat required_form_text_field(f, :name, t(:field_name))
       safe_concat epic_form_color_field(f)
       safe_concat epic_form_description_field(f)
-    end
-  end
-
-  def epic_form_field(f, model)
-    content_tag :p do
-      safe_concat required_form_label(f, :name, t(:field_name))
-      safe_concat f.text_field :name, value: model.caption
     end
   end
 

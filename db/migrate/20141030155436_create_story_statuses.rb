@@ -5,6 +5,8 @@ class CreateStoryStatuses < ActiveRecord::Migration
       t.integer :board_id
       t.integer :position
       t.string :color
+      t.integer :issues_status_id
+
       t.timestamps
     end
   end

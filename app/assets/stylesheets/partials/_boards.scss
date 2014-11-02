@@ -62,7 +62,14 @@
 }
 
 .epic-caption{
+  color: white;
   .octicon{
     color: white;
+  }
+}
+
+#status-editor-overlay{
+  .form{
+    height: 400px;
   }
 }
