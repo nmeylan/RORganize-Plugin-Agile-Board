@@ -11,8 +11,12 @@ en:
   link_new_story: New story
   link_new_sprint: New sprint
   link_new_epic: New epic
+  link_split: Split
+  link_unified: Unified
 
   field_summary: Summary
+  field_status: Status
+  field_epic: Epic
 
   text_no_agile_board: This project doesn't have agile board yet, do you want to create it?
   text_no_stories: This sprint doesn't contains any user stories, create a new one or drag and drop it above.

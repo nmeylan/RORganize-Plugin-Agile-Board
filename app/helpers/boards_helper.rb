@@ -5,9 +5,20 @@ module BoardsHelper
   include SprintsHelper
 
   def agile_board_menu
-    subnav_tag('agile-board-menu', 'agile-board-menu',
-               @board_decorator.plan_menu_item, @board_decorator.work_menu_item,
-               @board_decorator.configuration_menu_item)
+    #TODO add permission control
+    content_tag :div do
+      safe_concat display_mode_menu
+      safe_concat subnav_tag('agile-board-menu', 'agile-board-menu',
+                             @board_decorator.plan_menu_item, @board_decorator.work_menu_item,
+                             @board_decorator.configuration_menu_item)
+    end
+  end
+
+  def display_mode_menu
+    if @sessions[:agile_board_menu].eql?(:plan)
+      group_button_tag(@board_decorator.unified_display_mode(@sessions[:display_mode].eql?(:unified)),
+                       @board_decorator.split_display_mode(@sessions[:display_mode].eql?(:split)))
+    end
   end
 
   def agile_board
@@ -76,7 +87,7 @@ module BoardsHelper
     safe_concat clear_both
     safe_concat content_tag :div, class: 'agile-board-plan', &Proc.new {
       sprints_content(@sprints_decorator)
-      safe_concat render_sprint(@backlog, 'backlog splitcontentright')
+      safe_concat render_sprint(@backlog, "backlog #{'splitcontentright' if @sessions[:display_mode].eql?(:split)}")
     }
   end
 

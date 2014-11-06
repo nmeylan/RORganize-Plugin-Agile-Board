@@ -6,6 +6,8 @@ class BoardsController < AgileBoardController
   def index
     @sessions[:agile_board_menu] ||= :work
     @sessions[:agile_board_menu] = params[:agile_board_menu].to_sym if params[:agile_board_menu]
+    @sessions[:display_mode] ||= :split
+    @sessions[:display_mode] = params[:display_mode].to_sym if params[:display_mode]
 
     select_menu
     respond_to do |format|
@@ -22,9 +24,7 @@ class BoardsController < AgileBoardController
   end
 
   def plan
-    @backlog = Sprint.new(id: -1, name: 'Backlog')
-    @backlog.stories = UserStory.where(sprint_id: nil)
-    @backlog.stories << UserStory.new(points: StoryPoint.new(value: 10), title: 'My Story', tracker_id: 1, status_id: StoryStatus.find_by_board_id_and_position(@board_decorator.id, 0).id)
+    @backlog = Sprint.backlog(@board.id)
     @backlog = @backlog.decorate(context: {project: @project})
     @sprints_decorator = Sprint.ordered_sprints(@board.id).decorate(context: {project: @project})
   end

@@ -1,0 +1,8 @@
+<%#=
+ * User: nmeylan
+ * Date: 01.11.14
+ * Time: 17:21
+ %>
+
+$('#story-editor-overlay').overlay().close();
+$('#sprint-<%= @sprint.id %>').replaceWith("<%= escape_javascript render_sprint(@sprint, "#{@sprint.id < 0 ? 'backlog splitcontentright' : 'sprint' }") %>");

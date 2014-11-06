@@ -9,26 +9,18 @@ class SprintDecorator < AgileBoardDecorator
 
   def new_story(render_button = true)
     h.link_to_with_permissions(h.glyph(h.t(:link_new_story), 'tasks'),
-                               h.agile_board_plugin::new_user_story_path(context[:project].slug),
+                               h.agile_board_plugin::new_user_story_path(context[:project].slug, sprint_id: model.id),
                                context[:project], nil,
                                {remote: true, class: "#{'button' if render_button}"}
     )
   end
 
   def edit_link
-    h.link_to_with_permissions(h.glyph(h.t(:link_edit), 'pencil'),
-                               h.agile_board_plugin::edit_sprint_path(context[:project].slug, model.id),
-                               context[:project], nil,
-                               {remote: true, class: ''}
-    )
+    super(context[:project], h.agile_board_plugin::edit_sprint_path(context[:project].slug, model.id), false)
   end
 
   def delete_link
-    h.link_to_with_permissions(h.glyph(h.t(:link_delete), 'trashcan'),
-                               h.agile_board_plugin::sprint_path(context[:project].slug, model.id),
-                               context[:project], nil,
-                               {remote: true, class: 'danger-dropdown', confirm: h.t(:text_delete_sprint), method: :delete}
-    )
+    super(context[:project], h.agile_board_plugin::sprint_path(context[:project].slug, model.id), false)
   end
 
   def display_count_stories

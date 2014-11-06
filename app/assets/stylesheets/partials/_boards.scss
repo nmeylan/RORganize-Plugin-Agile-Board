@@ -8,7 +8,8 @@
     color: $link-color;
   }
 }
-.octicon-sword.medium-octicon{
+
+.octicon-sword.medium-octicon {
   margin-right: 0px;
 }
 
@@ -30,8 +31,11 @@
 
 }
 
-.story .right-content-list span {
-  margin-right: 5px;
+.fancy-list-item.story .right-content-list {
+  margin-top: -5px;
+  span {
+    margin-right: 5px;
+  }
 }
 
 .stories-list {
@@ -56,20 +60,39 @@
     }
   }
 }
-
-.epic-summary{
+.sprint{
+  .fancy-list .fancy-list-item .right-content-list li {
+     float: inherit;
+    margin-left: 0px;
+  }
+  .info-square{
+    padding: 3px 10px 1px 10px;
+  }
+}
+.epic-summary {
   margin-left: 10px;
 }
 
-.epic-caption{
+.epic-caption {
   color: white;
-  .octicon{
+  .octicon {
     color: white;
   }
 }
 
-#status-editor-overlay{
-  .form{
+#status-editor-overlay {
+  .form {
     height: 400px;
+  }
+}
+
+#story-editor-overlay .overlayContent {
+  width: 100% !important;
+  .overlayInner {
+    max-height: 700px;
+    #user_story_title{
+      width: 100%;
+    }
+
   }
 }

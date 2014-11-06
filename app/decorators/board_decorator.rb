@@ -18,9 +18,26 @@ class BoardDecorator < AgileBoardDecorator
     agile_board_menu(h.t(:lable_agile_board_configuration), 'gear', :configuration)
   end
 
-  def agile_board_menu(label, glyph, param)
+  def unified_display_mode(selected = false)
+    display_mode_menu(h.t(:link_unified), :unified, selected)
+  end
+
+  def split_display_mode(selected = false)
+    display_mode_menu(h.t(:link_split), :split, selected)
+  end
+
+  def display_mode_menu(caption, mode, selected = false)
+    {
+        options: {class: "minibutton #{'selected' if selected}"},
+        caption: caption,
+        path: h.agile_board_plugin::agile_board_index_path(project_id: context[:project].slug, agile_board_menu: :plan, display_mode: mode)
+    }
+  end
+
+  def agile_board_menu(label, glyph, param, path_params = {})
+    default_path_params = {project_id: context[:project].slug, agile_board_menu: param}
     h.agile_board_menu_nav_item(label, glyph, param,
-                                h.agile_board_plugin::agile_board_index_path(context[:project].slug, agile_board_menu: param))
+                                h.agile_board_plugin::agile_board_index_path(default_path_params.merge(path_params)))
   end
 
   def delete_link

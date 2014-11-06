@@ -5,10 +5,11 @@ module SprintsHelper
   def sprints_content(sprints)
     safe_concat render_sprints(sprints)
     safe_concat sprint_editor_overlay
+    safe_concat story_editor_overlay
   end
 
   def render_sprints(sprints)
-    content_tag :div, class: 'sprints splitcontentleft', id: 'sprints-list' do
+    content_tag :div, class: "sprints #{'splitcontentleft' if @sessions[:display_mode].eql?(:split)}", id: 'sprints-list' do
       if sprints.any?
         sprints.collect { |sprint| render_sprint(sprint) }.join.html_safe
       else
@@ -104,24 +105,16 @@ module SprintsHelper
   def sprint_form(model, path, method)
     overlay_form(model, path, method) do |f|
       safe_concat sprint_form_version_field(model, f)
-      safe_concat sprint_form_name_field(f)
+      safe_concat required_form_text_field(f, :name, t(:field_name))
       safe_concat sprint_date_field(f, :start_date, t(:field_start_date))
       safe_concat sprint_date_field(f, :end_date, t(:field_target_date), false)
     end
   end
 
   def sprint_form_version_field(model, f)
-    content_tag :div, class: 'autocomplete-combobox' do
-      safe_concat f.label :version_id, t(:field_version)
-      safe_concat select_tag_versions('sprint_version_id', 'sprint[version_id]', model.version_id,
-                                      {'data-link' => agile_board_plugin::generate_sprint_name_path(@project.slug)})
-    end
-  end
-
-  def sprint_form_name_field(f)
-    content_tag :p do
-      safe_concat required_form_label(f, :name, t(:field_name))
-      safe_concat f.text_field(:name)
+    agile_board_select_field(f, :version_id, t(:field_version)) do
+      select_tag_versions('sprint_version_id', 'sprint[version_id]', model.version_id,
+                          {'data-link' => agile_board_plugin::generate_sprint_name_path(@project.slug)})
     end
   end
 

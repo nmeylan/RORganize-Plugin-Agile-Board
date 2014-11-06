@@ -4,6 +4,7 @@
  * Time: 21:48
  %>
 $('#points-tab').replaceWith("<%= escape_javascript points_content(addition) %>");
+bind_tab_nav('configuration-tab');
 $('#submit-points-addition').click(function(e){
     e.preventDefault();
     var val = $('#points').val();

@@ -1,7 +1,7 @@
 module StoryPointsHelper
 
   def points_content(addition = false)
-    content_tag :div, id: 'points-tab', style: 'display:none' do
+    content_tag :div, id: 'points-tab', style: "display:none" do
       safe_concat @board_decorator.display_points
       if addition
         points_addition

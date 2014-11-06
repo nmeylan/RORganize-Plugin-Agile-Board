@@ -39,7 +39,7 @@ module EpicsHelper
   def epic_form(model, path, method)
     overlay_form(model, path, method) do |f|
       safe_concat required_form_text_field(f, :name, t(:field_name))
-      safe_concat epic_form_color_field(f)
+      safe_concat agile_board_form_color_field(f)
       safe_concat epic_form_description_field(f)
     end
   end
@@ -48,13 +48,6 @@ module EpicsHelper
     content_tag :p do
       safe_concat f.label :description, t(:field_description)
       safe_concat f.text_area :description, rows: 5
-    end
-  end
-
-  def epic_form_color_field(f)
-    content_tag :p do
-      safe_concat f.label :color, t(:label_color)
-      safe_concat color_field_tag f, :color
     end
   end
 

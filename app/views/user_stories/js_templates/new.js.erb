@@ -1,0 +1,8 @@
+<%#=
+ * User: nmeylan
+ * Date: 31.10.14
+ * Time: 14:31
+ %>
+    jQuery("#story-editor-overlay").replaceWith("<%= escape_javascript story_editor_overlay(@user_story, path, method) %>");
+    createOverlay("#story-editor-overlay", 150);
+    jQuery('#story-editor-overlay').overlay().load();

@@ -13,10 +13,17 @@ module AgileBoardHelper
     end
   end
 
-  def required_form_text_field(f, attr_name, label)
+  def required_form_text_field(f, attr_name, label, options = {size: 25})
     content_tag :p do
       safe_concat required_form_label(f, attr_name, label)
-      safe_concat f.text_field attr_name
+      safe_concat f.text_field attr_name, options
+    end
+  end
+
+  def agile_board_form_color_field(f)
+    content_tag :p do
+      safe_concat f.label :color, t(:label_color)
+      safe_concat color_field_tag f, :color, {size: 26}
     end
   end
 
@@ -27,6 +34,13 @@ module AgileBoardHelper
         safe_concat(content_tag(:h1, t))
         safe_concat yield
       end
+    end
+  end
+
+  def agile_board_select_field(f, attr_name, label, required = false)
+    content_tag :div, class: 'autocomplete-combobox' do
+      safe_concat(required ? required_form_label(f, attr_name, label) : f.label(attr_name, label))
+      safe_concat yield if block_given?
     end
   end
 
