@@ -3,7 +3,7 @@ class Sprint < ActiveRecord::Base
   has_many :stories, class_name: 'UserStory', dependent: :nullify
   belongs_to :version
   belongs_to :board
-  scope :eager_load_user_stories, -> { includes(stories: [:status, :points, :tracker, :category])}
+  scope :eager_load_user_stories, -> { includes(stories: [:status, :points, :tracker, :category, :epic])}
   scope :ordered_sprints, ->(board_id) { where(board_id: board_id).includes(:version, ).eager_load_user_stories.order(start_date: :desc) }
 
   validates :name, :start_date, presence: true

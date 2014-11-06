@@ -1,7 +1,16 @@
 class UserStoriesController < AgileBoardController
   include Rorganize::RichController::GenericCallbacks
   helper SprintsHelper
-  before_action :set_user_story, only: [:show, :edit, :update, :destroy]
+
+  before_filter { |c| c.menu_context :project_menu }
+  before_filter { |c| c.menu_item('boards') }
+  before_filter { |c| c.top_menu_item('projects') }
+  before_action :set_user_story, only: [:edit, :update, :destroy]
+
+
+  def peek_enabled?
+    false
+  end
 
   # GET /user_stories
   def index
@@ -10,6 +19,7 @@ class UserStoriesController < AgileBoardController
 
   # GET /user_stories/1
   def show
+    @user_story_decorator = UserStory.fetch_dependencies.find(params[:id]).decorate
   end
 
   # GET /user_stories/new
@@ -28,6 +38,7 @@ class UserStoriesController < AgileBoardController
   # POST /user_stories
   def create
     @user_story = UserStory.new(user_story_params)
+    @user_story.auth
     @user_story.board = @board
     result = @user_story.save
     @sprint = @user_story.get_sprint.decorate(context: {project: @project})

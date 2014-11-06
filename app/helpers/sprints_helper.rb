@@ -9,7 +9,7 @@ module SprintsHelper
   end
 
   def render_sprints(sprints)
-    content_tag :div, class: "sprints #{'splitcontentleft' if @sessions[:display_mode].eql?(:split)}", id: 'sprints-list' do
+    content_tag :div, class: "sprints #{'splitcontentleft' if split_content?}", id: 'sprints-list' do
       if sprints.any?
         sprints.collect { |sprint| render_sprint(sprint) }.join.html_safe
       else
@@ -46,7 +46,7 @@ module SprintsHelper
       safe_concat link_to glyph('', 'chevron-down'), '#', {id: "content-sprint-#{sprint.id}", class: 'icon-expanded sprint-expand'}
       safe_concat content_tag :h2, sprint.resized_caption(25)
       safe_concat sprint.display_dates
-      safe_concat sprint.display_version
+      safe_concat sprint.display_version if unified_content?
     end
   end
 

@@ -30,7 +30,7 @@ module AgileBoardHelper
   def agile_board_overlay_editor(overlay_id, title, model)
     overlay_tag(overlay_id, 'width:800px') do
       if model
-        t = model.new_record? ? title : model.caption
+        t = model.new_record? ? title : resize_text(model.caption, 70)
         safe_concat(content_tag(:h1, t))
         safe_concat yield
       end
@@ -42,6 +42,14 @@ module AgileBoardHelper
       safe_concat(required ? required_form_label(f, attr_name, label) : f.label(attr_name, label))
       safe_concat yield if block_given?
     end
+  end
+
+  def split_content?
+    @sessions[:display_mode].eql?(:split)
+  end
+
+  def unified_content?
+    @sessions[:display_mode].eql?(:unified)
   end
 
 end

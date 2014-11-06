@@ -4,6 +4,7 @@
 # File: sprint_decorator.rb
 
 class UserStoryDecorator < AgileBoardDecorator
+  decorates_association :sprint
   decorates_association :status
   decorates_association :epic
   delegate_all
@@ -19,7 +20,10 @@ class UserStoryDecorator < AgileBoardDecorator
 
   def delete_link
     super(context[:project], h.agile_board_plugin::user_story_path(context[:project].slug, model.id), false)
+  end
 
+  def show_link(caption)
+    h.link_to_with_permissions(caption, h.agile_board_plugin::user_story_path(context[:project].slug, model.id), context[:project], nil)
   end
 
   def display_status
@@ -28,6 +32,26 @@ class UserStoryDecorator < AgileBoardDecorator
 
   def display_epic
     self.epic.display_caption if self.epic
+  end
+
+  def display_tracker
+    self.tracker.caption
+  end
+
+  def display_category
+    display_info_square(model.category, 'tag', false)
+  end
+
+  def display_sprint_dates
+    self.sprint.display_dates if self.sprint
+  end
+
+  def display_sprint
+    model.get_sprint.caption
+  end
+
+  def display_version
+    display_info_square(model.sprint.version, 'milestone') if self.sprint
   end
 
   def status_options

@@ -6,7 +6,10 @@ class UserStory < ActiveRecord::Base
   belongs_to :category
   belongs_to :sprint
   belongs_to :epic
+  belongs_to :author, class_name: 'User'
   belongs_to :board
+
+  scope :fetch_dependencies, -> { includes(:status, :points, :tracker, :category, sprint: :version)}
 
   validates :tracker_id, :status_id, :board_id, :title, presence: true
   before_save :set_backlog_id
@@ -16,10 +19,10 @@ class UserStory < ActiveRecord::Base
   end
 
   def get_sprint
-    if self.sprint_id > 0
-      Sprint.eager_load_user_stories.find_by_id(self.sprint_id)
+    if self.sprint_id
+      self.sprint
     else
-      Sprint.backlog(self.board_id)
+      Sprint.new(id: -1, name: 'Backlog')
     end
   end
 

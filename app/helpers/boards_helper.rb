@@ -1,4 +1,5 @@
 module BoardsHelper
+  include AgileBoardHelper
   include StoryPointsHelper
   include StoryStatusesHelper
   include EpicsHelper
@@ -16,8 +17,8 @@ module BoardsHelper
 
   def display_mode_menu
     if @sessions[:agile_board_menu].eql?(:plan)
-      group_button_tag(@board_decorator.unified_display_mode(@sessions[:display_mode].eql?(:unified)),
-                       @board_decorator.split_display_mode(@sessions[:display_mode].eql?(:split)))
+      group_button_tag(@board_decorator.unified_display_mode(unified_content?),
+                       @board_decorator.split_display_mode(split_content?))
     end
   end
 
@@ -87,7 +88,7 @@ module BoardsHelper
     safe_concat clear_both
     safe_concat content_tag :div, class: 'agile-board-plan', &Proc.new {
       sprints_content(@sprints_decorator)
-      safe_concat render_sprint(@backlog, "backlog #{'splitcontentright' if @sessions[:display_mode].eql?(:split)}")
+      safe_concat render_sprint(@backlog, "backlog #{'splitcontentright' if split_content?}")
     }
   end
 

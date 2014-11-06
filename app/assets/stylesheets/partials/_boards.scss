@@ -20,7 +20,14 @@
 
 .agile-board-plan {
 }
-
+.sprints, .backlog{
+  .dropdown-menu{
+    width: 120px;
+    > li > a{
+      padding: 4px 0px 4px 0px;
+    }
+  }
+}
 .sprint .header, .backlog .header {
   > span > span, > div > span {
     margin-right: 5px;
@@ -31,15 +38,28 @@
 
 }
 
-.fancy-list-item.story .right-content-list {
-  margin-top: -5px;
-  span {
-    margin-right: 5px;
+.fancy-list-item.story {
+  .story-left-content, .right-content-list {
+    .story-tracker {
+      font-weight: bold;
+    }
+    .story-title{
+      a{
+        color: $link-hover-color;
+        font-weight: inherit;
+      }
+      a:hover{
+        text-decoration: underline;
+      }
+    }
+    margin-top: -5px;
+    span {
+      margin-right: 5px;
+    }
   }
 }
 
 .stories-list {
-
   min-height: 30px;
 }
 
@@ -60,15 +80,24 @@
     }
   }
 }
-.sprint{
+
+.sprint {
+  .fancy-list .fancy-list-item .story-left-content {
+    float: left;
+    width: 75%;
+  }
   .fancy-list .fancy-list-item .right-content-list li {
-     float: inherit;
+    float: inherit;
     margin-left: 0px;
   }
-  .info-square{
+  .story-title {
+    overflow: hidden;
+  }
+  .info-square {
     padding: 3px 10px 1px 10px;
   }
 }
+
 .epic-summary {
   margin-left: 10px;
 }
@@ -90,7 +119,7 @@
   width: 100% !important;
   .overlayInner {
     max-height: 700px;
-    #user_story_title{
+    #user_story_title {
       width: 100%;
     }
 

@@ -1,22 +1,26 @@
 module UserStoriesHelper
+  include AgileBoardHelper
   def render_story(story)
     content_tag :li, class: "fancy-list-item story", id: "story-#{story.id}" do
       safe_concat render_story_left_content(story)
       safe_concat render_story_right_content(story)
+      safe_concat clear_both
     end
   end
 
   def render_story_left_content(story)
     content_tag :span, class: 'story-left-content' do
-      concat_span_tag story.caption
+      concat_span_tag story.display_tracker, class: 'story-tracker'
+      concat_span_tag story.show_link(story.resized_caption(caption_sized)), class: 'story-title'
     end
   end
 
   def render_story_right_content(story)
     content_tag :span, class: 'fancy-list right-content-list' do
+      safe_concat story.display_category if unified_content?
       safe_concat story.display_epic
-      concat_span_tag story.display_status
-      concat_span_tag story.display_points
+      safe_concat story.display_status
+      safe_concat story.display_points
       safe_concat story_right_dropdown(story)
     end
   end
@@ -95,5 +99,9 @@ module UserStoriesHelper
     agile_board_select_field(f, :point, t(:link_story_points)) do
       f.select :point_id, model.point_options, {include_blank: true}, {class: 'chzn-select-deselect  cbb-medium search'}
     end
+  end
+
+  def caption_sized
+    unified_content? ? 150 : 50
   end
 end
