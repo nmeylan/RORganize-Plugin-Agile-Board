@@ -3,7 +3,7 @@ class Sprint < ActiveRecord::Base
   has_many :stories, class_name: 'UserStory', dependent: :nullify
   belongs_to :version
   belongs_to :board
-  scope :eager_load_user_stories, -> { includes(stories: [:status, :points, :tracker, :category, :epic])}
+  scope :eager_load_user_stories, -> { includes(stories: [:status, :points, :tracker, :category, :epic, :issues])}
   scope :ordered_sprints, ->(board_id) { where(board_id: board_id).includes(:version, ).eager_load_user_stories.order(start_date: :desc) }
 
   validates :name, :start_date, presence: true
@@ -25,7 +25,7 @@ class Sprint < ActiveRecord::Base
 
   def self.backlog(board_id)
     backlog = Sprint.new(id: -1, name: 'Backlog')
-    backlog.stories = UserStory.where(sprint_id: nil, board_id: board_id).includes(:status, :points, :tracker, :category)
+    backlog.stories = UserStory.where(sprint_id: nil, board_id: board_id).includes(:status, :points, :tracker, :category, :issues)
     backlog
   end
 

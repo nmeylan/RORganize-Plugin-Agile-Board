@@ -19,7 +19,7 @@ class UserStoriesController < AgileBoardController
 
   # GET /user_stories/1
   def show
-    @user_story_decorator = UserStory.fetch_dependencies.includes(:issues).find(params[:id]).decorate(context: {project: @project})
+    @user_story_decorator = UserStory.fetch_dependencies.includes(issues: [:tracker, :category, :version, :assigned_to, status: :enumeration]).find(params[:id]).decorate(context: {project: @project})
   end
 
   # GET /user_stories/new

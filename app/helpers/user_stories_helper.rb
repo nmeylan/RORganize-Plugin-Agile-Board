@@ -26,6 +26,7 @@ module UserStoriesHelper
   end
 
   def story_detail_content(story)
+    safe_concat story.display_all_assigned
     safe_concat story.display_category
     safe_concat story.display_epic
   end

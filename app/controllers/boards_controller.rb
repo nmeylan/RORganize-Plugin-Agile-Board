@@ -6,7 +6,7 @@ class BoardsController < AgileBoardController
   def index
     @sessions[:agile_board_menu] ||= :work
     @sessions[:agile_board_menu] = params[:agile_board_menu].to_sym if params[:agile_board_menu]
-    @sessions[:display_mode] ||= :split
+    @sessions[:display_mode] ||= :unified
     @sessions[:display_mode] = params[:display_mode].to_sym if params[:display_mode]
 
     select_menu

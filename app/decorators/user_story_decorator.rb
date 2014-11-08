@@ -16,17 +16,24 @@ class UserStoryDecorator < AgileBoardDecorator
   end
 
   def edit_link(button = false, path_params = {})
-    h.link_to_with_permissions(h.glyph(h.t(:link_edit), 'pencil'),
-                               h.agile_board_plugin::edit_user_story_path(context[:project].slug, model.id, path_params),
-                               context[:project], nil, {remote: true, method: :get, class: "#{'button' if button}"})
+    if User.current.allowed_to?(:edit, 'user_stories', context[:project])
+      link_to(h.glyph(h.t(:link_edit), 'pencil'),
+              h.agile_board_plugin::edit_user_story_path(context[:project].slug, model.id, path_params), {remote: true, method: :get, class: "#{'button' if button}"})
+    end
   end
 
   def delete_link
-    super(context[:project], h.agile_board_plugin::user_story_path(context[:project].slug, model.id), false)
+    if User.current.allowed_to?(:destroy, 'user_stories', context[:project])
+      link_to h.glyph(h.t(:link_delete), 'trashcan'),
+              h.agile_board_plugin::user_story_path(context[:project].slug, model.id),
+              {remote: true, method: :delete, class: "danger danger-dropdown", confirm: h.t(:text_delete_item)}
+    end
   end
 
   def show_link(caption)
-    h.link_to_with_permissions(caption, h.agile_board_plugin::user_story_path(context[:project].slug, model.id), context[:project], nil)
+    if User.current.allowed_to?(:show, 'user_stories', context[:project])
+      link_to(caption, h.agile_board_plugin::user_story_path(context[:project].slug, model.id))
+    end
   end
 
   def new_task_link
@@ -88,5 +95,9 @@ class UserStoryDecorator < AgileBoardDecorator
 
   def point_options
     context[:points].collect { |point| [point.caption, point.id] }
+  end
+
+  def display_all_assigned
+    self.issues.map(&:display_assigned_to_avatar).compact.uniq.join.html_safe
   end
 end

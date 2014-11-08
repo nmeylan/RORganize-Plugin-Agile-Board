@@ -12,3 +12,8 @@ gemspec
 
 # To use debugger
 # gem 'debugger'
+
+gem 'peek'
+gem 'peek-mysql2'
+gem 'peek-rblineprof'
+gem 'peek-performance_bar'

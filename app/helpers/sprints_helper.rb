@@ -90,7 +90,7 @@ module SprintsHelper
 
   def render_sprint_body(sprint)
     content_tag :ul, {class: "fancy-list fancy-list-mini stories-list sortable #{'no-stories' if sprint.stories.empty?}"} do
-      sprint.stories.collect do |story|
+      sprint.sorted_stories.collect do |story|
         render_story(story)
       end.join.html_safe
     end
