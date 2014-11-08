@@ -13,6 +13,13 @@ module AgileBoardHelper
     end
   end
 
+  def agile_board_form_description_field(f)
+    content_tag :p do
+      safe_concat f.label :description, t(:field_description)
+      safe_concat f.text_area :description, {class: 'fancyEditor', rows: 12}
+    end
+  end
+
   def required_form_text_field(f, attr_name, label, options = {size: 25})
     content_tag :p do
       safe_concat required_form_label(f, attr_name, label)
@@ -28,7 +35,7 @@ module AgileBoardHelper
   end
 
   def agile_board_overlay_editor(overlay_id, title, model)
-    overlay_tag(overlay_id, 'width:800px') do
+    overlay_tag(overlay_id, 'width:835px') do
       if model
         t = model.new_record? ? title : resize_text(model.caption, 70)
         safe_concat(content_tag(:h1, t))

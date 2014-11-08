@@ -5,4 +5,10 @@
  %>
 
 $('#story-editor-overlay').overlay().close();
-$('#sprint-<%= @sprint.id %>').replaceWith("<%= escape_javascript render_sprint(@sprint, "#{@sprint.id < 0 ? 'backlog splitcontentright' : 'sprint' }") %>");
+<% if @sprint %>
+<% split_class = @sessions[:display_mode].eql?(:split) ? 'splitcontentright' : '' %>
+$('#sprint-<%= @sprint.id %>').replaceWith("<%= escape_javascript render_sprint(@sprint, "#{@sprint.id < 0 ? 'backlog ' + split_class : 'sprint' }") %>");
+bind_stories_sortable();
+<% else %>
+$('#story-<%= @user_story_decorator.id %>').replaceWith("<%= escape_javascript render partial: 'user_stories/show' %>");
+<% end %>

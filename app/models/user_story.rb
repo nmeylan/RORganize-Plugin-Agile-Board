@@ -6,6 +6,7 @@ class UserStory < ActiveRecord::Base
   belongs_to :category
   belongs_to :sprint
   belongs_to :epic
+  has_many :issues
   belongs_to :author, class_name: 'User'
   belongs_to :board
 
@@ -18,12 +19,22 @@ class UserStory < ActiveRecord::Base
     self.title
   end
 
-  def get_sprint
-    if self.sprint_id
-      self.sprint
+  def get_sprint(fetch_dependencies = false)
+    if self.sprint_id && self.sprint_id > 0
+      fetch_dependencies ? Sprint.eager_load_user_stories.find_by_id(self.sprint_id) : self.sprint
     else
-      Sprint.new(id: -1, name: 'Backlog')
+      fetch_dependencies ? Sprint.backlog(self.board_id) : Sprint.new(id: -1, name: 'Backlog')
     end
+  end
+
+  def tasks_version_id
+    version = self.get_sprint.version
+    version ? version.id : nil
+  end
+
+  def tasks_status_id
+    status = self.status.issues_status
+    status ? status.id : nil
   end
 
   def set_backlog_id

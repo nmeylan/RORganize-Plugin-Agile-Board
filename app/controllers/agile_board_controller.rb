@@ -8,9 +8,9 @@ class AgileBoardController < ApplicationController
 
   protected
 
-  def agile_board_form_callback(path, method)
+  def agile_board_form_callback(path, method, action = 'new')
     respond_to do |format|
-      format.js { respond_to_js action: 'new', locals: {path: path, method: method} }
+      format.js { respond_to_js action: action, locals: {path: path, method: method} }
     end
   end
 

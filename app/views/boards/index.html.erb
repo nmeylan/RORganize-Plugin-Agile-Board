@@ -1,4 +1,8 @@
-<%#= javascript_include_tag 'boards' %>
+<%#= CSS Files %>
+<%= stylesheet_link_tag 'agile_board_manifest' %>
+<%#= JS Files %>
+<%= javascript_include_tag 'agile_board_manifest' %>
+
 <%= contextual t(:label_agile_board) do %>
 <%=  @board_decorator.delete_link if @board_decorator %>
 <% end %>

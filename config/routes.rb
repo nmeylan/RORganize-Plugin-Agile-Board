@@ -16,7 +16,10 @@ AgileBoard::Engine.routes.draw do
       resources :story_points, only: [:edit, :update]
       resources :epics
       resources :sprints
-      resources :user_stories
+      resources :user_stories do
+        get :new_task
+        post :create_task
+      end
 
       get :generate_sprint_name, controller: 'sprints'
     end

@@ -1,5 +1,6 @@
 module UserStoriesHelper
   include AgileBoardHelper
+  include UserStoryTasksHelper
   def render_story(story)
     content_tag :li, class: "fancy-list-item story", id: "story-#{story.id}" do
       safe_concat render_story_left_content(story)
@@ -17,12 +18,16 @@ module UserStoriesHelper
 
   def render_story_right_content(story)
     content_tag :span, class: 'fancy-list right-content-list' do
-      safe_concat story.display_category if unified_content?
-      safe_concat story.display_epic
+      story_detail_content(story) if unified_content?
       safe_concat story.display_status
       safe_concat story.display_points
       safe_concat story_right_dropdown(story)
     end
+  end
+
+  def story_detail_content(story)
+    safe_concat story.display_category
+    safe_concat story.display_epic
   end
 
   def story_right_dropdown(story)
@@ -45,7 +50,7 @@ module UserStoriesHelper
       safe_concat story_form_right_content(f, model)
       safe_concat clear_both
       safe_concat required_form_text_field(f, :title, t(:field_title), {size: 80})
-      safe_concat story_form_description_field(f)
+      safe_concat agile_board_form_description_field(f)
     end
   end
 
@@ -67,13 +72,6 @@ module UserStoriesHelper
   def story_form_status_field(f, model)
     agile_board_select_field(f, :status, t(:field_status), true) do
       f.select :status_id, model.status_options, {include_blank: false}, {class: 'chzn-select  cbb-medium search'}
-    end
-  end
-
-  def story_form_description_field(f)
-    content_tag :p do
-      safe_concat f.label :description, t(:field_description)
-      safe_concat f.text_area :description, {class: 'fancyEditor', rows: 12}
     end
   end
 
