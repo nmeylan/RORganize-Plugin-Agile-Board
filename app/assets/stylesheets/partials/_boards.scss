@@ -99,7 +99,11 @@
     }
   }
 }
-
+.fancy-list .fancy-list-item {
+  .info-square {
+    padding: 3px 10px 1px 10px;
+  }
+}
 .sprint, .story-tasks-list {
   .fancy-list .fancy-list-item .story-left-content {
     float: left;
@@ -147,4 +151,24 @@
 .counter.story-points{
   width: 30px;
   text-align: center;
+}
+.story-tasks-list{
+
+  min-height: 50px;
+}
+#trash-story-tasks.box{
+  border: dashed 3px $default-border-color;
+  margin-top: 50px;
+  .trash-placeholder{
+    text-align: center;
+    p{
+      margin: 0;
+      margin-right: 10px;
+      display: inline-block;
+      padding: 5px;
+      font-weight: bold;
+      font-size: 16px;
+      color: $default-smooth-color;
+    }
+  }
 }

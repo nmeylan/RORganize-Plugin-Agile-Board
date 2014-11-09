@@ -10,7 +10,7 @@ class UserStory < ActiveRecord::Base
   belongs_to :author, class_name: 'User'
   belongs_to :board
 
-  scope :fetch_dependencies, -> { includes(:status, :points, :tracker, :category, sprint: :version)}
+  scope :fetch_dependencies, -> { includes(:status, :points, :tracker, :category, sprint: :version) }
   scope :fetch_issues_dependencies, -> { includes(issues: [:tracker, :category, :version, :assigned_to, status: :enumeration]) }
   validates :tracker_id, :status_id, :board_id, :title, presence: true
   before_save :set_backlog_id
@@ -55,5 +55,11 @@ class UserStory < ActiveRecord::Base
         Issue.bulk_edit(issue_ids, {attr_name => value}, project)
       end
     end
+  end
+
+  def detach_tasks(ids)
+    issues_to_remove = self.issues.collect { |issue| issue if ids.include?(issue.id.to_s) }.compact
+    self.issues.delete(issues_to_remove)
+    self.save
   end
 end

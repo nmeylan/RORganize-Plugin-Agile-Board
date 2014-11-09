@@ -57,6 +57,10 @@ class UserStoryDecorator < AgileBoardDecorator
                                h.agile_board_plugin::user_story_new_task_path(context[:project].slug, model.id), context[:project], nil, {class: 'button', remote: true})
   end
 
+  def detach_tasks_link
+    h.link_to h.t(:button_apply), h.agile_board_plugin::user_story_detach_tasks_path(context[:project].slug, model.id), {class: 'button', id: 'user-story-detach-tasks'}
+  end
+
   def display_status
     self.status.display_caption
   end

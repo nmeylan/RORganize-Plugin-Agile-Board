@@ -5,7 +5,7 @@ class UserStoriesController < AgileBoardController
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item('boards') }
   before_filter { |c| c.top_menu_item('projects') }
-  before_action :set_user_story, only: [:edit, :update, :destroy, :new_task, :create_task]
+  before_action :set_user_story, only: [:edit, :update, :destroy, :new_task, :create_task, :detach_tasks]
 
 
   def peek_enabled?
@@ -20,6 +20,9 @@ class UserStoriesController < AgileBoardController
   # GET /user_stories/1
   def show
     @user_story_decorator = decorate_user_story
+    respond_to do |format|
+      format.html {render 'show'}
+    end
   end
 
   # GET /user_stories/new
@@ -95,6 +98,14 @@ class UserStoriesController < AgileBoardController
     end
   end
 
+  def detach_tasks
+    @user_story.detach_tasks(params[:ids])
+    respond_to do |format|
+      flash[:notice] = t(:successful_update)
+      format.js { js_redirect_to(agile_board_plugin::user_story_path(@project.slug, @user_story.id)) }
+    end
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_user_story
@@ -102,7 +113,7 @@ class UserStoriesController < AgileBoardController
   end
 
   def decorate_user_story
-    UserStory.fetch_dependencies.fetch_issues_dependencies.find(params[:id]).decorate(context: {project: @project})
+    UserStory.fetch_dependencies.fetch_issues_dependencies.find(params[:id] || params[:user_story_id]).decorate(context: {project: @project})
   end
 
   def form_context

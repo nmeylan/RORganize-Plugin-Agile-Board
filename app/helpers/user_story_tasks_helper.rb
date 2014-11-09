@@ -33,7 +33,7 @@ module UserStoryTasksHelper
   def story_tasks_list(model)
     if model.issues.any?
       content_tag :div, class: 'box' do
-        content_tag :ul, {class: "fancy-list fancy-list-mini story-tasks-list"} do
+        content_tag :ul, {class: "sortable fancy-list fancy-list-mini story-tasks-list"} do
           render_tasks(model)
         end
       end
@@ -65,12 +65,23 @@ module UserStoryTasksHelper
 
   def render_story_task_right_content(issue)
     content_tag :span, class: 'fancy-list right-content-list' do
-      # concat_span_tag issue.display_done_progression, {class: 'tooltipped tooltipped-s', label: "#{issue.done}%"}
       safe_concat issue.display_assigned_to_avatar
       safe_concat issue.display_version if issue.version_id
       safe_concat issue.display_category if issue.category_id
       safe_concat issue.display_status
       safe_concat progress_bar_tag(issue.done)
+    end
+  end
+
+  def render_story_trash_tasks(model)
+    content_tag :div, {id: 'trash-story-tasks', class: 'box'} do
+      safe_concat content_tag :ul, class: 'fancy-list fancy-list-mini story-tasks-list sortable', &Proc.new {
+
+      }
+      safe_concat content_tag :div, {class: 'trash-placeholder'}, &Proc.new {
+        safe_concat content_tag :p, t(:text_trash_task_placeholder)
+        safe_concat model.detach_tasks_link
+      }
     end
   end
 
