@@ -75,13 +75,15 @@ module UserStoryTasksHelper
 
   def render_story_trash_tasks(model)
     content_tag :div, {id: 'trash-story-tasks', class: 'box'} do
-      safe_concat content_tag :ul, class: 'fancy-list fancy-list-mini story-tasks-list sortable', &Proc.new {
+      safe_concat content_tag :ul, nil, class: 'fancy-list fancy-list-mini story-tasks-list sortable'
+      safe_concat render_story_trash_tasks_placeholder(model)
+    end
+  end
 
-      }
-      safe_concat content_tag :div, {class: 'trash-placeholder'}, &Proc.new {
-        safe_concat content_tag :p, t(:text_trash_task_placeholder)
-        safe_concat model.detach_tasks_link
-      }
+  def render_story_trash_tasks_placeholder(model)
+    content_tag :div, {class: 'trash-placeholder'} do
+      safe_concat content_tag :p, t(:text_trash_task_placeholder)
+      safe_concat model.detach_tasks_link
     end
   end
 

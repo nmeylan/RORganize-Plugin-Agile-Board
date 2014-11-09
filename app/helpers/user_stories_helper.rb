@@ -2,7 +2,9 @@ module UserStoriesHelper
   include AgileBoardHelper
   include UserStoryTasksHelper
   def render_story(story)
-    content_tag :li, class: "fancy-list-item story", id: "story-#{story.id}" do
+    story_options = {class: "fancy-list-item story", id: "story-#{story.id}"}
+    story_options['data-link'] = story.change_sprint_link
+    content_tag :li, story_options do
       safe_concat render_story_left_content(story)
       safe_concat render_story_right_content(story)
       safe_concat clear_both

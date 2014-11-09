@@ -58,7 +58,17 @@ class UserStoryDecorator < AgileBoardDecorator
   end
 
   def detach_tasks_link
-    h.link_to h.t(:button_apply), h.agile_board_plugin::user_story_detach_tasks_path(context[:project].slug, model.id), {class: 'button', id: 'user-story-detach-tasks'}
+    if User.current.allowed_to?(:detach_tasks, 'user_stories', context[:project])
+      h.link_to h.t(:button_apply),
+                h.agile_board_plugin::user_story_detach_tasks_path(context[:project].slug, model.id),
+                {class: 'button', id: 'user-story-detach-tasks'}
+    end
+  end
+
+  def change_sprint_link
+    if User.current.allowed_to?(:change_sprint, 'user_stories', context[:project])
+      h.agile_board_plugin::user_story_change_sprint_path(context[:project].slug, model.id)
+    end
   end
 
   def display_status

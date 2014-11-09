@@ -28,7 +28,7 @@ en:
   text_no_stories: This sprint doesn't contains any user stories, create a new one or drag and drop it above.
   text_no_sprints: This board doesn't contains any sprints.
   text_no_end_date: Current
-  text_no_tasks: This story doesn't have nay tasks.
+  text_no_tasks: This story doesn't have any tasks.
   text_trash_task_placeholder: Here is the trash. Drag tasks you want to remove above.
 
   text_delete_agile_board: Are you sure you want to destroy this agile board? you will lose ALL data.

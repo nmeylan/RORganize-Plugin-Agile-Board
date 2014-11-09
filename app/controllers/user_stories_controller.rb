@@ -5,7 +5,7 @@ class UserStoriesController < AgileBoardController
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item('boards') }
   before_filter { |c| c.top_menu_item('projects') }
-  before_action :set_user_story, only: [:edit, :update, :destroy, :new_task, :create_task, :detach_tasks]
+  before_action :set_user_story, only: [:edit, :update, :destroy, :new_task, :create_task, :detach_tasks, :change_sprint]
 
 
   def peek_enabled?
@@ -21,7 +21,7 @@ class UserStoriesController < AgileBoardController
   def show
     @user_story_decorator = decorate_user_story
     respond_to do |format|
-      format.html {render 'show'}
+      format.html { render 'show' }
     end
   end
 
@@ -64,14 +64,15 @@ class UserStoriesController < AgileBoardController
     result = @user_story.destroy
     if params[:from]
       respond_to do |format|
-      flash[:notice] = t(:successful_deletion)
-      format.js { js_redirect_to(agile_board_plugin::agile_board_index_path(@project.slug)) }
-    end
+        flash[:notice] = t(:successful_deletion)
+        format.js { js_redirect_to(agile_board_plugin::agile_board_index_path(@project.slug)) }
+      end
     else
       simple_js_callback(result, :delete, @user_story, {id: params[:id]})
     end
   end
 
+  # GET /user_stories/:user_story_id/new_task
   def new_task
     @issue = Issue.new(category_id: @user_story.category_id,
                        tracker_id: @user_story.tracker_id,
@@ -83,27 +84,32 @@ class UserStoriesController < AgileBoardController
     agile_board_form_callback(agile_board_plugin::user_story_create_task_path(@project.slug, @user_story.id), :post, 'new_task')
   end
 
+  # POST /user_stories/:user_story_id/create_task
   def create_task
     @issue = Issue.new(issue_params)
     @issue.author = User.current
     @issue.project = @project
     @user_story.issues << @issue
     if @issue.save && @user_story.save
-      respond_to do |format|
-        flash[:notice] = t(:successful_creation)
-        format.js { js_redirect_to(agile_board_plugin::user_story_path(@project.slug, @user_story.id)) }
-      end
+      show_redirection(t(:successful_creation))
     else
       simple_js_callback(false, :create, @issue)
     end
   end
 
+  # POST /user_stories/:user_story_id/detach_tasks
   def detach_tasks
     @user_story.detach_tasks(params[:ids])
-    respond_to do |format|
-      flash[:notice] = t(:successful_update)
-      format.js { js_redirect_to(agile_board_plugin::user_story_path(@project.slug, @user_story.id)) }
-    end
+    show_redirection(t(:successful_update))
+  end
+
+  def change_sprint
+    old_sprint = @user_story.sprint_id
+    @user_story.sprint = Sprint.find_by_id_and_board_id(params[:sprint_id], @board.id)
+    @user_story.save
+    old_sprint = old_sprint ? Sprint.eager_load_user_stories.find_by_id(old_sprint) : Sprint.backlog(@board.id)
+    simple_js_callback(@user_story.save, :update, @user_story, {old_sprint: old_sprint.decorate(context: {project: @project}),
+                                                                sprint: @user_story.get_sprint(true).decorate(context: {project: @project})})
   end
 
   private
@@ -122,6 +128,13 @@ class UserStoriesController < AgileBoardController
      categories: @project.categories,
      points: @board.story_points,
      trackers: @project.trackers}
+  end
+
+  def show_redirection(message)
+    respond_to do |format|
+      flash[:notice] = message
+      format.js { js_redirect_to(agile_board_plugin::user_story_path(@project.slug, @user_story.id)) }
+    end
   end
 
   def find_project_with_dependencies

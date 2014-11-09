@@ -9,7 +9,8 @@ module SprintsHelper
   end
 
   def render_sprints(sprints)
-    content_tag :div, class: "sprints #{'splitcontentleft' if split_content?}", id: 'sprints-list' do
+    sprints_options = {class: "sprints #{'splitcontentleft' if split_content?}", id: 'sprints-list'}
+    content_tag :div, sprints_options do
       if sprints.any?
         sprints.collect { |sprint| render_sprint(sprint) }.join.html_safe
       else
@@ -27,8 +28,8 @@ module SprintsHelper
     end
   end
 
-  def render_sprint(sprint, class_css = 'sprint')
-    content_tag :div, {class: "box #{class_css}", id: "sprint-#{sprint.id}"} do
+  def render_sprint(sprint, class_css = '')
+    content_tag :div, {class: "box sprint #{class_css}", id: "sprint-#{sprint.id}"} do
       safe_concat render_sprint_header(sprint, class_css)
       safe_concat render_sprint_content(sprint, class_css)
     end
@@ -46,7 +47,7 @@ module SprintsHelper
       safe_concat link_to glyph('', 'chevron-down'), '#', {id: "content-sprint-#{sprint.id}", class: 'icon-expanded sprint-expand'}
       safe_concat content_tag :h2, sprint.resized_caption(25)
       safe_concat sprint.display_dates
-      safe_concat sprint.display_version if unified_content?
+      safe_concat sprint.display_version
     end
   end
 
@@ -89,6 +90,7 @@ module SprintsHelper
   end
 
   def render_sprint_body(sprint)
+    # TODO check permission for sortable
     content_tag :ul, {class: "fancy-list fancy-list-mini stories-list sortable #{'no-stories' if sprint.stories.empty?}"} do
       sprint.sorted_stories.collect do |story|
         render_story(story)
