@@ -11,7 +11,7 @@ class UserStory < ActiveRecord::Base
   belongs_to :board
 
   scope :fetch_dependencies, -> { includes(:status, :points, :tracker, :category, sprint: :version)}
-
+  scope :fetch_issues_dependencies, -> { includes(issues: [:tracker, :category, :version, :assigned_to, status: :enumeration]) }
   validates :tracker_id, :status_id, :board_id, :title, presence: true
   before_save :set_backlog_id
   after_update :update_issues

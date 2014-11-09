@@ -3,7 +3,7 @@
  * Date: 31.10.14
  * Time: 14:31
  %>
-jQuery("#status-editor-overlay").replaceWith("<%= escape_javascript status_editor_overlay(@story_status, path,method) %>");
+jQuery("#status-editor-overlay").replaceWith("<%= escape_javascript editor_overlay('status', t(:link_new_status), @story_status, path,method) %>");
 createOverlay("#status-editor-overlay", 150);
 jQuery('#status-editor-overlay').overlay().load();
 bind_color_editor();

@@ -4,6 +4,22 @@
 # File: agile_board_helper.rb
 
 module AgileBoardHelper
+  include AgileBoardTabHelper
+  # @param [String] editor_name : the name of the editor (e.g : epic)
+  # @param [String] label : title for the overlay.
+  # @param [ActiveRecord::Base] model : record to create or update with the form.
+  # @param [String] path : url for the form.
+  # @param [Symbol] method : :put or :post.
+  def editor_overlay(editor_name, label, model = nil, path = nil, method = nil)
+    agile_board_overlay_editor("#{editor_name}-editor-overlay", label, model) do
+      send("#{editor_name}_form".to_sym, model, path, method)
+    end
+  end
+
+
+  # @param [ActiveRecord::Base] model : record to create or update with the form.
+  # @param [String] path : url for the form.
+  # @param [Symbol] method : :put or :post.
   def overlay_form(model, path, method)
     form_for model, url: path, html: {class: 'form', remote: true, method: method} do |f|
       safe_concat content_tag :div, class: 'box', &Proc.new {
@@ -72,7 +88,6 @@ module AgileBoardHelper
   # To remove the day when rails link_to will come faster.
   def fast_story_edit_link(project, story_id, caption)
     "<a class=\"\" data-method=\"get\" data-remote=\"true\" href=\"/projects/#{project.slug}/agile_board/user_stories/#{story_id}/edit\"><span class=\"octicon-pencil octicon\"></span>#{caption}</a>"
-
   end
 
 end

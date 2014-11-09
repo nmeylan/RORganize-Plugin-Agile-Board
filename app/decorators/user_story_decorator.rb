@@ -18,30 +18,26 @@ class UserStoryDecorator < AgileBoardDecorator
 
   def edit_link(button = false, path_params = {})
     if User.current.allowed_to?(:edit, 'user_stories', context[:project])
-     h.link_to(h.glyph(h.t(:link_edit), 'pencil'),
-                h.agile_board_plugin::edit_user_story_path(context[:project].slug, model.id, path_params),
-                {remote: true, method: :get, class: "#{'button' if button}"})
+      link_to_edit_story(button, path_params)
     end
   end
 
-  def fast_edit_link
-    if User.current.allowed_to?(:edit, 'user_stories', context[:project])
-      h.fast_story_edit_link(context[:project], model.id, h.t(:link_edit)).html_safe
-    end
+  def link_to_edit_story(button, path_params)
+    h.link_to(h.glyph(h.t(:link_edit), 'pencil'),
+              h.agile_board_plugin::edit_user_story_path(context[:project].slug, model.id, path_params),
+              {remote: true, method: :get, class: "#{'button' if button}"})
   end
 
   def delete_link(button = false, path_params = {})
     if User.current.allowed_to?(:destroy, 'user_stories', context[:project])
-      h.link_to h.glyph(h.t(:link_delete), 'trashcan'),
-                h.agile_board_plugin::user_story_path(context[:project].slug, model.id, path_params),
-                {remote: true, method: :delete, class: "danger danger-dropdown #{'button' if button}", 'data-confirm' => h.t(:text_delete_item)}
+      link_to_delete_story(button, path_params)
     end
   end
 
-  def fast_delete_link
-    if User.current.allowed_to?(:destroy, 'user_stories', context[:project])
-      h.fast_story_delete_link(context[:project], model.id, h.t(:link_delete)).html_safe
-    end
+  def link_to_delete_story(button, path_params)
+    h.link_to h.glyph(h.t(:link_delete), 'trashcan'),
+              h.agile_board_plugin::user_story_path(context[:project].slug, model.id, path_params),
+              {remote: true, method: :delete, class: "danger danger-dropdown #{'button' if button}", 'data-confirm' => h.t(:text_delete_item)}
   end
 
   def fast_show_link(caption)
@@ -120,8 +116,9 @@ class UserStoryDecorator < AgileBoardDecorator
   def display_all_assigned
     self.issues.map(&:display_assigned_to_avatar).compact.uniq.join.html_safe
   end
+
   def total_progress
-    self.issues.inject(0){|sum, issue| sum + issue.done}
+    self.issues.inject(0) { |sum, issue| sum + issue.done }
   end
 
   def total_progress_bar

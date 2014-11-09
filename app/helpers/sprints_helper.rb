@@ -4,8 +4,8 @@ module SprintsHelper
 
   def sprints_content(sprints)
     safe_concat render_sprints(sprints)
-    safe_concat sprint_editor_overlay
-    safe_concat story_editor_overlay
+    safe_concat editor_overlay('sprint', t(:link_new_sprint))
+    safe_concat editor_overlay('story', t(:link_new_story))
   end
 
   def render_sprints(sprints)
@@ -93,12 +93,6 @@ module SprintsHelper
       sprint.sorted_stories.collect do |story|
         render_story(story)
       end.join.html_safe
-    end
-  end
-
-  def sprint_editor_overlay(model = nil, path = nil, method = nil)
-    agile_board_overlay_editor('sprint-editor-overlay', t(:link_new_sprint), model) do
-      sprint_form(model, path, method)
     end
   end
 

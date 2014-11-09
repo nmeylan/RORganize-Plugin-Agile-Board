@@ -21,7 +21,6 @@ module UserStoriesHelper
       story_detail_content(story) if unified_content?
       safe_concat story.display_status
       safe_concat story.display_points
-      # safe_concat story_right_dropdown(story)
     end
   end
 
@@ -30,18 +29,6 @@ module UserStoriesHelper
     safe_concat story.display_epic
   end
 
-  def story_right_dropdown(story)
-    dropdown_tag do
-      safe_concat dropdown_row story.fast_edit_link
-      safe_concat dropdown_row story.fast_delete_link
-    end
-  end
-
-  def story_editor_overlay(model = nil, path = nil, method = nil)
-    agile_board_overlay_editor('story-editor-overlay', t(:link_new_story), model) do
-      story_form(model, path, method)
-    end
-  end
 
   def story_form(model, path, method)
     overlay_form(model, path, method) do |f|

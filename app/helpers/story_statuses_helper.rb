@@ -2,11 +2,7 @@ module StoryStatusesHelper
   include AgileBoardHelper
 
   def statuses_content
-    content_tag :div, {id: 'statuses-tab', class: 'box', style: 'display:none'} do
-      safe_concat statuses_list_header
-      safe_concat statuses_list
-      safe_concat status_editor_overlay
-    end
+    tab_content('statuses') #@see agile_board_tab_helper
   end
 
   def statuses_list_header
@@ -27,14 +23,7 @@ module StoryStatusesHelper
   def statuses_list_row(status)
     content_tag :li, class: "fancy-list-item status", id: "status-#{status.id}" do
       safe_concat status.display_caption
-      safe_concat statuses_list_button(status)
-    end
-  end
-
-  def statuses_list_button(status)
-    content_tag :div, class: 'fancy-list right-content-list' do
-      safe_concat status.edit_link(@project)
-      safe_concat status.delete_link(@project)
+      safe_concat agile_board_list_button(status)
     end
   end
 
@@ -49,12 +38,6 @@ module StoryStatusesHelper
   def status_form_issues_status_field(f, model)
     agile_board_select_field(f, :issues_status, t(:label_issues_status), true) do
       f.select :issues_status_id, model.issues_status_options, {include_blank: false}, {class: 'chzn-select  cbb-medium search'}
-    end
-  end
-
-  def status_editor_overlay(model = nil, path = nil, method = nil)
-    agile_board_overlay_editor('status-editor-overlay', t(:link_new_status), model) do
-      status_form(model, path, method)
     end
   end
 

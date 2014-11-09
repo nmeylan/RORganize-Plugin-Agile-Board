@@ -19,7 +19,7 @@ class UserStoriesController < AgileBoardController
 
   # GET /user_stories/1
   def show
-    @user_story_decorator = UserStory.fetch_dependencies.includes(issues: [:tracker, :category, :version, :assigned_to, status: :enumeration]).find(params[:id]).decorate(context: {project: @project})
+    @user_story_decorator = decorate_user_story
   end
 
   # GET /user_stories/new
@@ -49,7 +49,7 @@ class UserStoriesController < AgileBoardController
   def update
     result = @user_story.update(user_story_params)
     if params[:from]
-      @user_story_decorator = UserStory.fetch_dependencies.includes(issues: [:tracker, :category, :version, :assigned_to, status: :enumeration]).find(params[:id]).decorate(context: {project: @project})
+      @user_story_decorator = decorate_user_story
     else
       @sprint = @user_story.get_sprint(true).decorate(context: {project: @project})
     end
@@ -99,6 +99,10 @@ class UserStoriesController < AgileBoardController
   # Use callbacks to share common setup or constraints between actions.
   def set_user_story
     @user_story = UserStory.find(params[:id] || params[:user_story_id])
+  end
+
+  def decorate_user_story
+    UserStory.fetch_dependencies.fetch_issues_dependencies.find(params[:id]).decorate(context: {project: @project})
   end
 
   def form_context

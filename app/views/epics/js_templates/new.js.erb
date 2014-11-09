@@ -3,7 +3,7 @@
  * Date: 31.10.14
  * Time: 14:31
  %>
-jQuery("#epic-editor-overlay").replaceWith("<%= escape_javascript epic_editor_overlay(@epic, path,method) %>");
+jQuery("#epic-editor-overlay").replaceWith("<%= escape_javascript editor_overlay('epic', t(:link_new_epic), @epic, path,method) %>");
 createOverlay("#epic-editor-overlay", 150);
 jQuery('#epic-editor-overlay').overlay().load();
 bind_color_editor();

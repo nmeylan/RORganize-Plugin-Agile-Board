@@ -15,4 +15,6 @@ class AgileBoardDecorator < ApplicationDecorator
                                path,
                                project, nil, {remote: true, method: :delete, class: "#{'button' if button} danger danger-dropdown", confirm: h.t(:text_delete_item)})
   end
+
+
 end

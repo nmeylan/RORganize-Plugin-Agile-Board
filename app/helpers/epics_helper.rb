@@ -1,10 +1,6 @@
 module EpicsHelper
   def epics_content
-    content_tag :div, {id: 'epics-tab', class: 'box', style: 'display:none'} do
-      safe_concat epics_list_header
-      safe_concat epics_list
-      safe_concat epic_editor_overlay
-    end
+    tab_content('epics') #@see agile_board_tab_helper
   end
 
   def epics_list_header
@@ -25,14 +21,7 @@ module EpicsHelper
     content_tag :li, class: "fancy-list-item epic", id: "epic-#{epic.id}" do
       safe_concat epic.display_caption
       concat_span_tag resize_text(epic.description, 150), class: 'epic-summary'
-      safe_concat epics_list_button(epic)
-    end
-  end
-
-  def epics_list_button(epic)
-    content_tag :div, class: 'fancy-list right-content-list' do
-      safe_concat epic.edit_link(@project)
-      safe_concat epic.delete_link(@project)
+      safe_concat agile_board_list_button(epic)
     end
   end
 
@@ -48,12 +37,6 @@ module EpicsHelper
     content_tag :p do
       safe_concat f.label :description, t(:field_description)
       safe_concat f.text_area :description, rows: 5
-    end
-  end
-
-  def epic_editor_overlay(model = nil, path = nil, method = nil)
-    agile_board_overlay_editor('epic-editor-overlay', t(:link_new_epic), model) do
-      epic_form(model, path, method)
     end
   end
 end
