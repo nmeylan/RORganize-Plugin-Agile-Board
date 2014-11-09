@@ -41,14 +41,14 @@ module StoryStatusesHelper
   def status_form(model, path, method)
     overlay_form(model, path, method) do |f|
       safe_concat required_form_text_field(f, :name, t(:field_name))
-      safe_concat agile_board_form_color_field(f)
       safe_concat status_form_issues_status_field(f, model)
+      safe_concat agile_board_form_color_field(f)
     end
   end
 
   def status_form_issues_status_field(f, model)
-    agile_board_select_field(f, :issues_status, t(:label_issues_status)) do
-      f.select :issues_status_id, model.issues_status_options, {include_blank: true}, {class: 'chzn-select-deselect  cbb-medium search'}
+    agile_board_select_field(f, :issues_status, t(:label_issues_status), true) do
+      f.select :issues_status_id, model.issues_status_options, {include_blank: false}, {class: 'chzn-select  cbb-medium search'}
     end
   end
 

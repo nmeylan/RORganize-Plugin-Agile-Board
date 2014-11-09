@@ -49,7 +49,7 @@ class UserStoriesController < AgileBoardController
   def update
     result = @user_story.update(user_story_params)
     if params[:from]
-      @user_story_decorator = @user_story.decorate(context: {project: @project})
+      @user_story_decorator = UserStory.fetch_dependencies.includes(issues: [:tracker, :category, :version, :assigned_to, status: :enumeration]).find(params[:id]).decorate(context: {project: @project})
     else
       @sprint = @user_story.get_sprint(true).decorate(context: {project: @project})
     end
@@ -58,7 +58,15 @@ class UserStoriesController < AgileBoardController
 
   # DELETE /user_stories/1
   def destroy
-    simple_js_callback(@user_story.destroy, :delete, @user_story, {id: params[:id]})
+    result = @user_story.destroy
+    if params[:from]
+      respond_to do |format|
+      flash[:notice] = t(:successful_deletion)
+      format.js { js_redirect_to(agile_board_plugin::agile_board_index_path(@project.slug)) }
+    end
+    else
+      simple_js_callback(result, :delete, @user_story, {id: params[:id]})
+    end
   end
 
   def new_task

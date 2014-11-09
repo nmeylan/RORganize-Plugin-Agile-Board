@@ -12,7 +12,7 @@ module UserStoriesHelper
   def render_story_left_content(story)
     content_tag :span, class: 'story-left-content' do
       concat_span_tag story.display_tracker, class: 'story-tracker'
-      concat_span_tag story.show_link(story.resized_caption(caption_sized)), class: 'story-title'
+      concat_span_tag story.fast_show_link(story.resized_caption(caption_sized)), class: 'story-title'
     end
   end
 
@@ -21,20 +21,19 @@ module UserStoriesHelper
       story_detail_content(story) if unified_content?
       safe_concat story.display_status
       safe_concat story.display_points
-      safe_concat story_right_dropdown(story)
+      # safe_concat story_right_dropdown(story)
     end
   end
 
   def story_detail_content(story)
-    safe_concat story.display_all_assigned
     safe_concat story.display_category
     safe_concat story.display_epic
   end
 
   def story_right_dropdown(story)
     dropdown_tag do
-      safe_concat dropdown_row story.edit_link
-      safe_concat dropdown_row story.delete_link
+      safe_concat dropdown_row story.fast_edit_link
+      safe_concat dropdown_row story.fast_delete_link
     end
   end
 

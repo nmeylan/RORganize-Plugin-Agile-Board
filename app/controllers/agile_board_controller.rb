@@ -5,7 +5,7 @@
 
 class AgileBoardController < ApplicationController
   before_action :set_board
-
+  before_action :set_display_sessions
   protected
 
   def agile_board_form_callback(path, method, action = 'new')
@@ -19,5 +19,9 @@ class AgileBoardController < ApplicationController
   def set_board
     @board = Board.find_by_project_id(@project.id)
     @board_decorator = @board.decorate(context: {project: @project}) if @board
+  end
+
+  def set_display_sessions
+    @sessions[:display_mode] = session[:boards][:display_mode]
   end
 end

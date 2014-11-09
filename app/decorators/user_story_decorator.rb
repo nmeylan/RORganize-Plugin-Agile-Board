@@ -4,6 +4,7 @@
 # File: sprint_decorator.rb
 
 class UserStoryDecorator < AgileBoardDecorator
+  attr_accessor :show_link
   decorates_association :sprint
   decorates_association :status
   decorates_association :epic
@@ -17,22 +18,41 @@ class UserStoryDecorator < AgileBoardDecorator
 
   def edit_link(button = false, path_params = {})
     if User.current.allowed_to?(:edit, 'user_stories', context[:project])
-      link_to(h.glyph(h.t(:link_edit), 'pencil'),
-              h.agile_board_plugin::edit_user_story_path(context[:project].slug, model.id, path_params), {remote: true, method: :get, class: "#{'button' if button}"})
+     h.link_to(h.glyph(h.t(:link_edit), 'pencil'),
+                h.agile_board_plugin::edit_user_story_path(context[:project].slug, model.id, path_params),
+                {remote: true, method: :get, class: "#{'button' if button}"})
     end
   end
 
-  def delete_link
+  def fast_edit_link
+    if User.current.allowed_to?(:edit, 'user_stories', context[:project])
+      h.fast_story_edit_link(context[:project], model.id, h.t(:link_edit)).html_safe
+    end
+  end
+
+  def delete_link(button = false, path_params = {})
     if User.current.allowed_to?(:destroy, 'user_stories', context[:project])
-      link_to h.glyph(h.t(:link_delete), 'trashcan'),
-              h.agile_board_plugin::user_story_path(context[:project].slug, model.id),
-              {remote: true, method: :delete, class: "danger danger-dropdown", confirm: h.t(:text_delete_item)}
+      h.link_to h.glyph(h.t(:link_delete), 'trashcan'),
+                h.agile_board_plugin::user_story_path(context[:project].slug, model.id, path_params),
+                {remote: true, method: :delete, class: "danger danger-dropdown #{'button' if button}", 'data-confirm' => h.t(:text_delete_item)}
+    end
+  end
+
+  def fast_delete_link
+    if User.current.allowed_to?(:destroy, 'user_stories', context[:project])
+      h.fast_story_delete_link(context[:project], model.id, h.t(:link_delete)).html_safe
+    end
+  end
+
+  def fast_show_link(caption)
+    if User.current.allowed_to?(:show, 'user_stories', context[:project])
+      h.fast_story_show_link(context[:project], model.id, caption).html_safe
     end
   end
 
   def show_link(caption)
     if User.current.allowed_to?(:show, 'user_stories', context[:project])
-      link_to(caption, h.agile_board_plugin::user_story_path(context[:project].slug, model.id))
+      h.link_to(caption, h.agile_board_plugin::user_story_path(context[:project].slug, model.id))
     end
   end
 

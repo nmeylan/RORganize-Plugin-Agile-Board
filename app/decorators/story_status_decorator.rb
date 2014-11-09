@@ -24,8 +24,4 @@ class StoryStatusDecorator < AgileBoardDecorator
   def issues_status_options
     context[:issues_statuses].collect{|status| [status.caption, status.id]}
   end
-
-  def <=>(other)
-    self.position <=> other.position
-  end
 end

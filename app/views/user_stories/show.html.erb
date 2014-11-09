@@ -11,6 +11,7 @@
 <%= contextual "#{t(:label_story)} : ##{@user_story_decorator.id}" do %>
     <%= @user_story_decorator.new_task_link %>
     <%= @user_story_decorator.edit_link(true, {from: :show}) %>
+    <%= @user_story_decorator.delete_link(true, {from: :show}) %>
 <% end %>
 
 

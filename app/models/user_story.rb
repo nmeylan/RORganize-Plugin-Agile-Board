@@ -6,7 +6,7 @@ class UserStory < ActiveRecord::Base
   belongs_to :category
   belongs_to :sprint
   belongs_to :epic
-  has_many :issues
+  has_many :issues, dependent: :nullify
   belongs_to :author, class_name: 'User'
   belongs_to :board
 
@@ -14,6 +14,7 @@ class UserStory < ActiveRecord::Base
 
   validates :tracker_id, :status_id, :board_id, :title, presence: true
   before_save :set_backlog_id
+  after_update :update_issues
 
   def caption
     self.title
@@ -39,5 +40,20 @@ class UserStory < ActiveRecord::Base
 
   def set_backlog_id
     self.sprint = nil if self.sprint_id.eql? -1
+  end
+
+  def update_issues
+    issues_attributes = %w(tracker_id category_id status_id)
+    issue_ids = self.issues.collect(&:id)
+    project = self.board.project
+    self.changes.each do |attr_name, values|
+      if issues_attributes.include?(attr_name)
+        value = values[1]
+        if attr_name.eql?('status_id')
+          value = StoryStatus.find(value).issues_status_id
+        end
+        Issue.bulk_edit(issue_ids, {attr_name => value}, project)
+      end
+    end
   end
 end

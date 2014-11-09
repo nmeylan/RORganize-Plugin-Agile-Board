@@ -63,6 +63,7 @@ class SprintsController < AgileBoardController
     @sprints_decorator = Sprint.ordered_sprints(@board.id).decorate(context: {project: @project})
   end
 
+
   # Only allow a trusted parameter "white list" through.
   def sprint_params
     params.require(:sprint).permit(:name, :start_date, :end_date, :version_id)

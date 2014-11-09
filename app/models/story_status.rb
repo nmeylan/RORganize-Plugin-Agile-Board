@@ -3,7 +3,7 @@ class StoryStatus < ActiveRecord::Base
   belongs_to :board
   belongs_to :issues_status
   before_create :set_position
-  validates :name, :board_id, presence: true
+  validates :name, :board_id, :issues_status_id, presence: true
 
   def caption
     self.name
