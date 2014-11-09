@@ -37,7 +37,12 @@
   }
 
 }
-
+.story-detail{
+  .user-profile.avatar{
+    height: 24px;
+    margin-right: 5px;
+  }
+}
 .fancy-list-item.story, .fancy-list-item.story-task {
   .story-task-left-content, .story-left-content, .right-content-list {
     .story-tracker, .story-task-tracker {

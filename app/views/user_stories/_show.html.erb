@@ -35,6 +35,16 @@
       <th style="width:15%"><%= t(:field_epic) %> :</th>
       <td style="width:30%"><%= @user_story_decorator.epic ? @user_story_decorator.display_epic : '-' %></td>
     </tr>
+    <tr>
+      <th style="width:15%"><%= t(:field_assigned_to) %> :</th>
+      <td style="width:30%" class="story-detail"><%= @user_story_decorator.display_all_assigned %></td>
+    </tr>
+    <tr>
+      <th style="width:15%"><%= t(:progression) %> :</th>
+      <td style="width:30%" class="tooltipped tooltipped-w" label="<%= @user_story_decorator.total_progress %>%">
+        <%= @user_story_decorator.total_progress_bar %>
+      </td>
+    </tr>
   </table>
   <br/>
   <hr/>
@@ -46,6 +56,7 @@
   <br/>
   <hr/>
   <br/>
+
   <h2><%= t(:label_tasks) %> : </h2>
   <%= @user_story_decorator.display_tasks %>
 </div>

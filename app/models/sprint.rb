@@ -27,7 +27,7 @@ class Sprint < ActiveRecord::Base
 
   def self.backlog(board_id)
     backlog = Sprint.new(id: -1, name: 'Backlog')
-    backlog.stories = UserStory.where(sprint_id: nil, board_id: board_id).includes(:status, :points, :tracker, :category, :issues)
+    backlog.stories = UserStory.where(sprint_id: nil, board_id: board_id).includes(:status, :points, :tracker, :category, :epic, :issues)
     backlog
   end
 

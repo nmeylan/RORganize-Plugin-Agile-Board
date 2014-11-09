@@ -120,4 +120,11 @@ class UserStoryDecorator < AgileBoardDecorator
   def display_all_assigned
     self.issues.map(&:display_assigned_to_avatar).compact.uniq.join.html_safe
   end
+  def total_progress
+    self.issues.inject(0){|sum, issue| sum + issue.done}
+  end
+
+  def total_progress_bar
+    h.mini_progress_bar_tag(self.total_progress, 'width-100')
+  end
 end
