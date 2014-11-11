@@ -39,17 +39,24 @@ function sortable_stories_hash() {
     return {
         connectWith: 'ul',
         update: function (event, ui) {
-            if (this !== ui.item.parent()[0]) {
-                var el = ui.item;
-                var sprint = $(el.parents(".sprint")[1]);
-                console.log(el.parents(".sprint"));
-                var id = sprint.attr('id').replace('sprint-', '');
+            var el = ui.item;
+            var sprint = $(el.parents(".sprint")[1]);
+            var id = sprint.attr('id').replace('sprint-', '');
+            var prev_id = el.prev().attr('id');
+            if (prev_id !== undefined)
+                prev_id = prev_id.replace('story-', '');
+            var next_id = el.next().attr('id');
+            if (next_id !== undefined)
+                next_id = next_id.replace('story-', '');
+            if (this === ui.item.parent()[0]) {
                 jQuery.ajax({
                     url: el.data('link'),
                     type: 'post',
                     dataType: 'script',
-                    data: {sprint_id: id}
+                    data: {sprint_id: id, prev_id: prev_id, next_id: next_id}
                 });
+            }else if(this === ui.item.parent()[0]){
+
             }
         }
     };

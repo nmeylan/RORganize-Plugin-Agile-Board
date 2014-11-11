@@ -106,10 +106,11 @@ class UserStoriesController < AgileBoardController
   def change_sprint
     old_sprint = @user_story.sprint_id
     @user_story.sprint = Sprint.find_by_id_and_board_id(params[:sprint_id], @board.id)
-    @user_story.save
+    @user_story.change_position(params[:prev_id], params[:next_id])
+    result = @user_story.save
     old_sprint = old_sprint ? Sprint.eager_load_user_stories.find_by_id(old_sprint) : Sprint.backlog(@board.id)
-    simple_js_callback(@user_story.save, :update, @user_story, {old_sprint: old_sprint.decorate(context: {project: @project}),
-                                                                sprint: @user_story.get_sprint(true).decorate(context: {project: @project})})
+    simple_js_callback(result, :update, @user_story, {old_sprint: old_sprint.decorate(context: {project: @project}),
+                                                      sprint: @user_story.get_sprint(true).decorate(context: {project: @project})})
   end
 
   private

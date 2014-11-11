@@ -14,7 +14,9 @@ class UserStory < ActiveRecord::Base
   scope :fetch_issues_dependencies, -> { includes(issues: [:tracker, :category, :version, :assigned_to, status: :enumeration]) }
   validates :tracker_id, :status_id, :board_id, :title, presence: true
   before_save :set_backlog_id
+  before_create :update_position
   after_update :update_issues
+  after_destroy :dec_position_on_destroy
 
   def caption
     self.title
@@ -55,6 +57,56 @@ class UserStory < ActiveRecord::Base
         Issue.bulk_edit(issue_ids, {attr_name => value}, project)
       end
     end
+  end
+
+  def update_position
+    board = self.board
+    count_stories = board.user_stories.where(sprint_id: self.sprint_id).count
+    self.position = count_stories + 1
+  end
+
+  def change_position(prev_id, next_id)
+    old_position = self.position
+    prev_or_next_story = prev_id ? UserStory.find_by_id(prev_id) : UserStory.find_by_id(next_id)
+    if self.sprint_id_changed?
+      change_position_on_sprint_change(old_position, prev_id, prev_or_next_story)
+    else
+      change_position_on_reorder(old_position, prev_id, prev_or_next_story)
+    end
+  end
+
+  def change_position_on_reorder(old_position, prev_id, prev_or_next_story)
+    self.position = prev_or_next_story.position
+    if prev_or_next_story.position > old_position
+      UserStory
+      .where("position > ? AND position <= ? AND id <> ?", old_position, self.position, self.id)
+      .where(sprint_id: self.sprint_id, board_id: self.board_id).update_all('position = position - 1')
+    else
+      self.position += 1 unless prev_id.nil?
+      UserStory
+      .where("position >= ? AND position < ? AND id <> ?", self.position, old_position, self.id)
+      .where(sprint_id: self.sprint_id, board_id: self.board_id).update_all('position = position + 1')
+    end
+  end
+
+  def change_position_on_sprint_change(old_position, prev_id, prev_or_next_story)
+    old_sprint_id = self.sprint_id_change.first
+    if prev_or_next_story
+      self.position = prev_id ? prev_or_next_story.position + 1 : prev_or_next_story.position
+      UserStory
+      .where("position >= ? AND id <> ?", self.position, self.id)
+      .where(sprint_id: self.sprint_id, board_id: self.board_id).update_all('position = position + 1')
+    else
+      self.position = 1
+    end
+    # Decrement position for old sprint's stories
+    UserStory.where("position > ? AND id <> ?", old_position, self.id)
+    .where(sprint_id: old_sprint_id, board_id: self.board_id).update_all('position = position - 1')
+  end
+
+  def dec_position_on_destroy
+    position = self.position
+    UserStory.where("position > ?", position).where(sprint_id: self.sprint_id, board_id: self.board_id).update_all('position = position - 1')
   end
 
   def detach_tasks(ids)

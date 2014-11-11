@@ -3,7 +3,7 @@ module UserStoriesHelper
   include UserStoryTasksHelper
   def render_story(story)
     story_options = {class: "fancy-list-item story", id: "story-#{story.id}"}
-    story_options['data-link'] = story.change_sprint_link
+    story_options['data-link'] = story.change_sprint_link(true)
     content_tag :li, story_options do
       safe_concat render_story_left_content(story)
       safe_concat render_story_right_content(story)
@@ -14,7 +14,7 @@ module UserStoriesHelper
   def render_story_left_content(story)
     content_tag :span, class: 'story-left-content' do
       concat_span_tag story.display_tracker, class: 'story-tracker'
-      concat_span_tag story.fast_show_link(story.resized_caption(caption_sized)), class: 'story-title'
+      concat_span_tag story.show_link(story.resized_caption(caption_sized), true), class: 'story-title'
     end
   end
 
@@ -23,6 +23,14 @@ module UserStoriesHelper
       story_detail_content(story) if unified_content?
       safe_concat story.display_status
       safe_concat story.display_points
+      safe_concat story_right_dropdown(story)
+    end
+  end
+
+  def story_right_dropdown(story)
+    dropdown_tag do
+      safe_concat dropdown_row story.edit_link(false, {}, true)
+      safe_concat dropdown_row story.delete_link(false, {}, true)
     end
   end
 

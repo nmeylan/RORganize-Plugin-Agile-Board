@@ -57,6 +57,6 @@ class SprintDecorator < AgileBoardDecorator
   end
 
   def sorted_stories
-    self.stories.sort_by{|story| story.points ? story.points.value : -1 }.reverse
+    self.stories.sort_by(&:position)
   end
 end

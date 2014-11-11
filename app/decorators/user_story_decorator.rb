@@ -16,39 +16,38 @@ class UserStoryDecorator < AgileBoardDecorator
     h.content_tag :span, points, {class: 'counter total-entries story-points'}
   end
 
-  def edit_link(button = false, path_params = {})
+  def edit_link(button = false, path_params = {}, fast = false)
     if User.current.allowed_to?(:edit, 'user_stories', context[:project])
-      link_to_edit_story(button, path_params)
+      if fast
+        h.fast_story_edit_link(context[:project], model.id, h.t(:link_edit)).html_safe
+      else
+        h.link_to(h.glyph(h.t(:link_edit), 'pencil'),
+                  h.agile_board_plugin::edit_user_story_path(context[:project].slug, model.id, path_params),
+                  {remote: true, method: :get, class: "#{'button' if button}"})
+      end
     end
   end
 
-  def link_to_edit_story(button, path_params)
-    h.link_to(h.glyph(h.t(:link_edit), 'pencil'),
-              h.agile_board_plugin::edit_user_story_path(context[:project].slug, model.id, path_params),
-              {remote: true, method: :get, class: "#{'button' if button}"})
-  end
-
-  def delete_link(button = false, path_params = {})
+  def delete_link(button = false, path_params = {}, fast = false)
     if User.current.allowed_to?(:destroy, 'user_stories', context[:project])
-      link_to_delete_story(button, path_params)
+      if fast
+        h.fast_story_delete_link(context[:project], model.id, h.t(:link_delete)).html_safe
+      else
+        h.link_to h.glyph(h.t(:link_delete), 'trashcan'),
+                  h.agile_board_plugin::user_story_path(context[:project].slug, model.id, path_params),
+                  {remote: true, method: :delete, class: "danger danger-dropdown #{'button' if button}",
+                   'data-confirm' => h.t(:text_delete_item)}
+      end
     end
   end
 
-  def link_to_delete_story(button, path_params)
-    h.link_to h.glyph(h.t(:link_delete), 'trashcan'),
-              h.agile_board_plugin::user_story_path(context[:project].slug, model.id, path_params),
-              {remote: true, method: :delete, class: "danger danger-dropdown #{'button' if button}", 'data-confirm' => h.t(:text_delete_item)}
-  end
-
-  def fast_show_link(caption)
+  def show_link(caption, fast = false)
     if User.current.allowed_to?(:show, 'user_stories', context[:project])
-      h.fast_story_show_link(context[:project], model.id, caption).html_safe
-    end
-  end
-
-  def show_link(caption)
-    if User.current.allowed_to?(:show, 'user_stories', context[:project])
-      h.link_to(caption, h.agile_board_plugin::user_story_path(context[:project].slug, model.id))
+      if fast
+        h.fast_story_show_link(context[:project], model.id, caption).html_safe
+      else
+        h.link_to(caption, h.agile_board_plugin::user_story_path(context[:project].slug, model.id))
+      end
     end
   end
 
@@ -65,9 +64,13 @@ class UserStoryDecorator < AgileBoardDecorator
     end
   end
 
-  def change_sprint_link
+  def change_sprint_link(fast = false)
     if User.current.allowed_to?(:change_sprint, 'user_stories', context[:project])
-      h.agile_board_plugin::user_story_change_sprint_path(context[:project].slug, model.id)
+      if fast
+        "/projects/#{context[:project].slug}/agile_board/user_stories/#{model.id}/change_sprint"
+      else
+        h.agile_board_plugin::user_story_change_sprint_path(context[:project].slug, model.id)
+      end
     end
   end
 
