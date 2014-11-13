@@ -20,14 +20,16 @@
 
 .agile-board-plan {
 }
-.sprints, .backlog{
-  .dropdown-menu{
+
+.sprints, .backlog {
+  .dropdown-menu {
     width: 120px;
-    > li > a{
+    > li > a {
       padding: 4px 0px 4px 0px;
     }
   }
 }
+
 .sprint .header, .backlog .header {
   > span > span, > div > span {
     margin-right: 5px;
@@ -37,40 +39,43 @@
   }
 
 }
-.story-detail{
-  .user-profile.avatar{
+.story-title {
+  a {
+    color: $link-hover-color;
+    font-weight: inherit;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+.story-detail {
+  .user-profile.avatar {
     height: 24px;
     margin-right: 5px;
   }
 }
+
 .fancy-list-item.story, .fancy-list-item.story-task {
   .story-task-left-content, .story-left-content, .right-content-list {
     .story-tracker, .story-task-tracker {
       font-weight: bold;
     }
-    .story-title{
-      a{
-        color: $link-hover-color;
-        font-weight: inherit;
-      }
-      a:hover{
-        text-decoration: underline;
-      }
-    }
+
     margin-top: -5px;
     span, a {
       margin-right: 5px;
     }
-    .user-profile.avatar{
+    .user-profile.avatar {
       height: 24px;
     }
-    .progress-bar{
+    .progress-bar {
       display: inline-block;
       width: 75px;
       vertical-align: middle;
       height: 24px;
       margin-top: -2px;
-      span{
+      span {
         height: 24px;
 
       }
@@ -99,11 +104,13 @@
     }
   }
 }
+
 .fancy-list .fancy-list-item {
   .info-square {
     padding: 3px 10px 1px 10px;
   }
 }
+
 .sprint, .story-tasks-list {
   .fancy-list .fancy-list-item .story-left-content {
     float: left;
@@ -148,20 +155,23 @@
 
   }
 }
-.counter.story-points{
+
+.counter.story-points {
   width: 30px;
   text-align: center;
 }
-.story-tasks-list{
+
+.story-tasks-list {
 
   min-height: 50px;
 }
-#trash-story-tasks.box{
+
+#trash-story-tasks.box {
   border: dashed 3px $default-border-color;
   margin-top: 50px;
-  .trash-placeholder{
+  .trash-placeholder {
     text-align: center;
-    p{
+    p {
       margin: 0;
       margin-right: 10px;
       display: inline-block;
@@ -169,6 +179,48 @@
       font-weight: bold;
       font-size: 16px;
       color: $default-smooth-color;
+    }
+  }
+}
+
+.story-map {
+  position: relative;
+  margin-top: 5px;
+  width: 100%;
+  .story-map-column {
+    position: relative;
+    float: left;
+    height: 100%;
+    .story-map-column-header {
+      font-size: 16px;
+      text-align: center;
+      font-weight: bold;
+      padding: 5px 0 5px 0;
+    }
+    .story-map-stories {
+      padding: 10px;
+      .story {
+        margin: 10px 0 10px 0;
+        padding: 5px;
+        height: 100px;
+        overflow: hidden;
+        border: solid 1px $default-border-color;
+        border-radius: 3px;
+        div > span {
+          margin-right: 5px;
+        }
+        .story-tracker {
+          font-weight: bold;
+        }
+        .story-header{
+          .story-left-content{
+            float:left;
+          }
+          .story-right-content{
+            float: right;
+          }
+        }
+      }
     }
   }
 }

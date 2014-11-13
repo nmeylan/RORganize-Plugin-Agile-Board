@@ -45,9 +45,21 @@ class UserStory < ActiveRecord::Base
   end
 
   def update_issues
-    issues_attributes = %w(tracker_id category_id status_id)
-    issue_ids = self.issues.collect(&:id)
+    issue_ids = self.issues.collect(&:id).to_a
     project = self.board.project
+    update_issues_on_sprint_change(issue_ids, project)
+    update_issues_on_story_change(issue_ids, project)
+  end
+
+  def update_issues_on_sprint_change(issue_ids, project)
+    if self.changes.keys.include?('sprint_id')
+      new_sprint = Sprint.find_by_id(self.changes['sprint_id'])
+      Issue.bulk_edit(issue_ids, {version_id: new_sprint.version_id}, project)
+    end
+  end
+
+  def update_issues_on_story_change(issue_ids, project)
+    issues_attributes = %w(tracker_id category_id status_id)
     self.changes.each do |attr_name, values|
       if issues_attributes.include?(attr_name)
         value = values[1]
@@ -114,4 +126,5 @@ class UserStory < ActiveRecord::Base
     self.issues.delete(issues_to_remove)
     self.save
   end
+
 end

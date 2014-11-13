@@ -30,7 +30,13 @@ class BoardsController < AgileBoardController
   end
 
   def work
-
+    #TODO pass sprint id
+    sprint_ids = params[:sprint_id] ? params[:sprint_id].to_a : Sprint.current_sprints(@board.id).collect(&:id)
+    @statuses = StoryStatus.where(board_id: @board.id).order(position: :asc)
+    @stories_hash = @statuses.inject({}) do |memo, status|
+      memo[status.caption] = UserStory.where(board_id: @board.id, status_id: status.id, sprint_id: sprint_ids).order(position: :asc).decorate(context: {project: @project})
+      memo
+    end
   end
 
   def configuration

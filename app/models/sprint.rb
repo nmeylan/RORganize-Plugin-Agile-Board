@@ -3,8 +3,10 @@ class Sprint < ActiveRecord::Base
   has_many :stories, class_name: 'UserStory', dependent: :nullify
   belongs_to :version
   belongs_to :board
-  scope :eager_load_user_stories, -> { includes(stories: [:status, :points, :tracker, :category, :epic, :issues])}
-  scope :ordered_sprints, ->(board_id) { where(board_id: board_id).includes(:version, ).eager_load_user_stories.order(start_date: :desc) }
+  scope :eager_load_user_stories, -> { includes(stories: [:status, :points, :tracker, :category, :epic]) }
+  scope :ordered_sprints, ->(board_id) { where(board_id: board_id).
+      includes(:version).eager_load_user_stories.order(start_date: :desc) }
+  scope :current_sprints, ->(board_id) { where(board_id: board_id).where('sprints.start_date <= ? AND (sprints.end_date >= ? OR sprints.end_date IS NULL)', Date.today, Date.today) }
 
   validates :name, :start_date, presence: true
   validate :dates_constraints, :name_uniqueness

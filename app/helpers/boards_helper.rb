@@ -4,6 +4,7 @@ module BoardsHelper
   include StoryStatusesHelper
   include EpicsHelper
   include SprintsHelper
+  include StoryMapHelper
 
   def agile_board_menu
     #TODO add permission control
@@ -81,7 +82,8 @@ module BoardsHelper
   end
 
   def work_content
-    content_tag :p, 'aaa'
+    safe_concat clear_both
+    safe_concat story_map_render(@statuses, @stories_hash)
   end
 
   def plan_content
