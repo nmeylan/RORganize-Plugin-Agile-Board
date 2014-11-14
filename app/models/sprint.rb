@@ -8,7 +8,8 @@ class Sprint < ActiveRecord::Base
       includes(:version).eager_load_user_stories.order(start_date: :desc) }
   scope :current_sprints, ->(board_id) { where(board_id: board_id).where('sprints.start_date <= ? AND (sprints.end_date >= ? OR sprints.end_date IS NULL)', Date.today, Date.today) }
 
-  validates :name, :start_date, presence: true
+  validates :start_date, presence: true
+  validates :name, presence: true, length: { maximum: 255 }
   validate :dates_constraints, :name_uniqueness
 
   after_update :update_issues

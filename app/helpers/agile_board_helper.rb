@@ -36,7 +36,7 @@ module AgileBoardHelper
     end
   end
 
-  def required_form_text_field(f, attr_name, label, options = {size: 25})
+  def required_form_text_field(f, attr_name, label, options = {size: 25, maxLength: 255})
     content_tag :p do
       safe_concat required_form_label(f, attr_name, label)
       safe_concat f.text_field attr_name, options

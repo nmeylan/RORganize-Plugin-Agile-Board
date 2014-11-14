@@ -13,7 +13,7 @@ module UserStoriesHelper
 
   def render_story_left_content(story)
     content_tag :span, class: 'story-left-content' do
-      concat_span_tag story.display_tracker, class: 'story-tracker'
+      safe_concat story.display_tracker_id
       concat_span_tag story.show_link(story.resized_caption(caption_sized), true), class: 'story-title'
     end
   end
@@ -22,6 +22,7 @@ module UserStoriesHelper
     content_tag :span, class: 'fancy-list right-content-list' do
       story_detail_content(story) if unified_content?
       safe_concat story.display_status
+      safe_concat story.display_issues_counter if unified_content?
       safe_concat story.display_points
       safe_concat story_right_dropdown(story)
     end
@@ -46,7 +47,7 @@ module UserStoriesHelper
       safe_concat story_form_left_content(f, model)
       safe_concat story_form_right_content(f, model)
       safe_concat clear_both
-      safe_concat required_form_text_field(f, :title, t(:field_title), {size: 80})
+      safe_concat required_form_text_field(f, :title, t(:field_title), {size: 80, maxLength: 255})
       safe_concat agile_board_form_description_field(f)
     end
   end

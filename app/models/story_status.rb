@@ -4,6 +4,7 @@ class StoryStatus < ActiveRecord::Base
   belongs_to :issues_status
   before_create :set_position
   validates :name, :board_id, :issues_status_id, presence: true
+  validates :name, length: { maximum: 255 }
 
   def caption
     self.name

@@ -1,5 +1,6 @@
 class UserStory < ActiveRecord::Base
   include Rorganize::Models::SmartRecords
+  Issue.belongs_to :user_story, counter_cache: true
   belongs_to :points, class_name: 'StoryPoint', foreign_key: :point_id
   belongs_to :status, class_name: 'StoryStatus'
   belongs_to :tracker
@@ -12,7 +13,10 @@ class UserStory < ActiveRecord::Base
 
   scope :fetch_dependencies, -> { includes(:status, :points, :tracker, :category, sprint: :version) }
   scope :fetch_issues_dependencies, -> { includes(issues: [:tracker, :category, :version, :assigned_to, status: :enumeration]) }
-  validates :tracker_id, :status_id, :board_id, :title, presence: true
+
+  validates :tracker_id, :status_id, :board_id, presence: true
+  validates :title, presence: true, length: { maximum: 255 }
+
   before_save :set_backlog_id
   before_create :update_position
   after_update :update_issues

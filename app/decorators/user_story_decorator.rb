@@ -13,7 +13,8 @@ class UserStoryDecorator < AgileBoardDecorator
 
   def display_points
     points = self.points ? self.points.value : '-'
-    h.content_tag :span, points, {class: 'counter total-entries story-points'}
+    h.content_tag :span, points, {class: 'counter total-entries story-points tooltipped tooltipped-s', label: h.t(:tooltip_points)}
+
   end
 
   def edit_link(button = false, path_params = {}, fast = false)
@@ -86,6 +87,21 @@ class UserStoryDecorator < AgileBoardDecorator
     self.tracker.caption
   end
 
+  def display_id
+    "##{self.id}"
+  end
+
+  def display_tracker_id
+    h.content_tag :span, "#{self.display_tracker} #{self.display_id}", class: 'story-tracker'
+  end
+
+  def display_issues_counter
+    count = model.issues_count ? model.issues_count : '0'
+    h.content_tag :span, {class: 'counter total-entries story-issues-count tooltipped tooltipped-s', label: h.t(:label_tasks)} do
+      h.safe_concat count
+    end
+  end
+
   def display_category
     display_info_square(model.category, 'tag', false)
   end
@@ -135,7 +151,7 @@ class UserStoryDecorator < AgileBoardDecorator
   end
 
   def total_progress
-    self.issues.inject(0) { |sum, issue| sum + issue.done }
+    self.issues.inject(0) { |sum, issue| sum + (issue.done ? issue.done : 0) }
   end
 
   def total_progress_bar
