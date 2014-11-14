@@ -7,7 +7,6 @@ module BoardsHelper
   include StoryMapHelper
 
   def agile_board_menu
-    #TODO add permission control
     content_tag :div do
       safe_concat display_mode_menu
       safe_concat subnav_tag('agile-board-menu', 'agile-board-menu',
@@ -38,7 +37,7 @@ module BoardsHelper
   def agile_board_menu_nav_item(label, glyph, type, path)
     {caption: glyph(label, glyph),
      path: path,
-     options: {class: "#{'selected' if nav_item_selected?(type.to_sym)} subnav-item"}}
+     options: {class: "#{'selected' if nav_item_selected?(type.to_sym)} subnav-item", remote: false}}
   end
 
   def nav_item_selected?(type)
@@ -64,11 +63,11 @@ module BoardsHelper
 
 
   def configuration_content
-    # TODO display or not tab (depending on permissions)
-    safe_concat horizontal_tabs('configuration-tab',
-                                [{name: 'epics-tab', element: medium_glyph(t(:link_epics), 'sword')},
-                                 {name: 'statuses-tab', element: glyph(t(:link_story_statuses), 'dashboard')},
-                                 {name: 'points-tab', element: glyph(t(:link_story_points), 'coin')}])
+    tabs = []
+    tabs << {name: 'epics-tab', element: medium_glyph(t(:link_epics), 'sword')} if User.current.allowed_to?('index', 'Epics', @project)
+    tabs << {name: 'statuses-tab', element: glyph(t(:link_story_statuses), 'dashboard')} if User.current.allowed_to?('index', 'Story_statuses', @project)
+    tabs <<  {name: 'points-tab', element: glyph(t(:link_story_points), 'coin')} if User.current.allowed_to?('index', 'Story_points', @project)
+    safe_concat horizontal_tabs('configuration-tab', tabs) unless tabs.empty?
 
     safe_concat points_content
     safe_concat statuses_content

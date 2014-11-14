@@ -1,7 +1,7 @@
 class StoryStatusesController < AgileBoardController
   include Rorganize::RichController::GenericCallbacks
   before_action :set_story_status, only: [:show, :edit, :update, :destroy]
-
+  before_action :check_permission
   # GET /story_statuses
   def index
     @story_statuses = StoryStatus.all

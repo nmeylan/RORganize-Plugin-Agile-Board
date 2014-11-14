@@ -2,6 +2,8 @@ class UserStoriesController < AgileBoardController
   include Rorganize::RichController::GenericCallbacks
   helper SprintsHelper
   before_filter :find_project_with_dependencies, only: [:new_task]
+  before_filter {|c| c.add_action_alias={'create_task' => 'new_task'}}
+  before_action :check_permission
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item('boards') }
   before_filter { |c| c.top_menu_item('projects') }

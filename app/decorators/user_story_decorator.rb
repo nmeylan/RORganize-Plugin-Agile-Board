@@ -49,6 +49,8 @@ class UserStoryDecorator < AgileBoardDecorator
       else
         h.link_to(caption, h.agile_board_plugin::user_story_path(context[:project].slug, model.id))
       end
+    else
+      caption
     end
   end
 

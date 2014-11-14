@@ -2,6 +2,19 @@ class StoryPointsController < AgileBoardController
   before_action :set_story_status, only: [:edit, :update]
   before_action :check_permission
 
+  def add_points
+    if request.get?
+      addition = true
+    else
+      @board_decorator.add_points(params[:points])
+      addition = false
+    end
+    @board_decorator.context.merge!({points: StoryPoint.where(board_id: @board.id).decorate})
+    respond_to do |format|
+      format.js { respond_to_js action: 'add_points', locals: {addition: addition}, response_header: addition ? '' : :success, response_content: t(:successful_creation) }
+    end
+  end
+
   # GET /story_statuses/1/edit
   def edit
     @point = StoryPoint.find(params[:id])
@@ -30,7 +43,6 @@ class StoryPointsController < AgileBoardController
   # Use callbacks to share common setup or constraints between actions.
   def set_story_status
     @point = StoryPoint.find(params[:id])
-    @board_decorator = @point.board.decorate(context: {project: @project})
     @board_decorator.context.merge!({points: StoryPoint.where(board_id: @board_decorator.id).decorate})
   end
 

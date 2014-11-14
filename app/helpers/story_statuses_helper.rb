@@ -13,7 +13,8 @@ module StoryStatusesHelper
 
   def statuses_list
     path = agile_board_plugin::story_status_change_position_path(@project.slug, '-1')
-    content_tag :ul, {class: "fancy-list fancy-list-mini story-statuses-list sortable", 'data-link' => path} do
+    sortable = 'sortable' if User.current.allowed_to?('change_position', 'Story_statuses', @project)
+    content_tag :ul, {class: "fancy-list fancy-list-mini story-statuses-list #{sortable}", 'data-link' => path} do
       @board_decorator.sorted_statuses.collect do |status|
         statuses_list_row(status)
       end.join.html_safe

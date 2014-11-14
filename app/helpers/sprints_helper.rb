@@ -69,10 +69,11 @@ module SprintsHelper
   end
 
   def sprint_dropwdown(sprint)
-    dropdown_tag do
-      safe_concat dropdown_row sprint.new_story(false)
-      safe_concat dropdown_row sprint.edit_link
-      safe_concat dropdown_row sprint.delete_link
+    actions = [sprint.new_story(false), sprint.edit_link, sprint.delete_link].compact
+    if actions.any?
+      dropdown_tag do
+        actions.collect{|action| dropdown_row action}.join.html_safe
+      end
     end
   end
 
@@ -90,8 +91,8 @@ module SprintsHelper
   end
 
   def render_sprint_body(sprint)
-    # TODO check permission for sortable
-    content_tag :ul, {class: "fancy-list fancy-list-mini stories-list sortable #{'no-stories' if sprint.stories.empty?}"} do
+    sortable = 'sortable' if User.current.allowed_to?('change_sprint', 'User_stories', @project)
+    content_tag :ul, {class: "fancy-list fancy-list-mini stories-list #{sortable} #{'no-stories' if sprint.stories.empty?}"} do
       sprint.sorted_stories.collect do |story|
         render_story(story)
       end.join.html_safe

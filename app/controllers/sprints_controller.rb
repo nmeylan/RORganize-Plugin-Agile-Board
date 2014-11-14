@@ -1,6 +1,7 @@
 class SprintsController < AgileBoardController
   include Rorganize::RichController::GenericCallbacks
   before_action :set_sprint, only: [:show, :edit, :update, :destroy]
+  before_action :check_permission, except: [:generate_sprint_name]
 
 
   # GET /sprints

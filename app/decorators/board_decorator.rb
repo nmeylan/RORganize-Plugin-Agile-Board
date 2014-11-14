@@ -15,7 +15,7 @@ class BoardDecorator < AgileBoardDecorator
   end
 
   def configuration_menu_item
-    agile_board_menu(h.t(:lable_agile_board_configuration), 'gear', :configuration)
+    agile_board_menu(h.t(:lable_agile_board_configuration), 'gear', :configuration) if User.current.allowed_to?('configuration', 'Boards', context[:project])
   end
 
   def unified_display_mode(selected = false)
@@ -52,7 +52,7 @@ class BoardDecorator < AgileBoardDecorator
 
   def add_points_link
     h.link_to_with_permissions(h.glyph(h.t(:link_add), 'plus'),
-                               h.agile_board_plugin::agile_board_add_points_path(context[:project].slug, model.id),
+                               h.agile_board_plugin::add_points_story_points_path(context[:project].slug),
                                context[:project], nil,
                                {remote: true, method: :get, class: 'button'})
   end

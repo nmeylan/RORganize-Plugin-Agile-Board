@@ -12,7 +12,7 @@ module StoryPointsHelper
   end
 
   def points_addition
-    path = agile_board_plugin::agile_board_add_points_path(@project.slug, @board_decorator.id)
+    path = agile_board_plugin::add_points_story_points_path(@project.slug)
     safe_concat text_field_tag(:points, nil, {placeholder: '10, 35, 50'})
     safe_concat @board_decorator.save_points_link(path, :post, 'submit-points-addition')
   end

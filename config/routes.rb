@@ -5,15 +5,17 @@ AgileBoard::Engine.routes.draw do
   end
 
   scope 'projects/:project_id/' do
-    resources :boards, only: [:create, :index, :destroy],  as: 'agile_board' do
-      get :add_points
-      post :add_points
-    end
+    resources :boards, only: [:create, :index, :destroy],  as: 'agile_board'
     scope 'agile_board' do
       resources :story_statuses do
         post :change_position
       end
-      resources :story_points, only: [:edit, :update]
+      resources :story_points, only: [:edit, :update] do
+        collection do
+          get :add_points
+          post :add_points
+        end
+      end
       resources :epics
       resources :sprints
       resources :user_stories do

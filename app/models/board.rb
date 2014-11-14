@@ -31,4 +31,18 @@ class Board < ActiveRecord::Base
     end
     self.save
   end
+
+  def load_story_map(project, sprint_id = nil)
+    sprints = sprint_id ? Sprint.where(id: sprint_id, board_id: self.id).to_a : Sprint.current_sprints(self.id).includes(:version)
+    stories = UserStory.where(board_id: self.id, sprint_id: sprints.collect(&:id)).includes(:tracker).order(position: :asc).decorate(context: {project: project})
+    statuses = StoryStatus.where(board_id: self.id).order(position: :asc)
+    stories_hash = sprints.inject({}) do |memo, sprint|
+      memo[sprint.id] = statuses.inject({}) do |memo_status, status|
+        memo_status[status.caption] = stories.select{ |story| story.status_id.eql?(status.id) && story.sprint_id.eql?(sprint.id)}
+        memo_status
+      end
+      memo
+    end
+    return sprints, statuses, stories_hash
+  end
 end

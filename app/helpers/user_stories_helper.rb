@@ -1,6 +1,7 @@
 module UserStoriesHelper
   include AgileBoardHelper
   include UserStoryTasksHelper
+
   def render_story(story)
     story_options = {class: "fancy-list-item story", id: "story-#{story.id}"}
     story_options['data-link'] = story.change_sprint_link(true)
@@ -29,9 +30,11 @@ module UserStoriesHelper
   end
 
   def story_right_dropdown(story)
-    dropdown_tag do
-      safe_concat dropdown_row story.edit_link(false, {}, true)
-      safe_concat dropdown_row story.delete_link(false, {}, true)
+    actions = [story.edit_link(false, {}, true), story.delete_link(false, {}, true)].compact
+    if actions.any?
+      dropdown_tag do
+        actions.collect { |action| dropdown_row  action }.join.html_safe
+      end
     end
   end
 
