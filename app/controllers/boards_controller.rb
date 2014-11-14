@@ -12,7 +12,7 @@ class BoardsController < AgileBoardController
     select_menu
     respond_to do |format|
       format.html { render :index }
-      format.js { respond_to_js action: 'index' }
+      format.js { js_redirect_to agile_board_plugin::agile_board_index_path(@project.slug) }
     end
   end
 
@@ -31,10 +31,14 @@ class BoardsController < AgileBoardController
 
   def work
     #TODO pass sprint id
-    sprint_ids = params[:sprint_id] ? params[:sprint_id].to_a : Sprint.current_sprints(@board.id).collect(&:id)
+    @sprints = params[:sprint_id] ? Sprint.where(id: params[:sprint_id], board_id: @board.id).to_a : Sprint.current_sprints(@board.id).includes(:version)
+    stories = UserStory.where(board_id: @board.id, sprint_id: @sprints.collect(&:id)).includes(:tracker).order(position: :asc).decorate(context: {project: @project})
     @statuses = StoryStatus.where(board_id: @board.id).order(position: :asc)
-    @stories_hash = @statuses.inject({}) do |memo, status|
-      memo[status.caption] = UserStory.where(board_id: @board.id, status_id: status.id, sprint_id: sprint_ids).includes(:tracker).order(position: :asc).decorate(context: {project: @project})
+    @stories_hash = @sprints.inject({}) do |memo, sprint|
+      memo[sprint.id] = @statuses.inject({}) do |memo_status, status|
+        memo_status[status.caption] = stories.select{ |story| story.status_id.eql?(status.id) && story.sprint_id.eql?(sprint.id)}
+        memo_status
+      end
       memo
     end
   end

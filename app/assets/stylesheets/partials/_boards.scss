@@ -40,14 +40,14 @@
 
 }
 
-.story-title {
-  a {
-    color: $link-hover-color;
-    font-weight: inherit;
-  }
-  a:hover {
-    text-decoration: underline;
-  }
+.story-title a, a.sprint-show {
+  color: $link-hover-color;
+  font-weight: inherit;
+}
+
+.story-title a:hover, a.sprint-show:hover {
+  text-decoration: underline;
+
 }
 
 .story-detail {
@@ -69,7 +69,7 @@
     }
     span.dropdown {
       margin-right: 0px;
-      a{
+      a {
         margin-right: 0px;
       }
     }
@@ -162,16 +162,17 @@
   }
 }
 
-.counter.story-issues-count{
+.counter.story-issues-count {
   background-color: $link-color;
-  color:white;
+  color: white;
   width: 20px;
   text-align: center;
-  .octicon{
+  .octicon {
     color: white;
     font-size: 16px;
   }
 }
+
 .counter.story-points {
   width: 30px;
   text-align: center;

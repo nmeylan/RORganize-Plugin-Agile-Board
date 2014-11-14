@@ -83,7 +83,7 @@ module BoardsHelper
 
   def work_content
     safe_concat clear_both
-    safe_concat story_map_render(@statuses, @stories_hash)
+    safe_concat story_map_render(@statuses, @sprints, @stories_hash)
   end
 
   def plan_content

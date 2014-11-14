@@ -23,6 +23,10 @@ class SprintDecorator < AgileBoardDecorator
     super(context[:project], h.agile_board_plugin::sprint_path(context[:project].slug, model.id), false)
   end
 
+  def show_link
+    h.link_to self.resized_caption(25), h.agile_board_plugin::agile_board_index_path(agile_board_menu: :work, sprint_id: model.id), {class: 'sprint-show'}
+  end
+
   def display_count_stories
     h.content_tag :span, "#{model.stories.size} stories", {class: 'counter total-entries'}
   end

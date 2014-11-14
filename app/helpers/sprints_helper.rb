@@ -45,7 +45,7 @@ module SprintsHelper
   def sprint_header_left_content(sprint)
     content_tag :span, class: 'sprint-header-left' do
       safe_concat link_to glyph('', 'chevron-down'), '#', {id: "content-sprint-#{sprint.id}", class: 'icon-expanded sprint-expand'}
-      safe_concat content_tag :h2, sprint.resized_caption(25)
+      safe_concat content_tag :h2, sprint.show_link
       safe_concat sprint.display_dates
       safe_concat sprint.display_version
     end

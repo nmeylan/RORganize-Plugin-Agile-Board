@@ -4,13 +4,33 @@
 # File: story_map_helper.rb
 
 module StoryMapHelper
-  def story_map_render(statuses, stories_hash)
+  def story_map_render(statuses, sprints, stories_hash)
     content_tag :div, class: 'story-map' do
-      number_cols = stories_hash.values.size
-      statuses.each do |status|
-        safe_concat story_map_column_render(status, stories_hash[status.caption], number_cols)
+      number_cols = statuses.size
+      if sprints.any?
+        stories_hash.collect do |sprint_id, _stories_hash|
+          safe_concat story_map_render_sprint_map(_stories_hash, number_cols, sprint_id, sprints, statuses)
+        end.join.html_safe
+      else
+        no_data
       end
     end
+  end
+
+  def story_map_render_sprint_map(_stories_hash, number_cols, sprint_id, sprints, statuses)
+    sprint = sprints.detect { |sprint| sprint.id.eql?(sprint_id) }
+    sprint_str = "#{sprint.name} #{': ' + sprint.version.caption if sprint.version}"
+    content_tag :div do
+      safe_concat content_tag :h1, sprint_str, class: 'story-map-sprint-name', id: "sprint-#{sprint_id}"
+      safe_concat story_map_render_sprint_content_map(_stories_hash, number_cols, statuses)
+      safe_concat clear_both
+    end
+  end
+
+  def story_map_render_sprint_content_map(_stories_hash, number_cols, statuses)
+    statuses.collect do |status|
+      story_map_column_render(status, _stories_hash[status.caption], number_cols)
+    end.join.html_safe
   end
 
   def story_map_column_render(status, stories, number_cols)
