@@ -137,7 +137,7 @@ class UserStoryDecorator < AgileBoardDecorator
   end
 
   def tracker_options
-    context[:trackers].collect { |tracker| [tracker.caption, tracker.id] }
+    context[:trackers].sort_by(&:position).collect { |tracker| [tracker.caption, tracker.id] }
   end
 
   def context_sprint
