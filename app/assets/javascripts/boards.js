@@ -48,7 +48,7 @@ function sortable_story_map_hash() {
             var status = $(el.parents(".status"));
             var status_id = status.attr('id').replace('status-', '');
             var next_prev_id = self.next_prev_id(el);
-            if (this === ui.item.parent()[0]) {
+            if (this !== ui.item.parent()[0]) {
                 jQuery.ajax({
                     url: el.data('link'),
                     type: 'post',
