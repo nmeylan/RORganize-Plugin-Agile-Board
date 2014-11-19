@@ -15,7 +15,7 @@ class UserStory < ActiveRecord::Base
   scope :fetch_issues_dependencies, -> { includes(issues: [:tracker, :category, :version, :assigned_to, status: :enumeration]) }
 
   validates :tracker_id, :status_id, :board_id, presence: true
-  validates :title, presence: true, length: { maximum: 255 }
+  validates :title, presence: true, length: {maximum: 255}
 
   before_save :set_backlog_id
   before_create :update_position
@@ -92,16 +92,18 @@ class UserStory < ActiveRecord::Base
   end
 
   def change_position_on_reorder(old_position, prev_id, prev_or_next_story)
-    self.position = prev_or_next_story.position
-    if prev_or_next_story.position > old_position
-      UserStory
-      .where("position > ? AND position <= ? AND id <> ?", old_position, self.position, self.id)
-      .where(sprint_id: self.sprint_id, board_id: self.board_id).update_all('position = position - 1')
-    else
-      self.position += 1 unless prev_id.nil?
-      UserStory
-      .where("position >= ? AND position < ? AND id <> ?", self.position, old_position, self.id)
-      .where(sprint_id: self.sprint_id, board_id: self.board_id).update_all('position = position + 1')
+    if prev_or_next_story
+      self.position = prev_or_next_story.position
+      if prev_or_next_story.position > old_position
+        UserStory
+        .where("position > ? AND position <= ? AND id <> ?", old_position, self.position, self.id)
+        .where(sprint_id: self.sprint_id, board_id: self.board_id).update_all('position = position - 1')
+      else
+        self.position += 1 unless prev_id.nil?
+        UserStory
+        .where("position >= ? AND position < ? AND id <> ?", self.position, old_position, self.id)
+        .where(sprint_id: self.sprint_id, board_id: self.board_id).update_all('position = position + 1')
+      end
     end
   end
 

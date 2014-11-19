@@ -77,6 +77,16 @@ class UserStoryDecorator < AgileBoardDecorator
     end
   end
 
+  def change_status_link(fast = false)
+    if User.current.allowed_to?(:change_status, 'user_stories', context[:project])
+      if fast
+        "/projects/#{context[:project].slug}/agile_board/user_stories/#{model.id}/change_status"
+      else
+        h.agile_board_plugin::user_story_change_status_path(context[:project].slug, model.id)
+      end
+    end
+  end
+
   def display_status
     self.status.display_caption
   end

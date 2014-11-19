@@ -23,6 +23,7 @@ AgileBoard::Engine.routes.draw do
         post :create_task
         post :detach_tasks
         post :change_sprint
+        post :change_status
       end
 
       get :generate_sprint_name, controller: 'sprints'

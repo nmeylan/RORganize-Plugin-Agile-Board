@@ -19,6 +19,11 @@
 }
 
 .agile-board-plan {
+  .ui-state-highlight{
+    height: 31px;
+    margin-right: 5px;
+    margin-left: 5px;
+  }
 }
 
 .sprints, .backlog {
@@ -178,8 +183,7 @@
   text-align: center;
 }
 
-.story-tasks-list {
-
+.story-tasks-list:empty {
   min-height: 50px;
 }
 
@@ -200,7 +204,14 @@
   }
 }
 
+#content .story-map ul.story-map-stories li.story{
+  font-size: 14px;
+}
 .story-map {
+  .ui-state-highlight{
+    height: 100px;
+    margin-bottom: 10px;
+  }
   position: relative;
   margin-top: 5px;
   width: 100%;
@@ -208,16 +219,27 @@
     position: relative;
     float: left;
     height: 100%;
+    .status-color{
+      height: 10px;
+      width: 100%;
+      margin-bottom: 10px;
+    }
     .story-map-column-header {
       font-size: 16px;
       text-align: center;
       font-weight: bold;
       padding: 5px 0 5px 0;
     }
+    .story-map-stories:empty{
+      border: dashed 3px $default-border-color;
+      height: 85px;
+      margin: 20px 10px 0 10px;
+    }
     .story-map-stories {
+      margin: 10px 0 0 0;
       padding: 10px;
       .story {
-        margin: 10px 0 10px 0;
+        margin: 0 0 10px 0;
         padding: 5px;
         height: 100px;
         overflow: hidden;

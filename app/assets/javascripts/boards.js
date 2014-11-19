@@ -9,6 +9,7 @@ $(document).ready(function (e) {
 function initialize_board() {
     bind_tab_nav('configuration-tab');
     bind_stories_sortable();
+    bind_story_map_sortable();
     multi_toogle('.sprint-expand');
     jQuery(".story-statuses-list.sortable").sortable({
         update: function (event, ui) {
@@ -30,34 +31,62 @@ function initialize_board() {
         }
     });
 }
-
+function bind_story_map_sortable() {
+    jQuery(".story-map-stories.sortable").sortable(sortable_story_map_hash());
+}
 function bind_stories_sortable() {
     jQuery(".stories-list.sortable").sortable(sortable_stories_hash());
 }
 
-function sortable_stories_hash() {
+function sortable_story_map_hash() {
+    var self = this;
     return {
         connectWith: 'ul',
+        placeholder: "ui-state-highlight",
         update: function (event, ui) {
             var el = ui.item;
-            var sprint = $(el.parents(".sprint")[1]);
-            var id = sprint.attr('id').replace('sprint-', '');
-            var prev_id = el.prev().attr('id');
-            if (prev_id !== undefined)
-                prev_id = prev_id.replace('story-', '');
-            var next_id = el.next().attr('id');
-            if (next_id !== undefined)
-                next_id = next_id.replace('story-', '');
+            var status = $(el.parents(".status"));
+            var status_id = status.attr('id').replace('status-', '');
+            var next_prev_id = self.next_prev_id(el);
             if (this === ui.item.parent()[0]) {
                 jQuery.ajax({
                     url: el.data('link'),
                     type: 'post',
                     dataType: 'script',
-                    data: {sprint_id: id, prev_id: prev_id, next_id: next_id}
+                    data: {status_id: status_id, prev_id: next_prev_id[0], next_id: next_prev_id[1]}
                 });
-            }else if(this === ui.item.parent()[0]){
-
             }
         }
     };
+}
+function sortable_stories_hash() {
+    var self = this;
+    return {
+        connectWith: 'ul',
+        placeholder: "ui-state-highlight",
+        update: function (event, ui) {
+            var el = ui.item;
+            var sprint = $(el.parents(".sprint")[1]);
+            var sprint_id = sprint.attr('id').replace('sprint-', '');
+            var next_prev_id = self.next_prev_id(el);
+            if (this === ui.item.parent()[0]) {
+                jQuery.ajax({
+                    url: el.data('link'),
+                    type: 'post',
+                    dataType: 'script',
+                    data: {sprint_id: sprint_id, prev_id: next_prev_id[0], next_id: next_prev_id[1]}
+                });
+            }
+        }
+    };
+}
+
+function next_prev_id(el){
+    var prev_id = el.prev().attr('id');
+    if (prev_id !== undefined)
+        prev_id = prev_id.replace('story-', '');
+    var next_id = el.next().attr('id');
+    if (next_id !== undefined)
+        next_id = next_id.replace('story-', '');
+    return [prev_id, next_id];
 }

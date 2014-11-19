@@ -8,6 +8,8 @@ class Board < ActiveRecord::Base
   has_many :sprint, dependent: :destroy
   after_create :set_board_default_configuration
 
+  validates :project_id, uniqueness: true
+
   def set_board_default_configuration
     points = [1, 2, 3, 4, 5]
     statuses = {'To Do' => IssuesStatus.find_by_name('New').id,

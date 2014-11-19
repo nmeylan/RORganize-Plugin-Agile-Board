@@ -7,7 +7,7 @@ class UserStoriesController < AgileBoardController
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item('boards') }
   before_filter { |c| c.top_menu_item('projects') }
-  before_action :set_user_story, only: [:edit, :update, :destroy, :new_task, :create_task, :detach_tasks, :change_sprint]
+  before_action :set_user_story, only: [:edit, :update, :destroy, :new_task, :create_task, :detach_tasks, :change_sprint, :change_status]
 
 
   def peek_enabled?
@@ -113,6 +113,12 @@ class UserStoriesController < AgileBoardController
     old_sprint = old_sprint ? Sprint.eager_load_user_stories.find_by_id(old_sprint) : Sprint.backlog(@board.id)
     simple_js_callback(result, :update, @user_story, {old_sprint: old_sprint.decorate(context: {project: @project}),
                                                       sprint: @user_story.get_sprint(true).decorate(context: {project: @project})})
+  end
+
+  def change_status
+    @user_story.status = StoryStatus.find_by_id_and_board_id(params[:status_id], @board.id)
+    # @user_story.change_position(params[:prev_id], params[:next_id])
+    simple_js_callback(@user_story.save, :update, @user_story)
   end
 
   private
