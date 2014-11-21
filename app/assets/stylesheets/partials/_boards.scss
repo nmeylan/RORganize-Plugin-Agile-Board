@@ -112,7 +112,18 @@
       font-weight: bold;
       margin-right: 5px;
       margin-left: 5px;
-
+    }
+  }
+}
+@media(max-width: 1440px) {
+   .sprints.splitcontentleft .sprint-dates-header{
+    display: none;
+  }
+}
+@media(max-width: 1150px){
+  .sprints.splitcontentleft, .backlog.splitcontentright{
+    .counter.total-entries{
+      display:none;
     }
   }
 }
@@ -124,8 +135,12 @@
 }
 
 .sprint, .story-tasks-list {
+  .fancy-list .fancy-list-item{
+    line-height: 30px;
+  }
   .fancy-list .fancy-list-item .story-left-content {
     float: left;
+    overflow: hidden;
   }
   .fancy-list .fancy-list-item .right-content-list li {
     float: inherit;

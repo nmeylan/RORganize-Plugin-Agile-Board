@@ -1,3 +1,4 @@
+require 'shared/history'
 class UserStoriesController < AgileBoardController
   include Rorganize::RichController::GenericCallbacks
   helper SprintsHelper
@@ -22,8 +23,10 @@ class UserStoriesController < AgileBoardController
   # GET /user_stories/1
   def show
     @user_story_decorator = decorate_user_story
+    journals = Journal.journalizable_activities(@user_story_decorator.id, 'UserStory')
+    comments = @user_story_decorator.comments
     respond_to do |format|
-      format.html { render 'show' }
+      format.html { render 'show', locals: {history: History.new(journals, comments)} }
     end
   end
 
@@ -55,10 +58,12 @@ class UserStoriesController < AgileBoardController
     result = @user_story.update(user_story_params)
     if params[:from]
       @user_story_decorator = decorate_user_story
+      locals = {history: History.new(Journal.journalizable_activities(@user_story_decorator.id, 'UserStory'))}
     else
+      locals = {}
       @sprint = @user_story.get_sprint(true).decorate(context: {project: @project})
     end
-    simple_js_callback(result, :update, @user_story)
+    simple_js_callback(result, :update, @user_story, locals)
   end
 
   # DELETE /user_stories/1

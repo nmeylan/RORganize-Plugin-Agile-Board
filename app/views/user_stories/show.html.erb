@@ -10,13 +10,16 @@
 
 <%= contextual "#{t(:label_story)} : ##{@user_story_decorator.id}" do %>
     <%= @user_story_decorator.new_task_link %>
+    <%= @user_story_decorator.new_comment_link %>
+    <%= @user_story_decorator.display_watch_button %>
     <%= @user_story_decorator.edit_link(true, {from: :show}) %>
     <%= @user_story_decorator.delete_link(true, {from: :show}) %>
 <% end %>
 
 
 
-<%= render partial: 'user_stories/show' %>
+<%= render partial: 'user_stories/show', locals: {history: history} %>
 
 <%= editor_overlay('story', t(:link_new_story))%>
 <%= story_task_editor_overlay %>
+

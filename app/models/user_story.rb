@@ -1,6 +1,14 @@
 class UserStory < ActiveRecord::Base
   include Rorganize::Models::SmartRecords
+  include Rorganize::Models::Journalizable
+  include Rorganize::Models::Commentable
+  include Rorganize::Models::Notifiable
+  include Rorganize::Models::Watchable
+
+  exclude_attributes_from_journal(:description)
+
   Issue.belongs_to :user_story, counter_cache: true
+
   belongs_to :points, class_name: 'StoryPoint', foreign_key: :point_id
   belongs_to :status, class_name: 'StoryStatus'
   belongs_to :tracker
@@ -24,6 +32,13 @@ class UserStory < ActiveRecord::Base
 
   def caption
     self.title
+  end
+
+  def project
+    self.board.project
+  end
+  def project_id
+    self.board.project_id
   end
 
   def get_sprint(fetch_dependencies = false)

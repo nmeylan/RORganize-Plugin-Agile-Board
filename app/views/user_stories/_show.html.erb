@@ -61,4 +61,7 @@
   <%= @user_story_decorator.display_tasks %>
   <%# TODO check permissions %>
   <%= render_story_trash_tasks(@user_story_decorator)%>
+
+  <%= @user_story_decorator.display_history(history) %>
+  <%= @user_story_decorator.add_comment_block %>
 </div>

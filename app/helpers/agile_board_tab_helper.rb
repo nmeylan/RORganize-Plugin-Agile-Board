@@ -5,7 +5,7 @@
 
 module AgileBoardTabHelper
   def agile_board_list_button(model)
-    content_tag :div, class: 'fancy-list right-content-list' do
+    content_tag :span, class: 'fancy-list right-content-list' do
       safe_concat model.edit_link(@project)
       safe_concat model.delete_link(@project)
     end

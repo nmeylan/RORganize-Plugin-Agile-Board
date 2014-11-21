@@ -1,6 +1,7 @@
 module UserStoriesHelper
   include AgileBoardHelper
   include UserStoryTasksHelper
+  include CommentsHelper
 
   def render_story(story)
     story_options = {class: "fancy-list-item story", id: "story-#{story.id}"}
@@ -15,7 +16,7 @@ module UserStoriesHelper
   def render_story_left_content(story)
     content_tag :span, class: 'story-left-content' do
       safe_concat story.display_tracker_id
-      concat_span_tag story.show_link(story.resized_caption(caption_sized), true), class: 'story-title'
+      concat_span_tag story.show_link(story.caption, true), class: 'story-title'
     end
   end
 
