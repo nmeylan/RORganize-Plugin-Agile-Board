@@ -32,7 +32,7 @@ module AgileBoardHelper
   def agile_board_form_description_field(f)
     content_tag :p do
       safe_concat f.label :description, t(:field_description)
-      safe_concat f.text_area :description, {class: 'fancyEditor', rows: 12}
+      safe_concat f.text_area :description, {class: 'fancyEditor', rows: 10}
     end
   end
 

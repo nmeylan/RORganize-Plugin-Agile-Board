@@ -4,5 +4,5 @@
  * Time: 14:31
  %>
     jQuery("#story-editor-overlay").replaceWith("<%= escape_javascript editor_overlay('story', t(:link_new_story), @user_story, path, method) %>");
-    createOverlay("#story-editor-overlay", 150);
+    createOverlay("#story-editor-overlay", 20);
     jQuery('#story-editor-overlay').overlay().load();
