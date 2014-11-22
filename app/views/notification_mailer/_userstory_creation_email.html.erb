@@ -1,0 +1,14 @@
+<%#=
+ * User: nmeylan
+ * Date: 13.09.14
+ * Time: 03:34
+%>
+<ul>
+  <li><b><%= t(:field_tracker) %>:</b> <%= model.tracker.caption %></li>
+  <li><b><%= t(:field_title) %>:</b> <%= model.caption %></li>
+  <li><b><%= t(:field_category) %>:</b> <%= model.category ? model.category.caption: '-' %></li>
+  <li><b><%= t(:field_status) %>:</b> <%= model.status ? model.status.caption : '-' %></li>
+  <li><b><%= t(:field_epic) %>:</b> <%= model.epic ? model.epic.caption : '-'%></li>
+  <li><b><%= t(:link_story_points) %>:</b> <%= model.points ? model.points.caption : '-'%></li>
+</ul>
+<%= markdown_to_html model.description, nil, true %>
