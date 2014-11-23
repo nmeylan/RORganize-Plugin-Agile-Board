@@ -59,7 +59,6 @@
 
   <h2><%= t(:label_tasks) %> : </h2>
   <%= @user_story_decorator.display_tasks %>
-  <%# TODO check permissions %>
   <%= render_story_trash_tasks(@user_story_decorator)%>
 
   <%= @user_story_decorator.display_history(history) %>
