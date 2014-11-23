@@ -169,4 +169,9 @@ class UserStoryDecorator < AgileBoardDecorator
   def total_progress_bar
     h.mini_progress_bar_tag(self.total_progress, 'width-100')
   end
+
+  def display_object_type(project)
+    h.safe_concat h.content_tag :b, "#{h.t(:label_user_story)} "
+    "<a href='/projects/#{project.slug}/agile_board/user_stories/#{self.id}'>#{resized_caption}</a>".html_safe
+  end
 end

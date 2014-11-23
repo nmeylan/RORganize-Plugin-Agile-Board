@@ -8,6 +8,7 @@ en:
   label_sprint: Sprint
   label_sprint_dates: Sprint dates
   label_tasks: Tasks
+  label_user_story: user story
 
   link_story_points: Points
   link_story_statuses: Statuses
