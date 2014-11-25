@@ -5,5 +5,5 @@
  %>
 
 jQuery("#story-task-editor-overlay").replaceWith("<%= escape_javascript story_task_editor_overlay(@issue, path, method) %>");
-createOverlay("#story-task-editor-overlay", 150);
+createOverlay("#story-task-editor-overlay", 50);
 jQuery('#story-task-editor-overlay').overlay().load();
