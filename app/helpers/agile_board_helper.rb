@@ -60,24 +60,27 @@ module AgileBoardHelper
     end
   end
 
+  # Build a select field tag.
+  # If a block is given only build the label an yield the given block.
+  # Else, try to build a select for the given attr_name.
+  # @param [FormFor] f : the form.
+  # @param [Symbol] attr_name : the attribute name.
+  # @param [String] label : label of the field.
+  # @param [ActiveRecordBase] model : a decorated(draper) model.
+  # @param [Boolean] required : does the field is mandatory?
   def agile_board_select_field(f, attr_name, label, model, required = false)
     content_tag :div, class: 'autocomplete-combobox' do
       safe_concat(required ? required_form_label(f, attr_name, label) : f.label(attr_name, label))
       if block_given?
         safe_concat yield
       else
-        safe_concat f.select "#{attr_name}_id", model.send("#{attr_name}_options"), {include_blank: !required}, {class: "chzn-select#{'-deselect' unless required}  cbb-medium search"}
+        safe_concat f.select "#{attr_name}_id",
+                             model.send("#{attr_name}_options"),
+                             {include_blank: !required}, {class: "chzn-select#{'-deselect' unless required}  cbb-medium search"}
       end
     end
   end
 
-  def split_content?
-    @sessions[:display_mode].eql?(:split)
-  end
-
-  def unified_content?
-    @sessions[:display_mode].eql?(:unified)
-  end
 
   def fast_story_show_link(project, story_id, caption)
     "<a href='/projects/#{project.slug}/agile_board/user_stories/#{story_id}'>#{caption}</a>"
@@ -94,4 +97,11 @@ module AgileBoardHelper
     "<a class=\"\" data-method=\"get\" data-remote=\"true\" href=\"/projects/#{project.slug}/agile_board/user_stories/#{story_id}/edit\"><span class=\"octicon-pencil octicon\"></span>#{caption}</a>"
   end
 
+  def split_content?
+    @sessions[:display_mode].eql?(:split)
+  end
+
+  def unified_content?
+    @sessions[:display_mode].eql?(:unified)
+  end
 end

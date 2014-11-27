@@ -5,7 +5,7 @@ module UserStoriesHelper
 
   def render_story(story)
     story_options = {class: "fancy-list-item story", id: "story-#{story.id}"}
-    story_options['data-link'] = story.change_sprint_link(true)
+    story_options['data-link'] = story.change_sprint_link
     content_tag :li, story_options do
       safe_concat render_story_left_content(story)
       safe_concat render_story_right_content(story)

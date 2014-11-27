@@ -39,9 +39,7 @@ class UserStoryDecorator < AgileBoardDecorator
 
   def display_issues_counter
     count = model.issues_count ? model.issues_count : '0'
-    h.content_tag :span, {class: 'counter total-entries story-issues-count tooltipped tooltipped-s', label: h.t(:label_tasks)} do
-      h.safe_concat count
-    end
+    h.content_tag :span, count, {class: 'counter total-entries story-issues-count tooltipped tooltipped-s', label: h.t(:label_tasks)}
   end
 
   def display_category

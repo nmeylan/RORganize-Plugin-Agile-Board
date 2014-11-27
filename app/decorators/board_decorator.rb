@@ -6,16 +6,18 @@
 class BoardDecorator < AgileBoardDecorator
   delegate_all
 
-  def plan_menu_item
-    agile_board_menu(h.t(:lable_agile_board_plan), 'plan', :plan)
+  def plan_menu_item(selected = false)
+    agile_board_menu(h.t(:lable_agile_board_plan), 'plan', :plan, selected)
   end
 
-  def work_menu_item
-    agile_board_menu(h.t(:lable_agile_board_work), 'column', :work)
+  def work_menu_item(selected = false)
+    agile_board_menu(h.t(:lable_agile_board_work), 'column', :work, selected)
   end
 
-  def configuration_menu_item
-    agile_board_menu(h.t(:lable_agile_board_configuration), 'gear', :configuration) if User.current.allowed_to?('configuration', 'Boards', context[:project])
+  def configuration_menu_item(selected = false)
+    if User.current.allowed_to?('configuration', 'Boards', context[:project])
+      agile_board_menu(h.t(:lable_agile_board_configuration), 'gear', :configuration, selected)
+    end
   end
 
   def unified_display_mode(selected = false)
@@ -26,18 +28,38 @@ class BoardDecorator < AgileBoardDecorator
     display_mode_menu(h.t(:link_split), :split, selected)
   end
 
+  # Build a hash for button group tag creation.
+  # @param [String] caption : display mode name.
+  # @param [Symbole] mode : the mode identifier.
+  # @param [Boolean] selected . does the mode is selected?
   def display_mode_menu(caption, mode, selected = false)
     {
         options: {class: "minibutton #{'selected' if selected}"},
         caption: caption,
-        path: h.agile_board_plugin::agile_board_index_path(project_id: context[:project].slug, agile_board_menu: :plan, display_mode: mode)
+        path: h.agile_board_plugin::agile_board_index_path(project_id: context[:project].slug,
+                                                           agile_board_menu: :plan, display_mode: mode)
     }
   end
 
-  def agile_board_menu(label, glyph, param, path_params = {})
-    default_path_params = {project_id: context[:project].slug, agile_board_menu: param}
-    h.agile_board_menu_nav_item(label, glyph, param,
-                                h.agile_board_plugin::agile_board_index_path(default_path_params.merge(path_params)))
+  # Render a subnav item.
+  # @param [String] label : the caption of the subnav item.
+  # @param [String] glyph : the name of the glyph to display.
+  # @param [Symbol] tab_identifier : the identifier of the tab.
+  # @param [Boolean] selected : does the tab is selected?
+  def agile_board_menu(label, glyph, tab_identifier, selected)
+    default_path_params = {project_id: context[:project].slug, agile_board_menu: tab_identifier}
+    agile_board_menu_nav_item(label, glyph, h.agile_board_plugin::agile_board_index_path(default_path_params), selected)
+  end
+
+  # Build a hash for subnav item creation.
+  # @param [String] label : the caption of the tab.
+  # @param [String] glyph : the name of the glyph to display.
+  # @param [String] path : the path for the given tab.
+  # @param [Boolean] selected : does the tab is selected?
+  def agile_board_menu_nav_item(label, glyph, path, selected)
+    {caption: h.glyph(label, glyph),
+     path: path,
+     options: {class: "#{'selected' if selected} subnav-item", remote: false}}
   end
 
   def delete_link
@@ -70,18 +92,12 @@ class BoardDecorator < AgileBoardDecorator
   end
 
   def agile_board_new_link(label, glyph_name, path)
-    h.link_to_with_permissions(h.glyph(label, glyph_name),
-                               path,
-                               context[:project], nil,
-                               {remote: true,
-                                method: :get, class: 'button'}
-    )
+    h.link_to_with_permissions(h.glyph(label, glyph_name), path, context[:project],
+                               nil, {remote: true, method: :get, class: 'button'})
   end
 
   def save_points_link(path, method, id)
-    h.link_to_with_permissions(h.t(:button_save),
-                               path,
-                               context[:project], nil,
+    h.link_to_with_permissions(h.t(:button_save), path, context[:project], nil,
                                {target: 'self', method: method, class: 'button',
                                 id: id, 'data-link' => path})
   end

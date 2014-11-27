@@ -51,7 +51,7 @@ module StoryMapHelper
   end
 
   def story_map_story_render(story)
-    content_tag :li, {class: 'story', id: "story-#{story.id}", 'data-link' => story.change_status_link(true)} do
+    content_tag :li, {class: 'story', id: "story-#{story.id}", 'data-link' => story.change_status_link} do
       safe_concat story_map_story_header_render(story)
       concat_span_tag story.show_link(story.resized_caption(200), true), class: 'story-title'
     end

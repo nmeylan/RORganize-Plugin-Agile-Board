@@ -6,15 +6,22 @@ module BoardsHelper
   include SprintsHelper
   include StoryMapHelper
 
+  # Render a subnav tag to choose the menu.
   def agile_board_menu
     content_tag :div do
       safe_concat display_mode_menu
       safe_concat subnav_tag('agile-board-menu', 'agile-board-menu',
-                             @board_decorator.plan_menu_item, @board_decorator.work_menu_item,
-                             @board_decorator.configuration_menu_item)
+                             @board_decorator.plan_menu_item(nav_item_selected?(:plan)),
+                             @board_decorator.work_menu_item(nav_item_selected?(:work)),
+                             @board_decorator.configuration_menu_item(nav_item_selected?(:configuration)))
     end
   end
 
+  def nav_item_selected?(type)
+    @sessions[:agile_board_menu].eql?(type)
+  end
+
+  # Render a button group tag to choose the display mode.
   def display_mode_menu
     if @sessions[:agile_board_menu].eql?(:plan)
       group_button_tag(@board_decorator.unified_display_mode(unified_content?),
@@ -32,16 +39,6 @@ module BoardsHelper
         safe_concat agile_board_content
       end
     end
-  end
-
-  def agile_board_menu_nav_item(label, glyph, type, path)
-    {caption: glyph(label, glyph),
-     path: path,
-     options: {class: "#{'selected' if nav_item_selected?(type.to_sym)} subnav-item", remote: false}}
-  end
-
-  def nav_item_selected?(type)
-    @sessions[:agile_board_menu].eql?(type)
   end
 
   def agile_board_content
@@ -62,6 +59,7 @@ module BoardsHelper
   end
 
 
+  # Render the nav tab for configuration content.
   def configuration_content
     tabs = []
     tabs << {name: 'epics-tab', element: medium_glyph(t(:link_epics), 'sword')} if User.current.allowed_to?('index', 'Epics', @project)
