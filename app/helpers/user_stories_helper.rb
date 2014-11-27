@@ -72,33 +72,23 @@ module UserStoriesHelper
   end
 
   def story_form_status_field(f, model)
-    agile_board_select_field(f, :status, t(:field_status), true) do
-      f.select :status_id, model.status_options, {include_blank: false}, {class: 'chzn-select  cbb-medium search'}
-    end
+    agile_board_select_field(f, :status, t(:field_status), model, true)
   end
 
   def story_form_epic_field(f, model)
-    agile_board_select_field(f, :epic, t(:field_epic)) do
-      f.select :epic_id, model.epic_options, {include_blank: true}, {class: 'chzn-select-deselect  cbb-medium search'}
-    end
+    agile_board_select_field(f, :epic, t(:field_epic), model)
   end
 
   def story_form_category_field(f, model)
-    agile_board_select_field(f, :category, t(:field_category)) do
-      f.select :category_id, model.category_options, {include_blank: true}, {class: 'chzn-select-deselect  cbb-medium search'}
-    end
+    agile_board_select_field(f, :category, t(:field_category), model)
   end
 
   def story_form_tracker_field(f, model)
-    agile_board_select_field(f, :tracker, t(:field_tracker), true) do
-      f.select :tracker_id, model.tracker_options, {include_blank: false}, {class: 'chzn-select  cbb-medium search'}
-    end
+    agile_board_select_field(f, :tracker, t(:field_tracker), model, true)
   end
 
   def story_form_point_field(f, model)
-    agile_board_select_field(f, :point, t(:link_story_points)) do
-      f.select :point_id, model.point_options, {include_blank: true}, {class: 'chzn-select-deselect  cbb-medium search'}
-    end
+    agile_board_select_field(f, :point, t(:link_story_points), model)
   end
 
   def caption_sized

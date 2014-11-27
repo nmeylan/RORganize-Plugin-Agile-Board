@@ -37,9 +37,7 @@ module StoryStatusesHelper
   end
 
   def status_form_issues_status_field(f, model)
-    agile_board_select_field(f, :issues_status, t(:label_issues_status), true) do
-      f.select :issues_status_id, model.issues_status_options, {include_blank: false}, {class: 'chzn-select  cbb-medium search'}
-    end
+    agile_board_select_field(f, :issues_status, t(:label_issues_status), model, true)
   end
 
 end

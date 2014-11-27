@@ -28,6 +28,8 @@ class Sprint < ActiveRecord::Base
     end
   end
 
+  # Build a backlog sprint.
+  # @param [String|Fixnum] board_id
   def self.backlog(board_id)
     backlog = Sprint.new(id: -1, name: 'Backlog')
     backlog.stories = UserStory.where(sprint_id: nil, board_id: board_id).includes(:status, :points, :tracker, :category, :epic, :issues)

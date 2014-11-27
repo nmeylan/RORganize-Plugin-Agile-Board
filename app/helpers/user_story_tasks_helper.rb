@@ -24,7 +24,7 @@ module UserStoryTasksHelper
 
 
   def story_task_form_assigned_field(f, model)
-    agile_board_select_field(f, :assigned_to, t(:field_assigned_to)) do
+    agile_board_select_field(f, :assigned_to, t(:field_assigned_to), model) do
       f.select :assigned_to_id, @members.collect { |member| [member.user.name, member.user.id] },
                {include_blank: true}, {class: 'chzn-select-deselect cbb-medium search'}
     end

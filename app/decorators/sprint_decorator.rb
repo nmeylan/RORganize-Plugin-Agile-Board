@@ -11,7 +11,7 @@ class SprintDecorator < AgileBoardDecorator
     h.link_to_with_permissions(h.glyph(h.t(:link_new_story), 'tasks'),
                                h.agile_board_plugin::new_user_story_path(context[:project].slug, sprint_id: model.id),
                                context[:project], nil,
-                               {remote: true, class: "#{'button' if render_button}"}
+                               {remote: true, class: "#{button_class(render_button)}"}
     )
   end
 

@@ -109,7 +109,7 @@ module SprintsHelper
   end
 
   def sprint_form_version_field(model, f)
-    agile_board_select_field(f, :version_id, t(:field_version)) do
+    agile_board_select_field(f, :version_id, t(:field_version), model) do
       select_tag_versions('sprint_version_id', 'sprint[version_id]', model.version_id,
                           {'data-link' => agile_board_plugin::generate_sprint_name_path(@project.slug)})
     end

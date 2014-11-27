@@ -60,10 +60,14 @@ module AgileBoardHelper
     end
   end
 
-  def agile_board_select_field(f, attr_name, label, required = false)
+  def agile_board_select_field(f, attr_name, label, model, required = false)
     content_tag :div, class: 'autocomplete-combobox' do
       safe_concat(required ? required_form_label(f, attr_name, label) : f.label(attr_name, label))
-      safe_concat yield if block_given?
+      if block_given?
+        safe_concat yield
+      else
+        safe_concat f.select "#{attr_name}_id", model.send("#{attr_name}_options"), {include_blank: !required}, {class: "chzn-select#{'-deselect' unless required}  cbb-medium search"}
+      end
     end
   end
 

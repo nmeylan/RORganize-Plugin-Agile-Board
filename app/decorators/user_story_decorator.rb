@@ -4,7 +4,7 @@
 # File: sprint_decorator.rb
 
 class UserStoryDecorator < AgileBoardDecorator
-  attr_accessor :show_link
+  include UserStoryDecoratorLink
   decorates_association :sprint
   decorates_association :status
   decorates_association :epic
@@ -15,76 +15,6 @@ class UserStoryDecorator < AgileBoardDecorator
     points = self.points ? self.points.value : '-'
     h.content_tag :span, points, {class: 'counter total-entries story-points tooltipped tooltipped-s', label: h.t(:tooltip_points)}
 
-  end
-
-  def edit_link(button = false, path_params = {}, fast = false)
-    if User.current.allowed_to?(:edit, 'user_stories', context[:project])
-      if fast
-        h.fast_story_edit_link(context[:project], model.id, h.t(:link_edit)).html_safe
-      else
-        h.link_to(h.glyph(h.t(:link_edit), 'pencil'),
-                  h.agile_board_plugin::edit_user_story_path(context[:project].slug, model.id, path_params),
-                  {remote: true, method: :get, class: "#{'button' if button}"})
-      end
-    end
-  end
-
-  def delete_link(button = false, path_params = {}, fast = false)
-    if User.current.allowed_to?(:destroy, 'user_stories', context[:project])
-      if fast
-        h.fast_story_delete_link(context[:project], model.id, h.t(:link_delete)).html_safe
-      else
-        h.link_to h.glyph(h.t(:link_delete), 'trashcan'),
-                  h.agile_board_plugin::user_story_path(context[:project].slug, model.id, path_params),
-                  {remote: true, method: :delete, class: "danger danger-dropdown #{'button' if button}",
-                   'data-confirm' => h.t(:text_delete_item)}
-      end
-    end
-  end
-
-  def show_link(caption, fast = false)
-    if User.current.allowed_to?(:show, 'user_stories', context[:project])
-      if fast
-        h.fast_story_show_link(context[:project], model.id, caption).html_safe
-      else
-        h.link_to(caption, h.agile_board_plugin::user_story_path(context[:project].slug, model.id))
-      end
-    else
-      caption
-    end
-  end
-
-  def new_task_link
-    h.link_to_with_permissions(h.glyph(h.t(:link_new_task), 'plus'),
-                               h.agile_board_plugin::user_story_new_task_path(context[:project].slug, model.id), context[:project], nil, {class: 'button', remote: true})
-  end
-
-  def detach_tasks_link
-    if User.current.allowed_to?(:detach_tasks, 'user_stories', context[:project])
-      h.link_to h.t(:button_apply),
-                h.agile_board_plugin::user_story_detach_tasks_path(context[:project].slug, model.id),
-                {class: 'button', id: 'user-story-detach-tasks'}
-    end
-  end
-
-  def change_sprint_link(fast = false)
-    if User.current.allowed_to?(:change_sprint, 'user_stories', context[:project])
-      if fast
-        "/projects/#{context[:project].slug}/agile_board/user_stories/#{model.id}/change_sprint"
-      else
-        h.agile_board_plugin::user_story_change_sprint_path(context[:project].slug, model.id)
-      end
-    end
-  end
-
-  def change_status_link(fast = false)
-    if User.current.allowed_to?(:change_status, 'user_stories', context[:project])
-      if fast
-        "/projects/#{context[:project].slug}/agile_board/user_stories/#{model.id}/change_status"
-      else
-        h.agile_board_plugin::user_story_change_status_path(context[:project].slug, model.id)
-      end
-    end
   end
 
   def display_status
@@ -174,4 +104,8 @@ class UserStoryDecorator < AgileBoardDecorator
     h.safe_concat h.content_tag :b, "#{h.t(:label_user_story)} "
     "<a href='/projects/#{project.slug}/agile_board/user_stories/#{self.id}'>#{resized_caption}</a>".html_safe
   end
+
+
+
+
 end
