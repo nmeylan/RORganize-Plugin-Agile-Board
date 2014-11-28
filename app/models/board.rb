@@ -39,6 +39,7 @@ class Board < ActiveRecord::Base
     stories = load_user_stories(project, sprints, param_sprint_id)
     statuses = StoryStatus.where(board_id: self.id).order(position: :asc)
     stories_hash = build_stories_hash(sprints, statuses, stories)
+    sprints =  sprints.decorate unless sprints.is_a?(Array)
     return sprints, statuses, stories_hash
   end
 
@@ -80,7 +81,7 @@ class Board < ActiveRecord::Base
     if param_sprint_id.eql?('-1')
       [Sprint.backlog(self.id)]
     else
-      Sprint.where(id: param_sprint_id, board_id: self.id).to_a
+      Sprint.where(id: param_sprint_id, board_id: self.id)
     end
   end
 

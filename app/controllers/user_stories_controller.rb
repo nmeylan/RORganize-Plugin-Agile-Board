@@ -121,9 +121,9 @@ class UserStoriesController < AgileBoardController
   end
 
   def change_status
+    old_status_id = @user_story.status_id
     @user_story.status = StoryStatus.find_by_id_and_board_id(params[:status_id], @board.id)
-    # @user_story.change_position(params[:prev_id], params[:next_id])
-    simple_js_callback(@user_story.save, :update, @user_story)
+    simple_js_callback(@user_story.save, :update, @user_story, {old_status_id: old_status_id, new_status_id: @user_story.status_id, story: @user_story})
   end
 
   private

@@ -1,0 +1,71 @@
+@import 'utilities/variables';
+
+.story-map {
+  position: relative;
+  margin-top: 5px;
+  width: 100%;
+
+  .ui-state-highlight{
+    height: 100px;
+    margin-bottom: 10px;
+  }
+  .story-map-sprint-header{
+    margin-bottom: 30px;
+  }
+  .story-map-column {
+    position: relative;
+    float: left;
+    height: 100%;
+
+    .status-color{
+      height: 10px;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+
+    .story-map-column-header {
+      font-size: 16px;
+      text-align: center;
+      font-weight: bold;
+      padding: 5px 0 5px 0;
+    }
+
+    .story-map-stories:empty{
+      border: dashed 3px $default-border-color;
+      height: 85px;
+      margin: 20px 10px 0 10px;
+    }
+
+    .story-map-stories {
+      margin: 10px 0 0 0;
+      padding: 10px;
+
+      .story {
+        margin: 0 0 10px 0;
+        padding: 5px;
+        height: 100px;
+        overflow: hidden;
+        border: solid 1px $default-border-color;
+        border-radius: 3px;
+
+        div > span {
+          margin-right: 5px;
+        }
+
+        .story-tracker {
+          font-weight: bold;
+        }
+
+        .story-header {
+          .story-left-content {
+            float: left;
+          }
+
+          .story-right-content {
+            float: right;
+          }
+        }
+      }
+    }
+  }
+}

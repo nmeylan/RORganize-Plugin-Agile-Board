@@ -28,6 +28,10 @@ class Sprint < ActiveRecord::Base
     end
   end
 
+  def is_backlog?
+    self.id.eql?(-1)
+  end
+
   # Build a backlog sprint.
   # @param [String|Fixnum] board_id
   def self.backlog(board_id)

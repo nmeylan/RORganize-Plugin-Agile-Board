@@ -9,6 +9,7 @@ en:
   label_sprint_dates: Sprint dates
   label_tasks: Tasks
   label_user_story: user story
+  label_stories: User stories
 
   link_story_points: Points
   link_story_statuses: Statuses
@@ -37,3 +38,7 @@ en:
   info_edit_point: If you let the field blank, the point will be destroy.
 
   tooltip_points: Story points
+
+  text_stories: stories
+  text_points: points
+  text_running: running
