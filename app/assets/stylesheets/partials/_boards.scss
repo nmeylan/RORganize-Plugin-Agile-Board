@@ -151,9 +151,15 @@
 #content .story-map ul.story-map-stories li.story {
   font-size: 14px;
 }
-
+.sprint-progress{
+  font-weight: bold;
+  float:right;
+}
+.sprint-date-range{
+  float:left;
+}
 .sprint-status-bar{
-  width: 200px;
+  width: 140px;
   height: 8px;
   position: relative;
   display: inline-block;

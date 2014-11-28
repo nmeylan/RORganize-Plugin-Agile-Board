@@ -37,6 +37,7 @@ module StoryMapHelper
     content_tag :div, class: 'story-map-sprint-header-info' do
       safe_concat sprint.display_info_text
       safe_concat sprint.display_status_bar(status_stories_hash, statuses)
+      safe_concat clear_both
     end
   end
 

@@ -4,12 +4,16 @@
   position: relative;
   margin-top: 5px;
   width: 100%;
+  .sprint {
+    position: relative;
+    height: 100%;
+  }
 
-  .ui-state-highlight{
+  .ui-state-highlight {
     height: 100px;
     margin-bottom: 10px;
   }
-  .story-map-sprint-header{
+  .story-map-sprint-header {
     margin-bottom: 30px;
   }
   .story-map-column {
@@ -17,7 +21,7 @@
     float: left;
     height: 100%;
 
-    .status-color{
+    .status-color {
       height: 10px;
       width: 100%;
       margin-bottom: 10px;
@@ -30,7 +34,7 @@
       padding: 5px 0 5px 0;
     }
 
-    .story-map-stories:empty{
+    .story-map-stories:empty {
       border: dashed 3px $default-border-color;
       height: 85px;
       margin: 20px 10px 0 10px;

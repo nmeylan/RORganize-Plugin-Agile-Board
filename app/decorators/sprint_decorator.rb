@@ -71,7 +71,7 @@ class SprintDecorator < AgileBoardDecorator
   end
 
   def display_status_bar(status_stories_hash, statuses)
-    h.content_tag :div do
+    h.content_tag :div, class: 'sprint-progress' do
       h.safe_concat "#{h.t(:label_progress)} : "
       h.safe_concat status_bar(status_stories_hash, statuses)
     end
@@ -90,7 +90,6 @@ class SprintDecorator < AgileBoardDecorator
 
   def status_bar_single_stat(percent, status_id, statuses)
       status = statuses.detect { |status| status.id.eql?(status_id) }
-
       h.concat_span_tag nil, {class: "status-percent tooltipped tooltipped-s",
                               id: "status-bar-id-#{status.id}",
                               style: "background-color:#{status.color}; width:#{percent}%; ",
