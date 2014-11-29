@@ -154,27 +154,8 @@
 .sprint-progress{
   font-weight: bold;
   float:right;
+  width: 140px;
 }
 .sprint-date-range{
   float:left;
-}
-.sprint-status-bar{
-  width: 140px;
-  height: 8px;
-  position: relative;
-  display: inline-block;
-  .status-percent{
-    position: relative;
-    display: inline-block;
-    height: 100%;
-  }
-}
-.sprint-status-bar .status-percent:first-child{
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-}
-
-.sprint-status-bar .status-percent:last-child{
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
 }

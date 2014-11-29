@@ -21,7 +21,7 @@ module StoryMapHelper
     sprint = sprints.detect { |sprint| sprint.id.eql?(sprint_id) }
     content_tag :div, id: "sprint-#{sprint_id}", class: 'sprint' do
       safe_concat story_map_sprint_header(sprint, status_stories_hash, statuses)
-      safe_concat story_map_render_sprint_content_map(status_stories_hash, number_cols, statuses)
+      safe_concat story_map_render_sprint_content_map(sprint.stories.count, status_stories_hash, number_cols, statuses)
       safe_concat clear_both
     end
   end
@@ -29,36 +29,43 @@ module StoryMapHelper
   def story_map_sprint_header(sprint, status_stories_hash, statuses)
     content_tag :div, class: 'story-map-sprint-header' do
       safe_concat content_tag :h1, sprint.name, class: 'story-map-sprint-name sprint'
-      safe_concat story_map_sprint_header_info(sprint, status_stories_hash, statuses) unless sprint.is_backlog?
+      safe_concat story_map_sprint_header_info(sprint) unless sprint.is_backlog?
     end
   end
 
-  def story_map_sprint_header_info(sprint, status_stories_hash, statuses)
+  def story_map_sprint_header_info(sprint)
     content_tag :div, class: 'story-map-sprint-header-info' do
       safe_concat sprint.display_info_text
-      safe_concat sprint.display_status_bar(status_stories_hash, statuses)
       safe_concat clear_both
     end
   end
 
-  def story_map_render_sprint_content_map(status_stories_hash, number_cols, statuses)
+  def story_map_render_sprint_content_map(total_stories_count, status_stories_hash, number_cols, statuses)
     statuses.collect do |status|
-      story_map_column_render(status, status_stories_hash[status.caption], number_cols)
+      story_map_column_render(total_stories_count, status, status_stories_hash[status.caption], number_cols)
     end.join.html_safe
   end
 
-  def story_map_column_render(status, stories, number_cols)
+  def story_map_column_render(total_stories_count, status, stories, number_cols)
     content_tag :div, {class: 'story-map-column status', id: "status-#{status.id}", style: "width:#{100 / number_cols}%"} do
-      safe_concat story_map_column_header(status, stories.size)
-      safe_concat content_tag :div, nil, class: 'story-map-column status-color', style: "background-color:#{status.color}"
+      safe_concat story_map_column_header(total_stories_count, status, stories.size)
       safe_concat story_map_stories_render(stories)
     end
   end
 
-  def story_map_column_header(status, stories_count)
+  def story_map_column_header(total_stories_count, status, stories_count)
     content_tag :div, {class: 'story-map-column-header'} do
-      safe_concat "#{status.caption} "
-      concat_span_tag stories_count, class: 'status-stories-counter counter total-entries tooltipped tooltipped-s', label: t(:label_stories)
+      concat_span_tag "#{status.caption} ", class: 'status-caption'
+      safe_concat story_map_column_header_stories_count(total_stories_count, status, stories_count)
+      safe_concat content_tag :div, nil, class: 'story-map-column status-color', style: "background-color:#{status.color}"
+    end
+  end
+
+  def story_map_column_header_stories_count(total_stories_count, status, stories_count)
+    percent = ((stories_count.to_f / total_stories_count) * 100).truncate
+     content_tag :span, id: "status-bar-id-#{status.id}", class: 'story-count tooltipped tooltipped-s', label: "#{percent}%" do
+      concat_span_tag stories_count, class: 'total-entries status-stories-counter'
+      concat_span_tag "#{t(:text_of)} #{total_stories_count}"
     end
   end
 

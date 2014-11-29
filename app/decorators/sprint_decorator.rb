@@ -70,46 +70,6 @@ class SprintDecorator < AgileBoardDecorator
     end
   end
 
-  def display_status_bar(status_stories_hash, statuses)
-    h.content_tag :div, class: 'sprint-progress' do
-      h.safe_concat "#{h.t(:label_progress)} : "
-      h.safe_concat status_bar(status_stories_hash, statuses)
-    end
-  end
-
-  def status_bar(status_stories_hash, statuses)
-    h.content_tag :div, class: 'sprint-status-bar' do
-      total_stories = model.stories.size
-      user_stories_stat_per_status = user_stories_stat_per_status(status_stories_hash, statuses)
-      user_stories_stat_per_status.each do |status_id, count|
-        percent = ((count.to_f / total_stories) * 100).truncate
-        status_bar_single_stat(percent, status_id, statuses)
-      end
-    end
-  end
-
-  def status_bar_single_stat(percent, status_id, statuses)
-      status = statuses.detect { |status| status.id.eql?(status_id) }
-      h.concat_span_tag nil, {class: "status-percent tooltipped tooltipped-s",
-                              id: "status-bar-id-#{status.id}",
-                              style: "background-color:#{status.color}; width:#{percent}%; ",
-                              label: "#{status.caption} : #{percent}%"
-      }
-  end
-
-  # @param [Hash] status_stories_hash : a Hash with the following structure :
-  # {status.name: [story, story], ...}
-  # @param [Array] statuses : an Array of StoryStatus.
-  # @return [Hash]  : Hash with following structure :
-  # {Status: 12, Status: 43...} : Key are complex objects (StoryStatus).
-  def user_stories_stat_per_status(status_stories_hash, statuses)
-    statuses.inject({}) do |memo, status|
-      status_stories_count = status_stories_hash[status.caption].size
-      memo[status.id] = status_stories_count
-      memo
-    end
-  end
-
   def display_target_phase_text
     if self.version
       h.safe_concat ", #{h.t(:text_with)} #{h.t(:field_version)} "

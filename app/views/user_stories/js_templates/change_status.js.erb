@@ -25,7 +25,6 @@ function update_sprint_status_bar(sprint, total, status_id, operator){
     var status_story_counter_value = status_stories_counter(status, sprint, status_id);
     var status_bar = sprint.find("#status-bar-id-"+status_id);
     var percent = Math.floor(((status_story_counter_value / total) * 100));
-    status_bar.css("width", percent+"%");
     var old_label = status_bar.attr("label");
     status_bar.attr("label", old_label.replace(/\d{1,3}/, percent));
 }
