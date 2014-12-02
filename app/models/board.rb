@@ -92,6 +92,6 @@ class Board < ActiveRecord::Base
   # @param [String] param_sprint_id
   def load_user_stories(project, sprints, param_sprint_id)
     sprint_id = param_sprint_id.eql?('-1') ? nil : sprints.collect(&:id)
-    UserStory.where(board_id: self.id, sprint_id: sprint_id).includes(:tracker).order(position: :asc).decorate(context: {project: project})
+    UserStory.where(board_id: self.id, sprint_id: sprint_id).includes(:tracker, :points).order(position: :asc).decorate(context: {project: project})
   end
 end
