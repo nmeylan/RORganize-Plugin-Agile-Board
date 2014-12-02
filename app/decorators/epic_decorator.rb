@@ -15,8 +15,6 @@ class EpicDecorator < AgileBoardDecorator
   end
 
   def display_caption
-    h.content_tag :span, {class: 'info-square epic-caption', style: "background-color: #{model.color}"} do
-      h.glyph(self.resized_caption(25), 'sword')
-    end
+    h.content_tag :span, h.glyph(self.resized_caption(25), 'sword'.freeze), {class: 'info-square epic-caption', style: "background-color: #{model.color.freeze}"}
   end
 end

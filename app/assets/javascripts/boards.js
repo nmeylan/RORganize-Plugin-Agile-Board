@@ -3,6 +3,7 @@
 $(document).ready(function (e) {
     if (gon.controller === "boards") {
         initialize_board();
+        bind_user_story_search_field("user-stories-search");
     }
 });
 

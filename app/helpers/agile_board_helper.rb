@@ -83,18 +83,18 @@ module AgileBoardHelper
 
 
   def fast_story_show_link(project, story_id, caption)
-    "<a href='/projects/#{project.slug}/agile_board/user_stories/#{story_id}'>#{caption}</a>"
+    "<a href='/projects/#{project.slug}/agile_board/user_stories/#{story_id}'>#{caption}</a>".freeze
   end
 
   # This link is faster than classical link_to when we have to render over 1k items.
   def fast_story_delete_link(project, story_id, caption)
-    "<a class=\"danger danger-dropdown\" data-confirm=\"Are you sure to want to delete this item?\" data-method=\"delete\" data-remote=\"true\" href=\"/projects/#{project.slug}/agile_board/user_stories/#{story_id}\" rel=\"nofollow\"><span class=\"octicon-trashcan octicon\"></span>#{caption}</a>"
+    "<a class=\"danger danger-dropdown\" data-confirm=\"Are you sure to want to delete this item?\" data-method=\"delete\" data-remote=\"true\" href=\"/projects/#{project.slug}/agile_board/user_stories/#{story_id}\" rel=\"nofollow\"><span class=\"octicon-trashcan octicon\"></span>#{caption}</a>".freeze
   end
 
   # This link is faster than classical link_to when we have to render over 1k items.
   # To remove the day when rails link_to will come faster.
   def fast_story_edit_link(project, story_id, caption)
-    "<a class=\"\" data-method=\"get\" data-remote=\"true\" href=\"/projects/#{project.slug}/agile_board/user_stories/#{story_id}/edit\"><span class=\"octicon-pencil octicon\"></span>#{caption}</a>"
+    "<a class=\"\" data-method=\"get\" data-remote=\"true\" href=\"/projects/#{project.slug}/agile_board/user_stories/#{story_id}/edit\"><span class=\"octicon-pencil octicon\"></span>#{caption}</a>".freeze
   end
 
   def split_content?

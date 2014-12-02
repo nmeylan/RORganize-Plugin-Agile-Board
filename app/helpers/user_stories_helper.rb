@@ -6,6 +6,8 @@ module UserStoriesHelper
   def render_story(story)
     story_options = {class: "fancy-list-item story", id: "story-#{story.id}"}
     story_options['data-link'] = story.change_sprint_link
+    story_options['style'] = 'display:block'
+    story_options.merge!(story.search_data_hash)
     content_tag :li, story_options do
       safe_concat render_story_left_content(story)
       safe_concat render_story_right_content(story)
@@ -26,7 +28,7 @@ module UserStoriesHelper
       safe_concat story.display_status
       safe_concat story.display_issues_counter if unified_content?
       safe_concat story.display_points
-      safe_concat story_right_dropdown(story)
+      safe_concat story_right_dropdown(story) if unified_content?
     end
   end
 

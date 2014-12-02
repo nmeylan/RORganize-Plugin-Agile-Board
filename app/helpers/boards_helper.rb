@@ -9,7 +9,7 @@ module BoardsHelper
   # Render a subnav tag to choose the menu.
   def agile_board_menu
     content_tag :div do
-      safe_concat display_mode_menu
+      display_mode_menu
       safe_concat subnav_tag('agile-board-menu', 'agile-board-menu',
                              @board_decorator.plan_menu_item(nav_item_selected?(:plan)),
                              @board_decorator.work_menu_item(nav_item_selected?(:work)),
@@ -24,9 +24,25 @@ module BoardsHelper
   # Render a button group tag to choose the display mode.
   def display_mode_menu
     if @sessions[:agile_board_menu].eql?(:plan)
-      group_button_tag(@board_decorator.unified_display_mode(unified_content?),
+      safe_concat group_button_tag(@board_decorator.unified_display_mode(unified_content?),
                        @board_decorator.split_display_mode(split_content?))
+      safe_concat text_field_tag :user_story_search, nil, {id: 'user-stories-search', placeholder: 'Press ENTER to apply filter'}
+      concat_span_tag glyph('', 'info'), {label: tooltip_text,
+                            class: 'tooltipped tooltipped-multiline tooltipped-multiline-pre tooltipped-s'}
     end
+  end
+
+  def tooltip_text
+    "SYNTAX: space between filter are interpreted as AND operator. "+
+    "\nSearch is case insensitive."+
+    "\n\nValues can contain spaces until the next key."+
+    "\n---------------------------------------------------------------------------------------\n"+
+    "title:my title\t\t\t\t\t\t     category:my category"+
+    "\ntracker:bug\t\t\t\t\t\t\t\t    epic:an epic"+
+    "\nstatus:to do"+
+    "\n---------------------------------------------------------------------------------------\n"+
+    "\nValid keys are : category, epic, status, title, tracker."+
+    "\n\nThe title: key is not mandatory but, if it not specified, value should be placed as the first parameter."
   end
 
   def agile_board
@@ -89,6 +105,7 @@ module BoardsHelper
       sprints_content(@sprints_decorator)
       safe_concat render_sprint(@backlog, "backlog #{'splitcontentright' if split_content?}")
     }
+    safe_concat clear_both
   end
 
 

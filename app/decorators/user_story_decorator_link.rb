@@ -99,6 +99,16 @@ module UserStoryDecoratorLink
               {remote: true, method: :get, class: "#{button_class(button)}"})
   end
 
+  def search_data_hash
+    result = {}
+    result['data-search-title'.freeze] = model.caption
+    result['data-search-epic'.freeze] = model.epic.caption if model.epic
+    result['data-search-category'.freeze] = model.category.caption if model.category
+    result['data-search-status'.freeze] = model.status.caption
+    result['data-search-tracker'.freeze] = model.tracker.caption
+    result
+  end
+
 
   private
   def user_allowed_to?(action)
