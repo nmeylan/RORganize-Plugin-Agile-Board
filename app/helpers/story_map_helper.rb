@@ -96,13 +96,13 @@ module StoryMapHelper
   def story_map_story_header_right(story)
     content_tag :div, {class: 'story-right-content'} do
       safe_concat story.display_issues_counter
-      concat_span_tag story.display_points, class: 'story-points'
+      concat_span_tag story.display_points.html_safe, class: 'story-points'
     end
   end
 
   def story_map_story_header_left(story)
     content_tag :div, {class: 'story-left-content'} do
-      story.display_tracker_id
+      story.display_tracker_id.html_safe
     end
   end
 end
