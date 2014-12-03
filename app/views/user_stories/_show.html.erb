@@ -17,23 +17,23 @@
     </tr>
     <tr>
       <th style="width:15%"><%= t(:field_status) %> :</th>
-      <td style="width:30%"><%= @user_story_decorator.display_status %></td>
+      <td style="width:30%"><%= @user_story_decorator.display_status.html_safe %></td>
       <th style="width:15%"><%= t(:label_sprint) %> :</th>
       <td style="width:30%"><%= @user_story_decorator.display_sprint %></td>
     </tr>
     <tr>
       <th style="width:15%"><%= t(:link_story_points) %> :</th>
-      <td style="width:30%"><%= @user_story_decorator.points ? @user_story_decorator.display_points : '-' %></td>
+      <td style="width:30%"><%= @user_story_decorator.points ? @user_story_decorator.display_points.html_safe : '-' %></td>
       <th style="width:15%"><%= t(:label_sprint_dates) %> :</th>
       <td style="width:30%"><%= @user_story_decorator.sprint ? @user_story_decorator.display_sprint_dates : '-' %></td>
     </tr>
     <tr>
       <th style="width:15%"><%= t(:field_category) %> :</th>
-      <td style="width:30%"><%= @user_story_decorator.category ? @user_story_decorator.display_category : '-' %></td>
+      <td style="width:30%"><%= @user_story_decorator.category ? @user_story_decorator.display_category.html_safe : '-' %></td>
     </tr>
     <tr>
       <th style="width:15%"><%= t(:field_epic) %> :</th>
-      <td style="width:30%"><%= @user_story_decorator.epic ? @user_story_decorator.display_epic : '-' %></td>
+      <td style="width:30%"><%= @user_story_decorator.epic ? @user_story_decorator.display_epic.html_safe : '-' %></td>
     </tr>
     <tr>
       <th style="width:15%"><%= t(:field_assigned_to) %> :</th>
