@@ -11,25 +11,25 @@ update_status_stories_counter(sprint, "<%= new_status_id %>", '+');
 
 var total = 0;
 sprint.find(".status-stories-counter").each(function(){total += parseInt($(this).text())});
-update_sprint_status_bar(sprint, total, "<%= old_status_id %>", '-');
-update_sprint_status_bar(sprint, total, "<%= new_status_id %>", '+');
+update_sprint_status_bar(sprint, total, "<%= old_status_id %>");
+update_sprint_status_bar(sprint, total, "<%= new_status_id %>");
 
 function update_status_stories_counter(sprint, status_id, operator){
     var status = status_column(sprint, status_id);
-    var status_story_counter_value = status_stories_counter(status, sprint, status_id);
+    var status_story_counter_value = status_stories_counter(status);
     status.find(".status-stories-counter").text(operator == '+' ? status_story_counter_value + 1 :  status_story_counter_value - 1);
 }
 
-function update_sprint_status_bar(sprint, total, status_id, operator){
+function update_sprint_status_bar(sprint, total, status_id){
     var status = status_column(sprint, status_id);
-    var status_story_counter_value = status_stories_counter(status, sprint, status_id);
+    var status_story_counter_value = status_stories_counter(status);
     var status_bar = sprint.find("#status-bar-id-"+status_id);
     var percent = Math.floor(((status_story_counter_value / total) * 100));
     var old_label = status_bar.attr("label");
     status_bar.attr("label", old_label.replace(/\d{1,3}/, percent));
 }
 
-function status_stories_counter(status, sprint, status_id){
+function status_stories_counter(status){
     var status_story_counter = status.find(".status-stories-counter");
     return parseInt(status_story_counter.text());
 }

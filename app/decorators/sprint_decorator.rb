@@ -28,11 +28,11 @@ class SprintDecorator < AgileBoardDecorator
   end
 
   def display_count_stories
-    h.content_tag :span, "#{model.stories.size} #{h.t(:text_stories)}", {class: 'counter total-entries'}
+    h.content_tag :span, "#{model.stories.size} #{h.t(:text_stories)}", {class: 'counter total-entries stories-counter'}
   end
 
   def display_count_points
-    h.content_tag :span, "#{model.count_points} #{h.t(:text_points)}", {class: 'counter total-entries'}
+    h.content_tag :span, "#{model.count_points} #{h.t(:text_points)}", {class: 'counter total-entries points-counter'}
   end
 
   def display_version

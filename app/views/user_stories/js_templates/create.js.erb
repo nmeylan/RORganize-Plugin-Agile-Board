@@ -5,6 +5,8 @@
  %>
 
 $('#story-editor-overlay').overlay().close();
-<% split_class = @sessions[:display_mode].eql?(:split) ? 'splitcontentright' : '' %>
-$('#sprint-<%= @sprint.id %>').replaceWith("<%= escape_javascript render_sprint(@sprint, "#{@sprint.id < 0 ? 'backlog ' + split_class : 'sprint' }") %>");
-bind_stories_sortable();
+var sprint_id = <%= @user_story.sprint_id ? @user_story.sprint_id : -1 %>;
+var sprint = $("#sprint-"+sprint_id);
+sprint.find('.stories-list').append("<%= escape_javascript render_story(@user_story) %>");
+
+update_sprint_info(sprint_id, '+', <%= @user_story.points ? @user_story.points.value : 0 %>);

@@ -49,19 +49,22 @@ class UserStoriesController < AgileBoardController
     @user_story.author = User.current
     @user_story.board = @board
     result = @user_story.save
-    @sprint = @user_story.get_sprint(true).decorate(context: {project: @project})
+    @user_story = @user_story.decorate(context: {project: @project})
     simple_js_callback(result, :create, @user_story)
   end
 
   # PATCH/PUT /user_stories/1
   def update
-    result = @user_story.update(user_story_params)
+    @user_story.attributes = user_story_params
+    @point_diff = @user_story.point_difference
+    result = @user_story.save
     if params[:from]
       @user_story_decorator = decorate_user_story
       locals = {history: History.new(Journal.journalizable_activities(@user_story_decorator.id, 'UserStory'))}
     else
       locals = {}
-      @sprint = @user_story.get_sprint(true).decorate(context: {project: @project})
+      @user_story_decorator = @user_story.decorate(context: {project: @project})
+      @from = :plan
     end
     simple_js_callback(result, :update, @user_story, locals)
   end
@@ -115,9 +118,9 @@ class UserStoriesController < AgileBoardController
     @user_story.sprint = Sprint.find_by_id_and_board_id(params[:sprint_id], @board.id)
     @user_story.change_position(params[:prev_id], params[:next_id])
     result = @user_story.save
-    old_sprint = old_sprint ? Sprint.eager_load_user_stories.find_by_id(old_sprint) : Sprint.backlog(@board.id)
-    simple_js_callback(result, :update, @user_story, {old_sprint: old_sprint.decorate(context: {project: @project}),
-                                                      sprint: @user_story.get_sprint(true).decorate(context: {project: @project})})
+    simple_js_callback(result, :update, @user_story, {old_sprint_id: old_sprint,
+                                                      sprint_id: @user_story.get_sprint(true).id,
+                                                      points: @user_story.points})
   end
 
   def change_status

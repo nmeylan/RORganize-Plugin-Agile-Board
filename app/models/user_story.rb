@@ -63,6 +63,18 @@ class UserStory < ActiveRecord::Base
     self.sprint = nil if self.sprint_id.eql? -1
   end
 
+  def point_difference
+    if self.point_id_changed?
+      old_points = StoryPoint.find_by_id(self.changes['point_id'].first)
+      new_points = StoryPoint.find_by_id(self.changes['point_id'].second)
+      old_points_value = old_points ? old_points.value : 0
+      new_points_value = new_points ? new_points.value : 0
+      new_points_value - old_points_value
+    else
+      0
+    end
+  end
+
   def update_issues
     issue_ids = self.issues.collect(&:id).to_a
     project = self.board.project

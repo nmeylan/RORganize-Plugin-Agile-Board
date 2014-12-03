@@ -37,6 +37,7 @@ class Board < ActiveRecord::Base
   def load_story_map(project, param_sprint_id = nil)
     sprints = param_sprint_id ? load_sprint_or_backlog(param_sprint_id) : Sprint.current_sprints(self.id).includes(:version)
     stories = load_user_stories(project, sprints, param_sprint_id)
+    p self
     statuses = StoryStatus.where(board_id: self.id).order(position: :asc)
     stories_hash = build_stories_hash(sprints, statuses, stories)
     sprints =  sprints.decorate unless sprints.is_a?(Array)
@@ -92,6 +93,6 @@ class Board < ActiveRecord::Base
   # @param [String] param_sprint_id
   def load_user_stories(project, sprints, param_sprint_id)
     sprint_id = param_sprint_id.eql?('-1') ? nil : sprints.collect(&:id)
-    UserStory.where(board_id: self.id, sprint_id: sprint_id).includes(:tracker, :points).order(position: :asc).decorate(context: {project: project})
+    UserStory.where(board_id: self.id, sprint_id: sprint_id).includes(:tracker, :points).order(position: :asc).decorate(context: {project: project, menu: :work})
   end
 end

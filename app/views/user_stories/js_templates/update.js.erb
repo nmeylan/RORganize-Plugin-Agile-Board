@@ -5,10 +5,11 @@
  %>
 
 $('#story-editor-overlay').overlay().close();
-<% if @sprint %>
-<% split_class = @sessions[:display_mode].eql?(:split) ? 'splitcontentright' : '' %>
-$('#sprint-<%= @sprint.id %>').replaceWith("<%= escape_javascript render_sprint(@sprint, "#{@sprint.id < 0 ? 'backlog ' + split_class : 'sprint' }") %>");
-bind_stories_sortable();
+<% if @from %>
+var sprint_id = <%= @user_story_decorator.sprint_id ? @user_story_decorator.sprint_id : -1 %>;
+var sprint = $("#sprint-"+sprint_id);
+$("#story-<%= @user_story_decorator.id %>").replaceWith("<%= escape_javascript render_story(@user_story_decorator) %>");
+update_sprint_info(sprint_id, '+', <%= @point_diff %>);
 <% else %>
 $('#story-<%= @user_story_decorator.id %>').replaceWith("<%= escape_javascript render partial: 'user_stories/show' , locals: {history: history}%>");
 <% end %>

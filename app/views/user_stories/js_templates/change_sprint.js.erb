@@ -3,15 +3,9 @@
  * Date: 09.11.14
  * Time: 18:16
  %>
-
-<% old_sprint_class = old_sprint.id.eql?(-1) ? "#{'backlog'} #{'splitcontentleft' if split_content?}": '' %>
-$("#sprint-<%= old_sprint.id %>").replaceWith("<%= escape_javascript render_sprint(old_sprint, old_sprint_class)%>");
-$("#sprint-<%= old_sprint.id %>").find('.stories-list.sortable').sortable(sortable_stories_hash());
-
-<% sprint_class = sprint.id.eql?(-1) ? "#{'backlog'} #{'splitcontentleft' if split_content?}" : '' %>
-$("#sprint-<%= sprint.id %>").replaceWith("<%= escape_javascript render_sprint(sprint, sprint_class)%>");
-$("#sprint-<%= sprint.id %>").find('.stories-list.sortable').sortable(sortable_stories_hash());
-
-
-multi_toogle("#sprint-<%= old_sprint.id %> .sprint-expand");
-multi_toogle("#sprint-<%= sprint.id %> .sprint-expand");
+var old_id = <%= old_sprint_id ? old_sprint_id : -1 %>;
+var new_id = <%= sprint_id %>;
+if(old_id !== new_id){
+ update_sprint_info(new_id, '+', <%= points ? points.value : 0 %>);
+ update_sprint_info(old_id, '-', <%= points ? points.value : 0 %>);
+}
