@@ -1,22 +1,21 @@
 module UserStoryDecoratorLink
-
   # build a link for the change status action.
   # @param [Boolean] fast : should we render the link fast or not. Fast is used when we display a huge amount of link.
   def change_status_link
-    change_link('status')
+    change_link('status'.freeze)
   end
 
   def change_link(change)
-    if user_allowed_to?("change_#{change}".to_sym)
+    if user_allowed_to?("change_#{change}".freeze)
       #Build a link to the given change.
-      "/projects/#{context[:project].slug}/agile_board/user_stories/#{model.id}/change_#{change}"
+      "/projects/#{context[:project].slug}/agile_board/user_stories/#{model.id}/change_#{change}".freeze
     end
   end
 
   # build a link for the change sprint action.
   # @param [Boolean] fast : should we render the link fast or not. Fast is used when we display a huge amount of link.
   def change_sprint_link
-    change_link('sprint')
+    change_link('sprint'.freeze)
   end
 
   # Build a link to detach issues that belongs to the current story.
@@ -41,9 +40,9 @@ module UserStoryDecoratorLink
   # @param [Object] params : splat params.
   def generic_link_chooser(caption, fast, action, *params)
     if fast
-      h.send("fast_story_#{action}_link", context[:project], model.id, caption).html_safe
+      send("fast_story_#{action.freeze}_link", context[:project], model.id, caption).html_safe
     else
-      send("link_to_#{action}", *params)
+      send("link_to_#{action.freeze}", *params)
     end
   end
 
@@ -52,7 +51,7 @@ module UserStoryDecoratorLink
   # @param [Boolean] fast : should we render the link fast or not. Fast is used when we display a huge amount of link.
   def show_link(caption, fast = false)
     if user_allowed_to?(:show)
-      generic_link_chooser(caption, fast, 'show', caption)
+      generic_link_chooser(caption, fast, 'show'.freeze, caption)
     else
       caption
     end
@@ -68,7 +67,7 @@ module UserStoryDecoratorLink
   # @param [Boolean] fast : should we render the link fast or not. Fast is used when we display a huge amount of link.
   def delete_link(button = false, path_params = {}, fast = false)
     if user_allowed_to?(:destroy)
-      generic_link_chooser( h.t(:link_delete), fast, 'delete', button, path_params)
+      generic_link_chooser(ApplicationDecorator::DELETE_LINK, fast, 'delete'.freeze, button, path_params)
     end
   end
 
@@ -87,7 +86,7 @@ module UserStoryDecoratorLink
   # @param [Boolean] fast : should we render the link fast or not. Fast is used when we display a huge amount of link.
   def edit_link(button = false, path_params = {}, fast = false)
     if user_allowed_to?(:edit)
-      generic_link_chooser( h.t(:link_edit), fast, 'edit', button, path_params)
+      generic_link_chooser(ApplicationDecorator::EDIT_LINK, fast, 'edit'.freeze, button, path_params)
     end
   end
 
@@ -102,16 +101,41 @@ module UserStoryDecoratorLink
   def search_data_hash
     result = {}
     result['data-search-title'.freeze] = model.caption
-    result['data-search-epic'.freeze] = model.epic.caption if model.epic
-    result['data-search-category'.freeze] = model.category.caption if model.category
-    result['data-search-status'.freeze] = model.status.caption
-    result['data-search-tracker'.freeze] = model.tracker.caption
+    result['data-search-epic'.freeze] = self.epic_caption if self.epic_caption
+    result['data-search-category'.freeze] = self.category_caption if self.category_caption
+    result['data-search-status'.freeze] = self.status_caption
+    result['data-search-tracker'.freeze] = self.tracker_caption
     result
   end
 
 
   private
   def user_allowed_to?(action)
-    User.current.allowed_to?(action, 'user_stories', context[:project])
+    User.current.allowed_to?(action, 'user_stories'.freeze, context[:project])
+  end
+
+  def fast_story_show_link(project, story_id, caption)
+    "<a href='/projects/#{project.slug}/agile_board/user_stories/#{story_id}'>#{caption}</a>".freeze
+  end
+
+  # This link is faster than classical link_to when we have to render over 1k items.
+  def fast_story_delete_link(project, story_id, caption)
+    "<a class=\"danger danger-dropdown\" data-confirm=\"Are you sure to want to delete this item?\"
+        data-method=\"delete\" data-remote=\"true\"
+        href=\"/projects/#{project.slug}/agile_board/user_stories/#{story_id}\"
+        rel=\"nofollow\">
+          <span class=\"octicon-trashcan octicon\"></span>
+          #{caption}
+    </a>".freeze
+  end
+
+  # This link is faster than classical link_to when we have to render over 1k items.
+  # To remove the day when rails link_to will come faster.
+  def fast_story_edit_link(project, story_id, caption)
+    "<a class=\"\" data-method=\"get\" data-remote=\"true\"
+        href=\"/projects/#{project.slug}/agile_board/user_stories/#{story_id}/edit\">
+          <span class=\"octicon-pencil octicon\"></span>
+          #{caption}
+    </a>".freeze
   end
 end

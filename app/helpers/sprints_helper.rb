@@ -78,7 +78,7 @@ module SprintsHelper
   end
 
   def is_backlog?(class_css)
-    class_css.split(' ').include?('backlog')
+    class_css.split(' '.freeze).include?('backlog')
   end
 
   def render_sprint_content(sprint, class_css = 'sprint')

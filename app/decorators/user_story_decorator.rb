@@ -3,47 +3,61 @@
 # Encoding: UTF-8
 # File: sprint_decorator.rb
 
+# WARNING : Here I use raw html instead of content tag due to performance issues.
+# User raw html reduce by 100% the render time.
 class UserStoryDecorator < AgileBoardDecorator
   include UserStoryDecoratorLink
   decorates_association :sprint
-  decorates_association :status
-  decorates_association :epic
   decorates_association :issues
   delegate_all
+  POINTS_LABEL = h.t(:tooltip_points)
+  TASK_LABEL = h.t(:label_tasks)
+  attr_accessor :tracker_caption, :epic_caption, :category_caption, :status_caption
+  def initialize(object, options = {})
+    super(object, options)
+    self.tracker_caption = model.tracker.caption.freeze
+    self.epic_caption = model.epic ? model.epic.caption.freeze : nil
+    self.category_caption = model.category ? model.category.caption.freeze : nil
+    self.status_caption = model.status.caption.freeze
+  end
 
   def display_points
-    points = self.points ? self.points.value : '-'
-    h.content_tag :span, points, {class: 'counter total-entries story-points tooltipped tooltipped-s', label: h.t(:tooltip_points)}
-
+    points = self.points ? self.points.value : '-'.freeze
+    "<span class='counter total-entries story-points tooltipped tooltipped-s' label='#{POINTS_LABEL}'>#{points}</span>".freeze
   end
 
   def display_status
-    self.status.display_caption
+    "<span class='issue-status' style='background-color:#{model.status.color}'>
+      #{self.status_caption}
+    </span>".freeze
   end
 
   def display_epic
-    self.epic.display_caption if self.epic
+    "<span class='info-square epic-caption' style='background-color:#{model.epic.color}'>
+          <span class='octicon octicon-sword'></span>
+          #{self.epic_caption}
+    </span>".freeze if self.epic_caption
   end
 
   def display_tracker
-    self.tracker.caption
+    self.tracker_caption
   end
 
   def display_id
-    "##{self.id}"
+    "##{self.id}".freeze
   end
 
   def display_tracker_id
-    h.content_tag :span, "#{self.display_tracker} #{self.display_id}", class: 'story-tracker'
+    "<span class='story-tracker'>#{self.display_tracker} #{self.display_id}</span>".freeze
   end
 
   def display_issues_counter
-    count = model.issues_count ? model.issues_count : '0'
-    h.content_tag :span, count, {class: 'counter total-entries story-issues-count tooltipped tooltipped-s', label: h.t(:label_tasks)}
+    count = model.issues_count ? model.issues_count : '0'.freeze
+    "<span class='counter total-entries story-issues-count tooltipped tooltipped-s' label='#{TASK_LABEL}'>#{count}</span>".freeze
   end
 
   def display_category
-    display_info_square(model.category, 'tag', false)
+    "<span class='info-square'><span class='octicon octicon-tag'></span>#{self.category_caption}</span>".freeze if self.category_caption
   end
 
   def display_sprint_dates
@@ -59,7 +73,7 @@ class UserStoryDecorator < AgileBoardDecorator
   end
 
   def display_version
-    self.sprint ? display_info_square(model.sprint.version, 'milestone') : '-'
+    self.sprint ? display_info_square(model.sprint.version, 'milestone'.freeze) : '-'.freeze
   end
 
   def status_options
@@ -95,7 +109,7 @@ class UserStoryDecorator < AgileBoardDecorator
   end
 
   def total_progress_bar
-    h.mini_progress_bar_tag(self.total_progress, 'width-100')
+    h.mini_progress_bar_tag(self.total_progress, 'width-100'.freeze)
   end
 
   def display_object_type(project)
