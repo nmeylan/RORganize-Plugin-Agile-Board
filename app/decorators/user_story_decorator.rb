@@ -13,12 +13,15 @@ class UserStoryDecorator < AgileBoardDecorator
   POINTS_LABEL = h.t(:tooltip_points)
   TASK_LABEL = h.t(:label_tasks)
   attr_accessor :tracker_caption, :epic_caption, :category_caption, :status_caption
+
   def initialize(object, options = {})
     super(object, options)
-    self.tracker_caption = model.tracker.caption.freeze
-    self.epic_caption = model.epic ? model.epic.caption.freeze : nil
-    self.category_caption = model.category ? model.category.caption.freeze : nil
-    self.status_caption = model.status.caption.freeze
+    self.tracker_caption = model.tracker.caption.freeze if model.tracker
+    if context[:menu].nil?
+      self.epic_caption = model.epic ? model.epic.caption.freeze : nil
+      self.category_caption = model.category ? model.category.caption.freeze : nil
+      self.status_caption = model.status ? model.status.caption.freeze : nil
+    end
   end
 
   def display_points
@@ -116,8 +119,6 @@ class UserStoryDecorator < AgileBoardDecorator
     h.safe_concat h.content_tag :b, "#{h.t(:label_user_story)} "
     "<a href='/projects/#{project.slug}/agile_board/user_stories/#{self.id}'>#{resized_caption}</a>".html_safe
   end
-
-
 
 
 end
