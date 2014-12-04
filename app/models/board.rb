@@ -1,11 +1,11 @@
 class Board < ActiveRecord::Base
   Project.has_one :board, dependent: :destroy
   belongs_to :project
-  has_many :story_points, dependent: :destroy
-  has_many :story_statuses, dependent: :destroy
+  has_many :story_points, dependent: :delete_all
+  has_many :story_statuses, dependent: :delete_all
   has_many :user_stories, dependent: :destroy
-  has_many :epics, dependent: :destroy
-  has_many :sprint, dependent: :destroy
+  has_many :epics, dependent: :delete_all
+  has_many :sprint, dependent: :delete_all
   after_create :set_board_default_configuration
 
   validates :project_id, uniqueness: true
@@ -37,7 +37,6 @@ class Board < ActiveRecord::Base
   def load_story_map(project, param_sprint_id = nil)
     sprints = param_sprint_id ? load_sprint_or_backlog(param_sprint_id) : Sprint.current_sprints(self.id).includes(:version)
     stories = load_user_stories(project, sprints, param_sprint_id)
-    p self
     statuses = StoryStatus.where(board_id: self.id).order(position: :asc)
     stories_hash = build_stories_hash(sprints, statuses, stories)
     sprints =  sprints.decorate unless sprints.is_a?(Array)

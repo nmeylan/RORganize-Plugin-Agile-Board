@@ -41,9 +41,13 @@ module StoryMapHelper
   end
 
   def story_map_render_sprint_content_map(total_stories_count, status_stories_hash, number_cols, statuses)
-    statuses.collect do |status|
-      story_map_column_render(total_stories_count, status, status_stories_hash[status.caption], number_cols)
-    end.join.html_safe
+    if total_stories_count > 0
+      statuses.collect do |status|
+        story_map_column_render(total_stories_count, status, status_stories_hash[status.caption], number_cols)
+      end.join.html_safe
+    else
+      no_data(t(:text_no_stories), 'tasks', true)
+    end
   end
 
   def story_map_column_render(total_stories_count, status, stories, number_cols)
@@ -63,7 +67,7 @@ module StoryMapHelper
 
   def story_map_column_header_stories_count(total_stories_count, status, stories_count)
     percent = ((stories_count.to_f / total_stories_count) * 100).truncate
-     content_tag :span, id: "status-bar-id-#{status.id}", class: 'story-count tooltipped tooltipped-s', label: "#{percent}%" do
+    content_tag :span, id: "status-bar-id-#{status.id}", class: 'story-count tooltipped tooltipped-s', label: "#{percent}%" do
       concat_span_tag stories_count, class: 'total-entries status-stories-counter'
       concat_span_tag "#{t(:text_of)} #{total_stories_count}"
     end
