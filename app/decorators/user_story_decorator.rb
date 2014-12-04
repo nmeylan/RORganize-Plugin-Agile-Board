@@ -14,19 +14,19 @@ class UserStoryDecorator < AgileBoardDecorator
   TASK_LABEL = h.t(:label_tasks)
 
   def tracker_caption
-    object.tracker.caption.freeze if model.tracker
+    @tracker_caption ||= object.tracker.caption.freeze if model.tracker
   end
 
   def epic_caption
-    model.epic ? model.epic.caption.freeze : nil
+    @epic_caption ||= model.epic ? model.epic.caption.freeze : nil
   end
 
   def category_caption
-    model.category ? model.category.caption.freeze : nil
+    @category_caption ||= model.category ? model.category.caption.freeze : nil
   end
 
   def status_caption
-    model.status ? model.status.caption.freeze : nil
+    @status_caption ||= model.status ? model.status.caption.freeze : nil
   end
 
   def display_points

@@ -98,14 +98,13 @@ module UserStoryDecoratorLink
               {remote: true, method: :get, class: "#{button_class(button)}"})
   end
 
-  def search_data_hash
-    result = {}
-    result['data-search-title'.freeze] = model.caption
-    result['data-search-epic'.freeze] = self.epic_caption if self.epic_caption
-    result['data-search-category'.freeze] = self.category_caption if self.category_caption
-    result['data-search-status'.freeze] = self.status_caption
-    result['data-search-tracker'.freeze] = self.tracker_caption
-    result
+  def search_data_string
+    str = "data-searchTitle='#{model.caption}'"
+    str += "data-searchTracker='#{self.tracker_caption}'"
+    str += "data-searchStatus='#{self.status_caption}'"
+    str += "data-searchCategory='#{self.category_caption}'" if self.category_caption
+    str += "data-searchEpic='#{self.epic_caption}'" if self.epic_caption
+    str
   end
 
 

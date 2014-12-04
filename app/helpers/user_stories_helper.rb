@@ -3,16 +3,16 @@ module UserStoriesHelper
   include UserStoryTasksHelper
   include CommentsHelper
 
+  # Render a user story. Didn't use content_tag due to performance issue,
+  # raw html is ugly but faster. =(
+  # @param [UserStoryDecorator] story
   def render_story(story)
-    story_options = {class: "fancy-list-item story", id: "story-#{story.id}"}
-    story_options['data-link'.freeze] = story.change_sprint_link
-    story_options['style'.freeze] = 'display:block'.freeze
-    story_options.merge!(story.search_data_hash)
-    content_tag :li, story_options do
-      safe_concat render_story_left_content(story)
-      safe_concat render_story_right_content(story)
-      safe_concat clear_both
-    end
+    "<li  class='fancy-list-item story' id='story-#{story.id}' data-link='#{story.change_sprint_link}'
+          style='display:block' #{story.search_data_string}'>
+      #{render_story_left_content(story)}
+      #{render_story_right_content(story)}
+      <div style='clear:both'></div>
+    </li>"
   end
 
   def render_story_left_content(story)
