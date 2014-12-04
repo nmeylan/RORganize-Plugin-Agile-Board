@@ -5,15 +5,14 @@
  */
 
 function bind_user_story_search_field(id) {
-    var stories = $(".fancy-list-item.story");
     var anchor = window.location.hash;
     var self = $("#" + id);
     if (self.length > 0) {
         self.val(anchor.replace('#', ''));
-        process_filter(self, stories);
+        process_filter(self);
         self.keydown(function (e) {
             if (e.keyCode == 13) {
-                process_filter(self, stories);
+                process_filter(self);
 
                 window.location.hash = self.val();
             }
@@ -21,7 +20,8 @@ function bind_user_story_search_field(id) {
     }
 }
 
-function process_filter(input, stories) {
+function process_filter(input) {
+    var stories = $(".fancy-list-item.story");
     var text = input.val();
     if (text.trim() !== "") {
         bulk_hide(stories);
