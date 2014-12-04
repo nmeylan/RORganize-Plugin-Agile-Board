@@ -58,12 +58,11 @@ class UserStoriesController < AgileBoardController
     @user_story.attributes = user_story_params
     @point_diff = @user_story.point_difference
     result = @user_story.save
+    @user_story_decorator = decorate_user_story
     if params[:from]
-      @user_story_decorator = decorate_user_story
       locals = {history: History.new(Journal.journalizable_activities(@user_story_decorator.id, 'UserStory'))}
     else
       locals = {}
-      @user_story_decorator = @user_story.decorate(context: {project: @project})
       @from = :plan
     end
     simple_js_callback(result, :update, @user_story, locals)

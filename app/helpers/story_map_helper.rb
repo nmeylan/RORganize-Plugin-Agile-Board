@@ -20,13 +20,13 @@ module StoryMapHelper
   def story_map_render_sprint_map(status_stories_hash, number_cols, sprint_id, sprints, statuses)
     sprint = sprints.detect { |sprint| sprint.id.eql?(sprint_id) }
     content_tag :div, id: "sprint-#{sprint_id}", class: 'sprint' do
-      safe_concat story_map_sprint_header(sprint, status_stories_hash, statuses)
-      safe_concat story_map_render_sprint_content_map(sprint.stories.size, status_stories_hash, number_cols, statuses)
+      safe_concat story_map_sprint_header(sprint)
+      safe_concat story_map_render_sprint_content_map(status_stories_hash, number_cols, statuses)
       safe_concat clear_both
     end
   end
 
-  def story_map_sprint_header(sprint, status_stories_hash, statuses)
+  def story_map_sprint_header(sprint)
     content_tag :div, class: 'story-map-sprint-header' do
       safe_concat content_tag :h1, sprint.name, class: 'story-map-sprint-name sprint'
       safe_concat story_map_sprint_header_info(sprint) unless sprint.is_backlog?
@@ -40,7 +40,8 @@ module StoryMapHelper
     end
   end
 
-  def story_map_render_sprint_content_map(total_stories_count, status_stories_hash, number_cols, statuses)
+  def story_map_render_sprint_content_map(status_stories_hash, number_cols, statuses)
+    total_stories_count = status_stories_hash.inject(0){|memo, hash| memo + hash[1].size}
     if total_stories_count > 0
       statuses.collect do |status|
         story_map_column_render(total_stories_count, status, status_stories_hash[status.caption], number_cols)

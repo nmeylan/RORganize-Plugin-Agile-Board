@@ -1,6 +1,6 @@
 @import 'utilities/variables';
 
-.stories-list.no-stories {
+.stories-list:empty {
   border: dashed 1px #e4e4e4;
   margin: 1px;
 }

@@ -79,7 +79,7 @@ class Board < ActiveRecord::Base
   # @param [String] param_sprint_id : the given sprint_id to load specific sprint.
   def load_sprint_or_backlog(param_sprint_id)
     if param_sprint_id.eql?('-1')
-      [Sprint.backlog(self.id)]
+      [Sprint.empty_backlog(self.id)]
     else
       Sprint.where(id: param_sprint_id, board_id: self.id)
     end
@@ -92,6 +92,6 @@ class Board < ActiveRecord::Base
   # @param [String] param_sprint_id
   def load_user_stories(project, sprints, param_sprint_id)
     sprint_id = param_sprint_id.eql?('-1') ? nil : sprints.collect(&:id)
-    UserStory.where(board_id: self.id, sprint_id: sprint_id).includes(:tracker, :points).order(position: :asc).decorate(context: {project: project, menu: :work})
+    UserStory.includes(:tracker, :points).where(board_id: self.id, sprint_id: sprint_id).order(position: :asc).decorate(context: {project: project})
   end
 end

@@ -12,16 +12,21 @@ class UserStoryDecorator < AgileBoardDecorator
   delegate_all
   POINTS_LABEL = h.t(:tooltip_points)
   TASK_LABEL = h.t(:label_tasks)
-  attr_accessor :tracker_caption, :epic_caption, :category_caption, :status_caption
 
-  def initialize(object, options = {})
-    super(object, options)
-    self.tracker_caption = model.tracker.caption.freeze if model.tracker
-    if context[:menu].nil?
-      self.epic_caption = model.epic ? model.epic.caption.freeze : nil
-      self.category_caption = model.category ? model.category.caption.freeze : nil
-      self.status_caption = model.status ? model.status.caption.freeze : nil
-    end
+  def tracker_caption
+    object.tracker.caption.freeze if model.tracker
+  end
+
+  def epic_caption
+    model.epic ? model.epic.caption.freeze : nil
+  end
+
+  def category_caption
+    model.category ? model.category.caption.freeze : nil
+  end
+
+  def status_caption
+    model.status ? model.status.caption.freeze : nil
   end
 
   def display_points
@@ -43,7 +48,7 @@ class UserStoryDecorator < AgileBoardDecorator
   end
 
   def display_tracker
-    self.tracker_caption
+    self.tracker_caption ||= model.tracker.caption
   end
 
   def display_id

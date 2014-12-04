@@ -92,7 +92,7 @@ module SprintsHelper
 
   def render_sprint_body(sprint)
     sortable = 'sortable' if User.current.allowed_to?('change_sprint', 'User_stories', @project)
-    content_tag :ul, {class: "fancy-list fancy-list-mini stories-list #{sortable} #{'no-stories' if sprint.stories.empty?}"} do
+    content_tag :ul, {class: "fancy-list fancy-list-mini stories-list #{sortable}"} do
       sprint.sorted_stories.collect do |story|
         render_story(story)
       end.join.html_safe

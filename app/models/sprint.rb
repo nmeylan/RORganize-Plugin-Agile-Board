@@ -9,7 +9,7 @@ class Sprint < ActiveRecord::Base
   scope :current_sprints, ->(board_id) { where(board_id: board_id).where('sprints.start_date <= ? AND (sprints.end_date >= ? OR sprints.end_date IS NULL)', Date.today, Date.today) }
 
   validates :start_date, presence: true
-  validates :name, presence: true, length: { maximum: 255 }
+  validates :name, presence: true, length: {maximum: 255}
   validate :dates_constraints, :name_uniqueness
 
   after_update :update_issues
@@ -35,9 +35,13 @@ class Sprint < ActiveRecord::Base
   # Build a backlog sprint.
   # @param [String|Fixnum] board_id
   def self.backlog(board_id)
-    backlog = Sprint.new(id: -1, name: 'Backlog')
+    backlog = Sprint.empty_backlog(board_id)
     backlog.stories = UserStory.where(sprint_id: nil, board_id: board_id).includes(:status, :points, :tracker, :category, :epic, :issues)
     backlog
+  end
+
+  def self.empty_backlog(board_id)
+    Sprint.new(id: -1, name: 'Backlog', board_id: board_id)
   end
 
   def issues
