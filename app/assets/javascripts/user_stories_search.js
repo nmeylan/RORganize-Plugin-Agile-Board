@@ -27,10 +27,16 @@ function process_filter(input, stories) {
         bulk_hide(stories);
         var selected_stories = search_strategy(stories, text);
         bulk_show(selected_stories);
+
+
     } else {
         bulk_show(stories);
     }
-
+    $('.box.sprint').each(function(){
+        var el = $(this);
+        update_sprint_stories_counter(el.attr('id'));
+        update_sprint_story_points_counter(el.attr('id'));
+    });
 }
 
 function bulk_hide(elements) {
@@ -50,25 +56,25 @@ function search_strategy(stories, text) {
     var criteria_hash = build_criteria_hash(text);
     return stories.filter(function () {
         var s = $(this);
-        return is_contained(s, criteria_hash, 'Title') &&
-            is_contained(s, criteria_hash, 'Epic') &&
-            is_contained(s, criteria_hash, 'Category') &&
-            is_contained(s, criteria_hash, 'Tracker') &&
-            is_contained(s, criteria_hash, 'Status');
+        // Should use .reduce() on an array.
+        return is_contained(s, criteria_hash, 'title') &&
+            is_contained(s, criteria_hash, 'epic') &&
+            is_contained(s, criteria_hash, 'category') &&
+            is_contained(s, criteria_hash, 'tracker') &&
+            is_contained(s, criteria_hash, 'status');
     });
 }
 
 function is_contained(story, criteria_hash, criterion_name) {
-    var criterion_name_lower = criterion_name.toLowerCase();
-    return is_criterion_empty(story, criteria_hash, criterion_name, criterion_name_lower) ||
-        (is_criterion_filled(story, criteria_hash, criterion_name, criterion_name_lower) &&
-        story.data("search" + criterion_name).toLowerCase().indexOf(criteria_hash[criterion_name_lower].toLowerCase()) > -1);
+    return is_criterion_empty(story, criteria_hash, criterion_name) ||
+        (is_criterion_filled(story, criteria_hash, criterion_name) &&
+        story.data("search" + criterion_name).toLowerCase().indexOf(criteria_hash[criterion_name].toLowerCase()) > -1);
 }
-function is_criterion_empty(story, criteria_hash, criterion_name, criterion_name_lower) {
-    return ((criteria_hash[criterion_name_lower] === undefined && story.data("search" + criterion_name) === undefined) || criteria_hash[criterion_name_lower] === undefined);
+function is_criterion_empty(story, criteria_hash, criterion_name) {
+    return ((criteria_hash[criterion_name] === undefined && story.data("search" + criterion_name) === undefined) || criteria_hash[criterion_name] === undefined);
 }
-function is_criterion_filled(story, criteria_hash, criterion_name, criterion_name_lower) {
-    return (story.data("search" + criterion_name) !== undefined && criteria_hash[criterion_name_lower] !== undefined);
+function is_criterion_filled(story, criteria_hash, criterion_name) {
+    return (story.data("search" + criterion_name) !== undefined && criteria_hash[criterion_name] !== undefined);
 }
 
 function build_criteria_hash(text) {

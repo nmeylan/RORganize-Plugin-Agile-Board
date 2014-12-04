@@ -56,7 +56,6 @@ class UserStoriesController < AgileBoardController
   # PATCH/PUT /user_stories/1
   def update
     @user_story.attributes = user_story_params
-    @point_diff = @user_story.point_difference
     result = @user_story.save
     @user_story_decorator = decorate_user_story
     if params[:from]
@@ -77,7 +76,7 @@ class UserStoriesController < AgileBoardController
         format.js { js_redirect_to(agile_board_plugin::agile_board_index_path(@project.slug)) }
       end
     else
-      simple_js_callback(result, :delete, @user_story, {id: params[:id]})
+      simple_js_callback(result, :delete, @user_story, {id: params[:id], sprint_id: @user_story.sprint_id})
     end
   end
 

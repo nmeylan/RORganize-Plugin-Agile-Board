@@ -3,4 +3,6 @@
  * Date: 30.10.14
  * Time: 23:38
  %>
-on_deletion_effect("#story-<%= id %>");
+$("#story-<%= id %>").remove();
+var sprint_id = <%= sprint_id ? sprint_id : -1 %>;
+update_sprint_info(sprint_id);
