@@ -42,3 +42,5 @@ en:
   text_stories: stories
   text_points: points
   text_running: running
+
+  placeholder_search_stories: Press ENTER to apply filter.

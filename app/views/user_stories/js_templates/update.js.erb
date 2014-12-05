@@ -10,6 +10,7 @@ $('#story-editor-overlay').overlay().close();
    var sprint = $("#sprint-"+sprint_id);
    $("#story-<%= @user_story_decorator.id %>").replaceWith("<%= escape_javascript render_story(@user_story_decorator).html_safe %>");
    update_sprint_info(sprint_id);
+   bind_user_story_search_onclick($('#user-stories-search'));
 <% else %>
    $('#story-<%= @user_story_decorator.id %>').replaceWith("<%= escape_javascript render partial: 'user_stories/show' , locals: {history: history}%>");
 <% end %>

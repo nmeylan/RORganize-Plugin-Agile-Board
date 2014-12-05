@@ -4,9 +4,11 @@
  * Time: 17:23
  */
 
-function bind_user_story_search_field(id) {
+function bind_user_story_search_field() {
     var anchor = window.location.hash;
-    var self = $("#" + id);
+    var self = $("#user-stories-search");
+    bind_user_story_search_onclick(self);
+    bind_clear_input_onclick(self);
     if (self.length > 0) {
         self.val(anchor.replace('#', ''));
         process_filter(self);
@@ -14,10 +16,53 @@ function bind_user_story_search_field(id) {
             if (e.keyCode == 13) {
                 process_filter(self);
 
-                window.location.hash = self.val();
+
             }
         });
     }
+}
+// Bind on click action to apply filter.
+function bind_user_story_search_onclick(input, _el) {
+    _el = _el || $('.filter-link');
+    _el.click(function (e) {
+        var el = $(this);
+        var value = el.text().trim().toLowerCase();
+        var type = el.data('filtertype');
+        var criteria = input.val().split(/ +(?=[\w]+\:)/g);
+        var criterion_type;
+        var criteria_types = [];
+
+        if(type === 'tracker'){
+            value = value.split(/\s/)[0];
+        }
+        for(var i = 0; i < criteria.length; i++){
+            criterion_type = criteria[i].split(':')[0];
+            criteria_types.push(criterion_type);
+        }
+        if(criteria_types.indexOf(type) == -1){
+            var s = input.val();
+            if(s.length > 0){
+                s += ' ';
+            }
+            input.val(s + type + ':' + value);
+        }else{
+            for(var j = 0; j < criteria.length; j++){
+                criterion_type = criteria[j].split(':')[0];
+                if(criterion_type === type){
+                    criteria[j] = type + ':' + value;
+                }
+            }
+            input.val(criteria.join(' '));
+        }
+        process_filter(input);
+    });
+}
+
+function bind_clear_input_onclick(input){
+    $('.clear-input-icon').click(function(e){
+        input.val('');
+        process_filter(input);
+    });
 }
 
 function process_filter(input) {
@@ -27,16 +72,18 @@ function process_filter(input) {
         bulk_hide(stories);
         var selected_stories = search_strategy(stories, text);
         bulk_show(selected_stories);
-
-
     } else {
         bulk_show(stories);
     }
-    $('.box.sprint').each(function(){
+    $('.box.sprint').each(function () {
         var el = $(this);
         update_sprint_stories_counter(el.attr('id'));
         update_sprint_story_points_counter(el.attr('id'));
     });
+
+    $('.sprint ').find('.fancy-list-item.story:visible').css('border-bottom', '').css('margin-bottom','');
+    $('.sprint ').find('.fancy-list-item.story:visible:last').css('border-bottom','inherit').css('margin-bottom','-6px');
+    window.location.hash = text;
 }
 
 function bulk_hide(elements) {

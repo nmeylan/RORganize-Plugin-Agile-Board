@@ -25,24 +25,34 @@ module BoardsHelper
   def display_mode_menu
     if @sessions[:agile_board_menu].eql?(:plan)
       safe_concat group_button_tag(@board_decorator.unified_display_mode(unified_content?),
-                       @board_decorator.split_display_mode(split_content?))
-      safe_concat text_field_tag :user_story_search, nil, {id: 'user-stories-search', placeholder: 'Press ENTER to apply filter'}
+                                   @board_decorator.split_display_mode(split_content?))
+      safe_concat agile_board_search_input
       concat_span_tag glyph('', 'info'), {label: tooltip_text,
-                            class: 'tooltipped tooltipped-multiline tooltipped-multiline-pre tooltipped-s'}
+                                          class: 'tooltipped tooltipped-multiline tooltipped-multiline-pre tooltipped-s'}
+    end
+  end
+
+  def agile_board_search_input
+    content_tag :div, class: 'subnav-search user-stories-search' do
+      safe_concat text_field_tag :user_story_search, nil, {id: 'user-stories-search',
+                                                           placeholder: t(:placeholder_search_stories),
+                                                           class: 'search-input'}
+      safe_concat content_tag :span, nil, class: 'octicon octicon-search search-input-icon'
+      safe_concat content_tag :span, nil, class: 'octicon octicon-x clear-input-icon'
     end
   end
 
   def tooltip_text
     "SYNTAX: space between filter are interpreted as AND operator. "+
-    "\nSearch is case insensitive."+
-    "\n\nValues can contain spaces until the next key."+
-    "\n---------------------------------------------------------------------------------------\n"+
-    "title:my title\t\t\t\t\t\t     category:my category"+
-    "\ntracker:bug\t\t\t\t\t\t\t\t    epic:an epic"+
-    "\nstatus:to do"+
-    "\n---------------------------------------------------------------------------------------\n"+
-    "\nValid keys are : category, epic, status, title, tracker."+
-    "\n\nThe title: key is not mandatory but, if it not specified, value should be placed as the first parameter."
+        "\nSearch is case insensitive."+
+        "\n\nValues can contain spaces until the next key."+
+        "\n---------------------------------------------------------------------------------------\n"+
+        "title:my title\t\t\t\t\t\t     category:my category"+
+        "\ntracker:bug\t\t\t\t\t\t\t\t    epic:an epic"+
+        "\nstatus:to do"+
+        "\n---------------------------------------------------------------------------------------\n"+
+        "\nValid keys are : category, epic, status, title, tracker."+
+        "\n\nThe title: key is not mandatory but, if it not specified, value should be placed as the first parameter."
   end
 
   def agile_board
@@ -80,7 +90,7 @@ module BoardsHelper
     tabs = []
     tabs << {name: 'epics-tab', element: medium_glyph(t(:link_epics), 'sword')} if User.current.allowed_to?('index', 'Epics', @project)
     tabs << {name: 'statuses-tab', element: glyph(t(:link_story_statuses), 'dashboard')} if User.current.allowed_to?('index', 'Story_statuses', @project)
-    tabs <<  {name: 'points-tab', element: glyph(t(:link_story_points), 'coin')} if User.current.allowed_to?('index', 'Story_points', @project)
+    tabs << {name: 'points-tab', element: glyph(t(:link_story_points), 'coin')} if User.current.allowed_to?('index', 'Story_points', @project)
     safe_concat horizontal_tabs('configuration-tab', tabs) unless tabs.empty?
 
     safe_concat points_content
@@ -102,9 +112,9 @@ module BoardsHelper
   def plan_content
     safe_concat clear_both
     safe_concat content_tag :div, class: 'agile-board-plan', &Proc.new {
-      sprints_content(@sprints_decorator)
-      safe_concat render_sprint(@backlog, "backlog #{'splitcontentright' if split_content?}")
-    }
+                                  sprints_content(@sprints_decorator)
+                                  safe_concat render_sprint(@backlog, "backlog #{'splitcontentright' if split_content?}")
+                                }
     safe_concat clear_both
   end
 

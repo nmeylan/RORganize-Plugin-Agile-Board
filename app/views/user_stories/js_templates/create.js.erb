@@ -10,3 +10,4 @@ var sprint = $("#sprint-"+sprint_id);
 sprint.find('.stories-list').append("<%= escape_javascript render_story(@user_story).html_safe %>");
 
 update_sprint_info(sprint_id);
+bind_user_story_search_onclick($('#user-stories-search'));

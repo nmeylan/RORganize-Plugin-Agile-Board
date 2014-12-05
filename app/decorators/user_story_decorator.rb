@@ -35,13 +35,13 @@ class UserStoryDecorator < AgileBoardDecorator
   end
 
   def display_status
-    "<span class='issue-status' style='background-color:#{model.status.color}'>
+    "<span class='issue-status filter-link' data-filtertype='status' style='background-color:#{model.status.color}'>
       #{self.status_caption}
     </span>".freeze
   end
 
   def display_epic
-    "<span class='info-square epic-caption' style='background-color:#{model.epic.color}'>
+    "<span class='info-square epic-caption filter-link' data-filtertype='epic' style='background-color:#{model.epic.color}'>
           <span class='octicon octicon-sword'></span>
           #{self.epic_caption}
     </span>".freeze if self.epic_caption
@@ -56,7 +56,7 @@ class UserStoryDecorator < AgileBoardDecorator
   end
 
   def display_tracker_id
-    "<span class='story-tracker'>#{self.display_tracker} #{self.display_id}</span>".freeze
+    "<span class='story-tracker filter-link' data-filtertype='tracker'>#{self.display_tracker} #{self.display_id}</span>".freeze
   end
 
   def display_issues_counter
@@ -65,7 +65,7 @@ class UserStoryDecorator < AgileBoardDecorator
   end
 
   def display_category
-    "<span class='info-square'><span class='octicon octicon-tag'></span>#{self.category_caption}</span>".freeze if self.category_caption
+    "<span class='info-square filter-link' data-filtertype='category'><span class='octicon octicon-tag'></span>#{self.category_caption}</span>".freeze if self.category_caption
   end
 
   def display_sprint_dates

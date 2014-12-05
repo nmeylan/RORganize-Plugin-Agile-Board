@@ -163,7 +163,12 @@
   float:left;
 }
 
+.user-stories-search{
+  display: inline-block;
+  margin: 0 10px 0 10px;
+}
 #user-stories-search{
-  margin-left: 10px;
   width: 400px;
+  padding-right: 20px;
+  margin-bottom: 0;
 }
