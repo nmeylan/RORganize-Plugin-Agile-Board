@@ -73,7 +73,7 @@ class UserStoriesController < AgileBoardController
     if params[:from]
       respond_to do |format|
         flash[:notice] = t(:successful_deletion)
-        format.js { js_redirect_to(agile_board_plugin::agile_board_index_path(@project.slug)) }
+        format.js { js_redirect_to(agile_board_plugin::agile_board_path(@project.slug)) }
       end
     else
       simple_js_callback(result, :delete, @user_story, {id: params[:id], sprint_id: @user_story.sprint_id})

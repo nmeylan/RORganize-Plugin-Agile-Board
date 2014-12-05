@@ -6,21 +6,21 @@ class BoardsController < AgileBoardController
   # GET /boards
   def index
     @sessions[:agile_board_menu] ||= :work
-    @sessions[:agile_board_menu] = params[:agile_board_menu].to_sym if params[:agile_board_menu]
+    @sessions[:agile_board_menu] = params[:menu].to_sym if params[:menu]
     @sessions[:display_mode] ||= :unified
     @sessions[:display_mode] = params[:display_mode].to_sym if params[:display_mode]
 
     select_menu
     respond_to do |format|
       format.html { render :index }
-      format.js { js_redirect_to agile_board_plugin::agile_board_index_path(@project.slug) }
+      format.js { js_redirect_to agile_board_plugin::agile_board_path(@project.slug) }
     end
   end
 
   def create
     @board_decorator = Board.create(project_id: @project.id).decorate(context: {project: @project})
     respond_to do |format|
-      format.js { js_redirect_to agile_board_plugin::agile_board_index_path(@project.slug) }
+      format.js { js_redirect_to agile_board_plugin::agile_board_path(@project.slug) }
     end
   end
 
@@ -40,11 +40,15 @@ class BoardsController < AgileBoardController
                                      epics: Epic.where(board_id: @board_decorator.id).decorate})
   end
 
+  def report
+
+  end
+
   def destroy
     @board_decorator.destroy
     respond_to do |format|
       flash[:notice] = 'Board was successfully destroyed.'
-      format.js { js_redirect_to (agile_board_plugin::agile_board_index_path(@project.slug)) }
+      format.js { js_redirect_to (agile_board_plugin::agile_board_path(@project.slug)) }
     end
   end
 
@@ -57,6 +61,8 @@ class BoardsController < AgileBoardController
           work
         when :plan
           plan
+        when :report
+          report
         when :configuration
           configuration
       end

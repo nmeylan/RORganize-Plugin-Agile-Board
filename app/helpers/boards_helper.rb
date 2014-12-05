@@ -13,6 +13,7 @@ module BoardsHelper
       safe_concat subnav_tag('agile-board-menu', 'agile-board-menu',
                              @board_decorator.plan_menu_item(nav_item_selected?(:plan)),
                              @board_decorator.work_menu_item(nav_item_selected?(:work)),
+                             @board_decorator.report_menu_item(nav_item_selected?(:report)),
                              @board_decorator.configuration_menu_item(nav_item_selected?(:configuration)))
     end
   end
@@ -100,7 +101,7 @@ module BoardsHelper
 
   def create_link
     link_to_with_permissions(t(:label_create),
-                             agile_board_plugin::agile_board_index_path(@project.slug),
+                             agile_board_plugin::agile_board_path(@project.slug),
                              @project, nil, {remote: true, class: 'button', method: :post})
   end
 

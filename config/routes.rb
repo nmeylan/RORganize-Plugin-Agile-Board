@@ -1,14 +1,18 @@
 AgileBoard::Engine.routes.draw do
   RORganize::Application.routes.draw do
     mount AgileBoard::Engine => '/', as: 'agile_board_plugin'
-    get 'projects/:project_id/agile_board/:action', controller: 'boards'
   end
-
   scope 'projects/:project_id/' do
-    resources :boards, only: [:create, :index, :destroy],  as: 'agile_board'
+    resource :boards, only: [:create, :index, :destroy],  as: 'agile_board', path: 'agile_board' do
+      get :index, path: '/(:menu)'
+    end
     scope 'agile_board' do
       resources :story_statuses do
         post :change_position
+      end
+      resource :agile_board_reports, only: [:index], as: 'reports' do
+        get :show_sprint, path: '/:sprint_id'
+        get :index, path: '/'
       end
       resources :story_points, only: [:edit, :update] do
         collection do

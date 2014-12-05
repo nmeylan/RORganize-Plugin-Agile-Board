@@ -14,6 +14,10 @@ class BoardDecorator < AgileBoardDecorator
     agile_board_menu(h.t(:lable_agile_board_work), 'column', :work, selected)
   end
 
+  def report_menu_item(selected = false)
+    agile_board_menu(h.t(:lable_agile_board_report), 'graph', :report, selected)
+  end
+
   def configuration_menu_item(selected = false)
     if User.current.allowed_to?('configuration', 'Boards', context[:project])
       agile_board_menu(h.t(:lable_agile_board_configuration), 'gear', :configuration, selected)
@@ -36,8 +40,7 @@ class BoardDecorator < AgileBoardDecorator
     {
         options: {class: "minibutton #{'selected' if selected}"},
         caption: caption,
-        path: h.agile_board_plugin::agile_board_index_path(project_id: context[:project].slug,
-                                                           agile_board_menu: :plan, display_mode: mode)
+        path: h.agile_board_plugin::agile_board_path(context[:project].slug, :plan, display_mode: mode)
     }
   end
 
@@ -47,8 +50,7 @@ class BoardDecorator < AgileBoardDecorator
   # @param [Symbol] tab_identifier : the identifier of the tab.
   # @param [Boolean] selected : does the tab is selected?
   def agile_board_menu(label, glyph, tab_identifier, selected)
-    default_path_params = {project_id: context[:project].slug, agile_board_menu: tab_identifier}
-    agile_board_menu_nav_item(label, glyph, h.agile_board_plugin::agile_board_index_path(default_path_params), selected)
+    agile_board_menu_nav_item(label, glyph, h.agile_board_plugin::agile_board_path(context[:project].slug, tab_identifier), selected)
   end
 
   # Build a hash for subnav item creation.
@@ -64,7 +66,7 @@ class BoardDecorator < AgileBoardDecorator
 
   def delete_link
     h.link_to_with_permissions(h.glyph(h.t(:link_delete), 'trashcan'),
-                               h.agile_board_plugin::agile_board_path(context[:project].slug, model.id),
+                               h.agile_board_plugin::agile_board_path(context[:project].slug),
                                context[:project], nil,
                                {remote: true,
                                 'data-confirm' => h.t(:text_delete_agile_board),

@@ -7,7 +7,9 @@ class AgileBoardController < ApplicationController
   before_action :set_board
   before_action :set_display_sessions
   protected
-
+  def peek_enabled?
+    false
+  end
   def agile_board_form_callback(path, method, action = 'new')
     respond_to do |format|
       format.js { respond_to_js action: action, locals: {path: path, method: method} }
