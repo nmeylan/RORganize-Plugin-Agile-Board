@@ -35,12 +35,25 @@ en:
 
   text_delete_agile_board: Are you sure you want to destroy this agile board? you will lose ALL data.
   text_delete_sprint: Are you sure you want to destroy this sprint? All affected stories will be sent to the backlog.
+  text_stories: stories
+  text_points: points
+  info_filter_syntax: |
+    SYNTAX: space between filter are interpreted as AND operator.
+    Search is case insensitive.
+
+    Values can contain spaces until the next key.
+    Valid keys are : category, epic, status, title, tracker.
+    ---------------------------------------------------------------------------------------
+    title:my title                                                    category:my category
+    tracker:bug                                                                   epic:an epic
+    status:to do
+    ---------------------------------------------------------------------------------------
+
+    The title: key is not mandatory but, if it not specified, value should be placed as the first parameter.
+
+  text_running: running
   info_edit_point: If you let the field blank, the point will be destroy.
 
   tooltip_points: Story points
-
-  text_stories: stories
-  text_points: points
-  text_running: running
 
   placeholder_search_stories: Press ENTER to apply filter.

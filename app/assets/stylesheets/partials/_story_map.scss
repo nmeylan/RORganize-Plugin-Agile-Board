@@ -10,8 +10,9 @@
   }
 
   .ui-state-highlight {
-    height: 100px;
+    height: 105px;
     margin-bottom: 10px;
+    margin-top: 5px;
   }
   .story-map-sprint-header {
     margin-bottom: 30px;
@@ -43,7 +44,7 @@
     .story-map-stories:empty {
       border: dashed 3px $default-border-color;
       height: 85px;
-      margin: 20px 10px 0 10px;
+      margin: 25px 10px 0 10px;
     }
 
     .story-map-stories {

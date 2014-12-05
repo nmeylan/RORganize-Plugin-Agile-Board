@@ -27,7 +27,7 @@ module BoardsHelper
       safe_concat group_button_tag(@board_decorator.unified_display_mode(unified_content?),
                                    @board_decorator.split_display_mode(split_content?))
       safe_concat agile_board_search_input
-      concat_span_tag glyph('', 'info'), {label: tooltip_text,
+      concat_span_tag glyph('', 'info'), {label: t(:info_filter_syntax),
                                           class: 'tooltipped tooltipped-multiline tooltipped-multiline-pre tooltipped-s'}
     end
   end
