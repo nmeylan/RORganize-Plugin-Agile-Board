@@ -6,11 +6,13 @@
 
 $('#story-editor-overlay').overlay().close();
 <% if @from %>
-   var sprint_id = <%= @user_story_decorator.sprint_id ? @user_story_decorator.sprint_id : -1 %>;
-   var sprint = $("#sprint-"+sprint_id);
-   $("#story-<%= @user_story_decorator.id %>").replaceWith("<%= escape_javascript render_story(@user_story_decorator).html_safe %>");
-   update_sprint_info(sprint_id);
-   bind_user_story_search_onclick($('#user-stories-search'));
+  var sprint_id = <%= @user_story_decorator.sprint_id ? @user_story_decorator.sprint_id : -1 %>;
+  var sprint = $("#sprint-" + sprint_id);
+  $("#story-<%= @user_story_decorator.id %>").replaceWith("<%= escape_javascript render_story(@user_story_decorator).html_safe %>");
+  update_sprint_info(sprint_id);
+  var input = $('#user-stories-search');
+  bind_user_story_search_onclick(input);
+  process_filter(input);
 <% else %>
-   $('#story-<%= @user_story_decorator.id %>').replaceWith("<%= escape_javascript render partial: 'user_stories/show' , locals: {history: history}%>");
+  $('#story-<%= @user_story_decorator.id %>').replaceWith("<%= escape_javascript render partial: 'user_stories/show' , locals: {history: history}%>");
 <% end %>
