@@ -39,11 +39,15 @@ module AgileBoardReportsHelper
   end
 
   def report_content
-    content_tag :div, {id: 'agile-board'} do
-      content_tag :div, {id: 'agile-board-content'} do
-        safe_concat left_sidebar_sprint_render
-        safe_concat report_content_body
+    if @sprint_decorator
+      content_tag :div, {id: 'agile-board'} do
+        content_tag :div, {id: 'agile-board-content'} do
+          safe_concat left_sidebar_sprint_render
+          safe_concat report_content_body
+        end
       end
+    else
+      no_data
     end
   end
 
