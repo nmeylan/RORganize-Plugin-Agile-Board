@@ -4,13 +4,15 @@ class Sprint < ActiveRecord::Base
   belongs_to :version
   belongs_to :board
   scope :eager_load_user_stories, -> { includes(stories: [:status, :points, :tracker, :category, :epic]) }
-  scope :ordered_sprints, ->(board_id) { where(board_id: board_id).
+  scope :ordered_sprints, ->(board_id) { where(board_id: board_id, is_archived: false).
       includes(:version).eager_load_user_stories.order(start_date: :desc) }
-  scope :current_sprints, ->(board_id) { where(board_id: board_id).where('sprints.start_date <= ? AND (sprints.end_date >= ? OR sprints.end_date IS NULL)', Date.today, Date.today) }
+  scope :current_sprints, ->(board_id) { where(board_id: board_id).
+      where('sprints.start_date <= ? AND (sprints.end_date >= ? OR sprints.end_date IS NULL)', Date.today, Date.today) }
 
   validates :start_date, presence: true
   validates :name, presence: true, length: {maximum: 255}
-  validate :dates_constraints, :name_uniqueness
+  validate :dates_constraints, :name_uniqueness, :archive_constraints
+
 
   after_update :update_issues
 
@@ -26,6 +28,10 @@ class Sprint < ActiveRecord::Base
     if self.end_date && self.start_date > self.end_date
       errors.add(:end_date, 'must be superior than start date.')
     end
+  end
+
+  def running?
+    self.end_date.nil? || self.end_date >= Date.today
   end
 
   def is_backlog?
@@ -48,10 +54,18 @@ class Sprint < ActiveRecord::Base
     Issue.where(user_story_id: self.stories.collect(&:id))
   end
 
+  # Check if sprints name are uniq inside a same version.
   def name_uniqueness
     other_sprint = Sprint.where(version_id: self.version_id, name: self.name).where.not(id: self.id).count
     if other_sprint > 0
       errors.add(:name, 'must be uniq inside a same version.')
+    end
+  end
+
+  # Archive a running sprint must be impossible
+  def archive_constraints
+    if is_archived_changed? && self.running?
+      errors.add(:archive, 'a running sprint is not allowed.')
     end
   end
 
@@ -64,6 +78,25 @@ class Sprint < ActiveRecord::Base
         value = values[1]
         Issue.bulk_edit(issue_ids, {attr_name => value}, project)
       end
+    end
+  end
+
+  def points_distribution
+    distribution_stats_by_status(& ->(story) { story.value })
+  end
+
+  def stories_distribution
+    distribution_stats_by_status(1)
+  end
+
+  # Return the distribution of something by status.
+  # @return [Hash] will this structure : {Status => distribution, Status => distribution}
+  # Key is a StoryStatus (a frozen complex object). Value is Numeric.
+  def distribution_stats_by_status(content_or_block = nil)
+    self.stories.sort_by(&:status_position).inject({}) do |memo, story|
+      memo[story.status.freeze] ||= 0
+      memo[story.status.freeze] += block_given? ? yield(story) : content_or_block
+      memo
     end
   end
 end

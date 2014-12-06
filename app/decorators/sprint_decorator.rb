@@ -23,6 +23,14 @@ class SprintDecorator < AgileBoardDecorator
     super(context[:project], h.agile_board_plugin::sprint_path(context[:project].slug, model.id), false)
   end
 
+  def archive_link
+    h.link_to_with_permissions(h.glyph(h.t(:link_archive), 'lock'),
+                               h.agile_board_plugin::sprint_archive_path(context[:project].slug, model.id),
+                               context[:project], nil,
+                               {remote: true, 'data-confirm' => h.t(:confirm_archive_sprint), method: :put}
+    )
+  end
+
   def show_link
     h.link_to self.resized_caption(25), h.agile_board_plugin::agile_board_path(context[:project].slug, :work, sprint_id: model.id), {class: 'sprint-show'}
   end

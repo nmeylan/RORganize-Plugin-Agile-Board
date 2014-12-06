@@ -1,5 +1,8 @@
 @import 'utilities/variables';
 
+.subnav.agile-board-menu{
+  margin-top: 0;
+}
 #points-tab, #statuses-tab {
   margin-top: 10px;
   margin-bottom: 50px;
@@ -7,6 +10,10 @@
     margin-right: 10px;
     color: $link-color;
   }
+}
+
+#delete-board-link{
+  float:right;
 }
 
 .info-square.epic-caption{

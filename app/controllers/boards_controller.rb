@@ -40,10 +40,6 @@ class BoardsController < AgileBoardController
                                      epics: Epic.where(board_id: @board_decorator.id).decorate})
   end
 
-  def report
-
-  end
-
   def destroy
     @board_decorator.destroy
     respond_to do |format|
@@ -61,8 +57,6 @@ class BoardsController < AgileBoardController
           work
         when :plan
           plan
-        when :report
-          report
         when :configuration
           configuration
       end

@@ -49,6 +49,14 @@ class UserStory < ActiveRecord::Base
     end
   end
 
+  def value
+    self.points ? self.points.value : 0
+  end
+
+  def status_position
+    self.status.position
+  end
+
   def tasks_version_id
     version = self.get_sprint.version
     version ? version.id : nil

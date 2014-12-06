@@ -5,7 +5,7 @@ class Board < ActiveRecord::Base
   has_many :story_statuses, dependent: :delete_all
   has_many :user_stories, dependent: :destroy
   has_many :epics, dependent: :delete_all
-  has_many :sprint, dependent: :delete_all
+  has_many :sprints, dependent: :delete_all
   after_create :set_board_default_configuration
 
   validates :project_id, uniqueness: true
@@ -39,7 +39,7 @@ class Board < ActiveRecord::Base
     stories = load_user_stories(project, sprints, param_sprint_id)
     statuses = StoryStatus.where(board_id: self.id).order(position: :asc)
     stories_hash = build_stories_hash(sprints, statuses, stories)
-    sprints =  sprints.decorate unless sprints.is_a?(Array)
+    sprints = sprints.decorate unless sprints.is_a?(Array)
     return sprints, statuses, stories_hash
   end
 
@@ -93,5 +93,23 @@ class Board < ActiveRecord::Base
   def load_user_stories(project, sprints, param_sprint_id)
     sprint_id = param_sprint_id.eql?('-1') ? nil : sprints.collect(&:id)
     UserStory.includes(:tracker, :points).where(board_id: self.id, sprint_id: sprint_id).order(position: :asc).decorate(context: {project: project})
+  end
+
+  def hash_group_by_is_archived
+    self.sprints.includes(:version).order(start_date: :desc).inject({ running: [], opened: [], archived: []}) do |memo, sprint|
+      hash_group_by_key(sprint)
+      memo[hash_group_by_key(sprint)] << sprint
+      memo
+    end
+  end
+
+  def hash_group_by_key(sprint)
+    if sprint.is_archived
+      :archived
+    elsif sprint.running?
+      :running
+    else
+      :opened
+    end
   end
 end

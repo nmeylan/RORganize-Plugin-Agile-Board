@@ -21,10 +21,18 @@ en:
   link_split: Split
   link_unified: Unified
   link_new_task: New task
+  link_archive: Archive
 
   field_summary: Summary
   field_status: Status
   field_epic: Epic
+
+  title_opened_sprints: Opened sprints
+  title_running_sprints: Running sprints
+  title_archived_sprints: Archived sprints
+  title_sprint_health: Sprint health
+  title_burndown_chart: Burndown chart
+  title_user_stories: User stories
 
 
   text_no_agile_board: This project doesn't have agile board yet, do you want to create it?
@@ -38,6 +46,14 @@ en:
   text_delete_sprint: Are you sure you want to destroy this sprint? All affected stories will be sent to the backlog.
   text_stories: stories
   text_points: points
+  text_running: running
+
+  success_sprint_archive: Sprint has been archived, retrieve it from reports page.
+  failure_sprint_archive: Sprint has not been archived.
+
+  confirm_archive_sprint: Are you sure you want to archive this sprint. It won't be able anymore from plan and work mode.
+    You can retrive it, and unarchive it, from the report page.
+
   info_filter_syntax: |
     SYNTAX: space between filter are interpreted as AND operator.
     Search is case insensitive.
@@ -51,8 +67,6 @@ en:
     ---------------------------------------------------------------------------------------
 
     The title: key is not mandatory but, if it not specified, value should be placed as the first parameter.
-
-  text_running: running
   info_edit_point: If you let the field blank, the point will be destroy.
 
   tooltip_points: Story points

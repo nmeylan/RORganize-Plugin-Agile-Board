@@ -9,7 +9,6 @@ module BoardsHelper
   # Render a subnav tag to choose the menu.
   def agile_board_menu
     content_tag :div do
-      display_mode_menu
       safe_concat subnav_tag('agile-board-menu', 'agile-board-menu',
                              @board_decorator.plan_menu_item(nav_item_selected?(:plan)),
                              @board_decorator.work_menu_item(nav_item_selected?(:work)),
@@ -62,7 +61,7 @@ module BoardsHelper
         safe_concat t(:text_no_agile_board)
         safe_concat create_link
       else
-        safe_concat agile_board_menu
+        display_mode_menu
         safe_concat agile_board_content
       end
     end
@@ -92,8 +91,8 @@ module BoardsHelper
     tabs << {name: 'epics-tab', element: medium_glyph(t(:link_epics), 'sword')} if User.current.allowed_to?('index', 'Epics', @project)
     tabs << {name: 'statuses-tab', element: glyph(t(:link_story_statuses), 'dashboard')} if User.current.allowed_to?('index', 'Story_statuses', @project)
     tabs << {name: 'points-tab', element: glyph(t(:link_story_points), 'coin')} if User.current.allowed_to?('index', 'Story_points', @project)
+    safe_concat @board_decorator.delete_link
     safe_concat horizontal_tabs('configuration-tab', tabs) unless tabs.empty?
-
     safe_concat points_content
     safe_concat statuses_content
     safe_concat epics_content

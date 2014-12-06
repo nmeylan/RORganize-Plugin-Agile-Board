@@ -15,7 +15,9 @@ class BoardDecorator < AgileBoardDecorator
   end
 
   def report_menu_item(selected = false)
-    agile_board_menu(h.t(:lable_agile_board_report), 'graph', :report, selected)
+    if User.current.allowed_to?('index', 'Agile_board_reports', context[:project])
+      agile_board_menu(h.t(:lable_agile_board_report), 'graph', :report, selected)
+    end
   end
 
   def configuration_menu_item(selected = false)
@@ -70,7 +72,7 @@ class BoardDecorator < AgileBoardDecorator
                                context[:project], nil,
                                {remote: true,
                                 'data-confirm' => h.t(:text_delete_agile_board),
-                                method: :delete, class: 'button danger'}
+                                method: :delete, class: 'button danger', id: 'delete-board-link'}
     )
   end
 

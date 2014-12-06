@@ -3,17 +3,19 @@ AgileBoard::Engine.routes.draw do
     mount AgileBoard::Engine => '/', as: 'agile_board_plugin'
   end
   scope 'projects/:project_id/' do
-    resource :boards, only: [:create, :index, :destroy],  as: 'agile_board', path: 'agile_board' do
-      get :index, path: '/(:menu)'
+    resource :boards, only: [:create, :index, :destroy], as: 'agile_board', path: 'agile_board' do
+      resource :agile_board_reports, only: [:index], path: '/report', as: 'reports' do
+        get :index, path: '/(:sprint_id)'
+      end
+      constraints(lambda { |req| req.params[:menu].nil? || ['work', 'plan', 'configuration'].include?(req.params[:menu]) }) do
+        get :index, path: '/(:menu)'
+      end
     end
     scope 'agile_board' do
       resources :story_statuses do
         post :change_position
       end
-      resource :agile_board_reports, only: [:index], as: 'reports' do
-        get :show_sprint, path: '/:sprint_id'
-        get :index, path: '/'
-      end
+
       resources :story_points, only: [:edit, :update] do
         collection do
           get :add_points
@@ -21,7 +23,9 @@ AgileBoard::Engine.routes.draw do
         end
       end
       resources :epics
-      resources :sprints
+      resources :sprints do
+        put :archive
+      end
       resources :user_stories do
         get :new_task
         post :create_task

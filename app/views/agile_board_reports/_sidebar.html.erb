@@ -1,0 +1,11 @@
+<%#=
+ * User: nmeylan
+ * Date: 05.12.14
+ * Time: 22:59
+%>
+
+<%= content_for :sidebar do %>
+    <% sidebar_block(sprint_hash, project, :running, t(:title_running_sprints), selected_sprint) %>
+    <% sidebar_block(sprint_hash, project, :opened, t(:title_opened_sprints), selected_sprint) %>
+    <% sidebar_block(sprint_hash, project, :archived, t(:title_archived_sprints), selected_sprint) %>
+<% end %>

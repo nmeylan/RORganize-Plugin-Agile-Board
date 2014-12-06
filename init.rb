@@ -14,6 +14,7 @@ Rorganize::Managers::PluginManager.register :agile_board do |plugin|
       {controller: 'story_statuses', action: 'index'},
       {controller: 'user_stories', action: 'index'},
       {controller: 'sprints', action: 'index'},
+      {controller: 'agile_board_reports', action: 'index'},
       {controller: 'epics', action: 'index'}])
 
   Rorganize::ACTION_ICON.merge!({epic_id: 'sword', point_id: 'coin', sprint_id: 'sprint'})

@@ -1,6 +1,6 @@
 class SprintsController < AgileBoardController
   include Rorganize::RichController::GenericCallbacks
-  before_action :set_sprint, only: [:show, :edit, :update, :destroy]
+  before_action :set_sprint, only: [:show, :edit, :update, :destroy, :archive]
   before_action :check_permission, except: [:generate_sprint_name]
 
 
@@ -40,6 +40,13 @@ class SprintsController < AgileBoardController
     simple_js_callback(result, :update, @sprint)
   end
 
+  def archive
+    @sprint.is_archived = true
+    result = @sprint.save
+    error_message =  "#{t(:failure_sprint_archive)} : #{@sprint.errors.messages.to_a.join(' ')}".freeze
+    js_callback(result, [t(:success_sprint_archive), error_message], result ? :destroy : nil, {id: @sprint.id})
+  end
+
   # DELETE /sprints/1
   def destroy
     simple_js_callback(@sprint.destroy, :delete, @sprint, {id: params[:id]})
@@ -57,7 +64,7 @@ class SprintsController < AgileBoardController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_sprint
-    @sprint = Sprint.find(params[:id])
+    @sprint = Sprint.find(params[:id] || params[:sprint_id])
   end
 
   def set_sprints
