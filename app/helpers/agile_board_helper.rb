@@ -93,6 +93,6 @@ module AgileBoardHelper
   end
 
   def span_with_background_style(caption, css_class, color)
-    content_tag :span, caption, {class: css_class, style: "background-color: #{color}"}
+    content_tag :span, caption, {class: css_class, style: "#{style_background_color(color)}"}
   end
 end

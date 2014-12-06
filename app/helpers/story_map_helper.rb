@@ -62,7 +62,7 @@ module StoryMapHelper
     content_tag :div, {class: 'story-map-column-header'} do
       concat_span_tag "#{status.caption} ", class: 'status-caption'
       safe_concat story_map_column_header_stories_count(total_stories_count, status, stories_count)
-      safe_concat content_tag :div, nil, class: 'story-map-column status-color', style: "background-color:#{status.color}"
+      safe_concat content_tag :div, nil, class: 'story-map-column status-color', style: "#{style_background_color(status.color)}"
     end
   end
 

@@ -28,10 +28,89 @@ module AgileBoardReportsHelper
   def left_sidebar_sprint_render
     content_tag :div, class: 'left-sidebar' do
       content_tag :ul, class: 'filter-sidebar' do
-        safe_concat content_tag :li, link_to(glyph(t(:title_sprint_health), 'heart'), '#',class: 'filter-item')
-        safe_concat content_tag :li, link_to(glyph(t(:title_burndown_chart),'burndown'), '#',class: 'filter-item')
-        safe_concat content_tag :li, link_to(glyph(t(:title_user_stories),'userstory'), '#',class: 'filter-item')
+        safe_concat content_tag :li, link_to(glyph(t(:title_sprint_health), 'pulse'), '#',
+                                             class: "filter-item #{'selected' if @sessions[:report_menu].eql?(:health)}")
+        safe_concat content_tag :li, link_to(glyph(t(:title_burndown_chart), 'burndown'), '#',
+                                             class: "filter-item #{'selected' if @sessions[:report_menu].eql?(:burndown)}")
+        safe_concat content_tag :li, link_to(glyph(t(:title_user_stories), 'userstory'), '#',
+                                             class: "filter-item #{'selected' if @sessions[:report_menu].eql?(:stories)}")
       end
+    end
+  end
+
+  def report_content
+    content_tag :div, {id: 'agile-board'} do
+      content_tag :div, {id: 'agile-board-content'} do
+        safe_concat left_sidebar_sprint_render
+        safe_concat report_content_body
+      end
+    end
+  end
+
+  def report_content_body
+    case @sessions[:report_menu]
+      when :health
+        sprint_health
+      when :burndown
+
+      when :stories
+
+    end
+  end
+
+  def sprint_health
+    content_tag :div, class: 'box sprint-health' do
+      safe_concat content_tag :div, content_tag(:h2, t(:title_sprint_health)), class: 'header header-left'
+      safe_concat sprint_info
+      safe_concat sprint_health_by_points_render
+      safe_concat sprint_health_by_stories_render
+      safe_concat clear_both
+    end
+  end
+
+  def sprint_info
+    content_tag :div, class: 'sprint-info-text' do
+      safe_concat content_tag :h2, @sprint_decorator.show_link
+      safe_concat @sprint_decorator.display_days_left
+      safe_concat @sprint_decorator.display_info_text
+    end
+  end
+
+  def sprint_health_by_stories_render
+    content_tag :div, class: 'splitcontent splitcontentright' do
+      safe_concat content_tag :p, t(:text_sprint_health_by_stories), class: 'sprint-health-text'
+      safe_concat sprint_health_by_stories_render_content
+    end
+  end
+
+  def sprint_health_by_points_render
+    content_tag :div, class: 'splitcontent splitcontentleft' do
+      safe_concat content_tag :p, t(:text_sprint_health_by_points), class: 'sprint-health-text'
+      safe_concat sprint_health_by_points_render_content
+    end
+  end
+
+  def sprint_health_by_points_render_content
+    content_tag :div do
+      @sprint_health_by_points.distribution.any? ? sprint_health_render_distribution(@sprint_health_by_points.distribution) : no_data
+    end
+  end
+
+  def sprint_health_by_stories_render_content
+    content_tag :div do
+      @sprint_health_by_stories.distribution.any? ? sprint_health_render_distribution(@sprint_health_by_stories.distribution) : no_data
+    end
+  end
+
+  def sprint_health_render_distribution(distribution_hash)
+    content_tag :div, class: 'sprint-health-bar' do
+      distribution_hash.collect do |status, statistics|
+        content_tag :span, statistics[0],
+                    {class: "sprint-health-percent tooltipped tooltipped-s",
+                     style: "#{style_background_color(status.color)}; width:#{statistics[1]}%; ",
+                     label: "#{status.caption} : #{statistics[1]}%"
+                    }
+      end.join.html_safe
     end
   end
 end

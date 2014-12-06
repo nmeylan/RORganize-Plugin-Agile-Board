@@ -6,6 +6,6 @@
 
 <%= content_for :sidebar do %>
     <% sidebar_block(sprint_hash, project, :running, t(:title_running_sprints), selected_sprint) %>
-    <% sidebar_block(sprint_hash, project, :opened, t(:title_opened_sprints), selected_sprint) %>
+    <% sidebar_block(sprint_hash, project, :opened, t(:title_passed_sprints), selected_sprint) %>
     <% sidebar_block(sprint_hash, project, :archived, t(:title_archived_sprints), selected_sprint) %>
 <% end %>

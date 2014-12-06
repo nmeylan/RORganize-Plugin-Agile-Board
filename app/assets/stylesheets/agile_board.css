@@ -7,6 +7,7 @@ Syntax error: File to import not found or unreadable: utilities/variables.
 1: @import 'partials/boards';
 2: @import 'partials/story_map';
 3: @import 'partials/user_stories';
+4: @import 'partials/report';
 
 Backtrace:
 partials/_boards.scss:1
@@ -55,4 +56,4 @@ agile_board.scss:1
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Syntax error: File to import not found or unreadable: utilities/variables.\A               Load path: /Users/nmeylan/RubymineProject/RORganize/vendor/engines/agile_board/app/assets/stylesheets\A         on line 1 of partials/_boards.scss\A         from line 1 of agile_board.scss\A \A 1: @import 'partials/boards';\A 2: @import 'partials/story_map';\A 3: @import 'partials/user_stories';"; }
+  content: "Syntax error: File to import not found or unreadable: utilities/variables.\A               Load path: /Users/nmeylan/RubymineProject/RORganize/vendor/engines/agile_board/app/assets/stylesheets\A         on line 1 of partials/_boards.scss\A         from line 1 of agile_board.scss\A \A 1: @import 'partials/boards';\A 2: @import 'partials/story_map';\A 3: @import 'partials/user_stories';\A 4: @import 'partials/report';"; }

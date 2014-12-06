@@ -32,7 +32,8 @@ class SprintDecorator < AgileBoardDecorator
   end
 
   def show_link
-    h.link_to self.resized_caption(25), h.agile_board_plugin::agile_board_path(context[:project].slug, :work, sprint_id: model.id), {class: 'sprint-show'}
+    h.link_to self.resized_caption(25), h.agile_board_plugin::agile_board_path(context[:project].slug, :work, sprint_id: model.id),
+              {class: 'sprint-show tooltipped tooltipped-s', label: h.t(:tooltip_view_map)}
   end
 
   def display_count_stories
@@ -88,5 +89,12 @@ class SprintDecorator < AgileBoardDecorator
 
   def sorted_stories
     self.stories.sort_by(&:position)
+  end
+
+  def display_days_left
+    unless model.end_date.nil?
+      days_left = (model.end_date - Date.today).to_i
+      h.content_tag :span, "#{days_left < 0 ? 0 : days_left} #{days_left == 1 ? h.t(:text_day_left) : h.t(:text_days_left)}", class: 'sprint-days-left'
+    end
   end
 end

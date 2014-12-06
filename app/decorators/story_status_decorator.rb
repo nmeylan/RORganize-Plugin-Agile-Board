@@ -16,7 +16,7 @@ class StoryStatusDecorator < AgileBoardDecorator
   end
 
   def display_caption
-    h.content_tag :span, self.resized_caption(25), {class: 'issue-status', style: "background-color: #{model.color}"}
+    h.content_tag :span, self.resized_caption(25), {class: 'issue-status', style: "#{h.style_background_color(model.color)}"}
   end
 
   def issues_status_options

@@ -35,13 +35,13 @@ class UserStoryDecorator < AgileBoardDecorator
   end
 
   def display_status
-    "<span class='issue-status filter-link' data-filtertype='status' style='background-color:#{model.status.color}'>
+    "<span class='issue-status filter-link' data-filtertype='status' style='#{h.style_background_color(model.status.color)}'>
       #{self.status_caption}
     </span>".freeze
   end
 
   def display_epic
-    "<span class='info-square epic-caption filter-link' data-filtertype='epic' style='background-color:#{model.epic.color}'>
+    "<span class='info-square epic-caption filter-link' data-filtertype='epic' style='#{h.style_background_color(model.epic.color)}'>
           <span class='octicon octicon-sword'></span>
           #{self.epic_caption}
     </span>".freeze if self.epic_caption

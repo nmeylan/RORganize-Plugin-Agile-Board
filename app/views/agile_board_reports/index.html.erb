@@ -11,7 +11,8 @@
 <%= contextual t(:label_agile_board) do %>
     <%= agile_board_menu if @board_decorator %>
 <% end %>
-<%= agile_board %>
+<%= render partial: 'agile_board_reports/sidebar', locals: {sprint_hash: sprint_hash, project: @project, selected_sprint: @sprint_decorator} %>
 
-<%= left_sidebar_sprint_render %>
-<%= render partial: 'agile_board_reports/sidebar', locals: {sprint_hash: sprint_hash, project: @project, selected_sprint: @sprint} %>
+
+<%= report_content %>
+<%= clear_both %>

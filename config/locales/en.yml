@@ -27,7 +27,7 @@ en:
   field_status: Status
   field_epic: Epic
 
-  title_opened_sprints: Opened sprints
+  title_passed_sprints: Passed sprints
   title_running_sprints: Running sprints
   title_archived_sprints: Archived sprints
   title_sprint_health: Sprint health
@@ -37,10 +37,15 @@ en:
 
   text_no_agile_board: This project doesn't have agile board yet, do you want to create it?
   text_no_stories: This sprint doesn't contains any user stories, create a new one or drag and drop it above.
+  text_no_stories_short: This sprint doesn't contains any user stories.
   text_no_sprints: This board doesn't contains any sprints.
   text_no_end_date: Current
   text_no_tasks: This story doesn't have any tasks.
   text_trash_task_placeholder: Here is the trash. Drag tasks you want to remove above.
+  text_sprint_health_by_points: Overall sprint progress (Story points)
+  text_sprint_health_by_stories: Overall sprint progress (Number of stories)
+  text_day_left: day left
+  text_days_left: days left
 
   text_delete_agile_board: Are you sure you want to destroy this agile board? Sprints, epics and user stories attached to this board will be destroyed.
   text_delete_sprint: Are you sure you want to destroy this sprint? All affected stories will be sent to the backlog.
@@ -70,5 +75,6 @@ en:
   info_edit_point: If you let the field blank, the point will be destroy.
 
   tooltip_points: Story points
+  tooltip_view_map: View story map
 
   placeholder_search_stories: Press ENTER to apply filter.

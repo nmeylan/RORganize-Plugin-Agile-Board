@@ -1,0 +1,99 @@
+@import 'utilities/variables';
+
+#agile-board-content {
+  .left-sidebar {
+    width: 16%;
+  }
+
+  .box.sprint-health {
+    .header{
+      margin-bottom: 0;
+      margin: 0;
+      padding: 6px 6px 0px 6px;
+    }
+    position:relative;
+    float: left;
+    width: -moz-calc(84% - 65px);
+    /* WebKit */
+    width: -webkit-calc(84% - 65px);
+    /* Opera */
+    width: -o-calc(84% - 65px);
+    /* Standard */
+    width: calc(84% - 65px);
+    margin-left: 40px;
+    margin-top: 20px;
+    padding: 0;
+
+    .sprint-health-bar {
+      width: 140px;
+      line-height:40px;
+      position: relative;
+      display: inline-block;
+      color: white;
+      text-align: center;
+      vertical-align: middle;
+      font-weight: bold;
+      width: 100%;
+      .sprint-health-percent {
+        position: relative;
+        display: inline-block;
+        height: 100%;
+      }
+      .sprint-health-percent:first-child {
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+      }
+
+      .sprint-health-percent:last-child {
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+      }
+    }
+
+    .sprint-info-text{
+      border-bottom: solid 1px $default-border-color;
+      padding: 15px;
+      h2{
+        margin-left: 0;
+        display: inline-block;
+        a{
+          font-size: 16px;
+        }
+      }
+      .sprint-date-range{
+        float: none;
+      }
+      .sprint-days-left{
+        font-size: 16px;
+        color: $default-smooth-color;
+        font-weight: bold;
+      }
+    }
+    .splitcontentleft{
+      float:left;
+      border-right: solid 1px $default-border-color;
+    }
+    .splitcontentright{
+      float:right;
+    }
+    .splitcontent{
+      position: relative;
+      padding: 30px;
+      width: -moz-calc(50% - 65px);
+      /* WebKit */
+      width: -webkit-calc(50% - 65px);
+      /* Opera */
+      width: -o-calc(50% - 65px);
+      /* Standard */
+      width: calc(50% - 65px);
+      p{
+        margin: 0;
+      }
+      .sprint-health-text{
+        margin-bottom: 10px;
+      }
+    }
+
+  }
+
+}

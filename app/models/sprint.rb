@@ -81,22 +81,33 @@ class Sprint < ActiveRecord::Base
     end
   end
 
+  def total_points
+    self.stories.inject(0) { |count, story| count + story.value }
+  end
+
   def points_distribution
-    distribution_stats_by_status(& ->(story) { story.value })
+    distribution_stats_by_status(self.total_points, & ->(story) { story.value })
   end
 
   def stories_distribution
-    distribution_stats_by_status(1)
+    distribution_stats_by_status(self.stories.count, 1)
   end
 
   # Return the distribution of something by status.
-  # @return [Hash] will this structure : {Status => distribution, Status => distribution}
-  # Key is a StoryStatus (a frozen complex object). Value is Numeric.
-  def distribution_stats_by_status(content_or_block = nil)
-    self.stories.sort_by(&:status_position).inject({}) do |memo, story|
-      memo[story.status.freeze] ||= 0
-      memo[story.status.freeze] += block_given? ? yield(story) : content_or_block
+  # @return [Hash] will this structure : {Status => [distribution, percent], Status => [distribution, percent]}
+  # Key is a StoryStatus (a frozen complex object). Value is an array of size 2 [Numeric, Numeric].
+  def distribution_stats_by_status(total, content_or_block = nil)
+    hash = self.stories.sort_by(&:status_position).inject({}) do |memo, story|
+      memo[story.status.freeze] ||= [0, 0]
+      memo[story.status.freeze][0] += block_given? ? yield(story) : content_or_block
       memo
+    end
+    hash.each do |status, stats|
+      if total > 0
+        hash[status][1] = ((stats[0].to_f / total) * 100.0).truncate
+      else
+        hash.delete(status)
+      end
     end
   end
 end
