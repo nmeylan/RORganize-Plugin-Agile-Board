@@ -24,6 +24,6 @@ class AgileBoardController < ApplicationController
   end
 
   def set_display_sessions
-    @sessions[:display_mode] = session[:boards][:display_mode]
+    @sessions[:display_mode] = session[:boards] ? session[:boards][:display_mode] : session[:agile_board_reports][:display_mode]
   end
 end

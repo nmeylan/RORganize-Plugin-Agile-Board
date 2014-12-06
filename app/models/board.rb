@@ -112,4 +112,10 @@ class Board < ActiveRecord::Base
       :opened
     end
   end
+
+
+  # @return [StoryStatus] the last status, which is considered as the "Done" status.
+  def done_status
+    self.story_statuses.order(position: :desc).first
+  end
 end

@@ -93,7 +93,7 @@ class UserStory < ActiveRecord::Base
         if attr_name.eql?('status_id')
           value = StoryStatus.find(value).issues_status_id
         end
-        Issue.bulk_edit(issue_ids, {attr_name => value}, project)
+        Issue.bulk_edit(issue_ids, {attr_name.to_sym => value}, project)
       end
     end
   end

@@ -33,6 +33,9 @@ en:
   title_sprint_health: Sprint health
   title_burndown_chart: Burndown chart
   title_user_stories: User stories
+  title_time_elapsed: Time elapsed
+  title_work_complete: Work complete
+  title_tasks_progress: Tasks progress
 
 
   text_no_agile_board: This project doesn't have agile board yet, do you want to create it?

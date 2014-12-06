@@ -113,7 +113,7 @@ class UserStoryDecorator < AgileBoardDecorator
   end
 
   def total_progress
-    self.issues.inject(0) { |sum, issue| sum + (issue.done ? issue.done : 0) }
+    self.issues.size > 0 ? (self.issues.inject(0) { |sum, issue| sum + (issue.done ? issue.done : 0) } / self.issues.size) : 100
   end
 
   def total_progress_bar

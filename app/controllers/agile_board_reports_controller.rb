@@ -27,7 +27,7 @@ class AgileBoardReportsController < AgileBoardController
 
   def load_sprint(sprint_hash)
     id = params[:sprint_id] || sprint_hash.values.flatten.first.id
-    Sprint.includes(stories: [:status, :points]).find_by_id(id)
+    Sprint.includes(stories: [:status, :points, :issues]).find_by_id(id)
   end
 
 end

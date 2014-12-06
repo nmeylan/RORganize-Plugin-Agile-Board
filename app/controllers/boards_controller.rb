@@ -1,7 +1,7 @@
 class BoardsController < AgileBoardController
-  before_action :set_board, only: [:index, :add_points, :destroy]
-  before_action :check_permission
-  before_action :custom_check_permission
+  # before_action :set_board, only: [:index, :add_points, :destroy]
+  # before_action :check_permission
+  # before_action :custom_check_permission
   include Rorganize::RichController::ProjectContext
   # GET /boards
   def index
@@ -9,7 +9,6 @@ class BoardsController < AgileBoardController
     @sessions[:agile_board_menu] = params[:menu].to_sym if params[:menu]
     @sessions[:display_mode] ||= :unified
     @sessions[:display_mode] = params[:display_mode].to_sym if params[:display_mode]
-
     select_menu
     respond_to do |format|
       format.html { render :index }

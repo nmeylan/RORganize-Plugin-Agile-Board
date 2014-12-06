@@ -80,6 +80,8 @@ module AgileBoardReportsHelper
     content_tag :div, class: 'splitcontent splitcontentright' do
       safe_concat content_tag :p, t(:text_sprint_health_by_stories), class: 'sprint-health-text'
       safe_concat sprint_health_by_stories_render_content
+      safe_concat sprint_health_square(@sprint_health_by_stories.tasks_count, t(:label_tasks))
+      safe_concat sprint_health_square("#{@sprint_health_by_stories.tasks_progress} %", t(:title_tasks_progress))
     end
   end
 
@@ -87,6 +89,9 @@ module AgileBoardReportsHelper
     content_tag :div, class: 'splitcontent splitcontentleft' do
       safe_concat content_tag :p, t(:text_sprint_health_by_points), class: 'sprint-health-text'
       safe_concat sprint_health_by_points_render_content
+      unit = @sprint_health_by_points.time_elapsed_unit.eql?(:percent) ? '%' : t(:label_plural_day)
+      safe_concat sprint_health_square("#{@sprint_health_by_points.time_elapsed} #{unit}", t(:title_time_elapsed))
+      safe_concat sprint_health_square("#{@sprint_health_by_points.work_complete} %", t(:title_work_complete))
     end
   end
 
@@ -109,8 +114,16 @@ module AgileBoardReportsHelper
                     {class: "sprint-health-percent tooltipped tooltipped-s",
                      style: "#{style_background_color(status.color)}; width:#{statistics[1]}%; ",
                      label: "#{status.caption} : #{statistics[1]}%"
-                    }
+                    } if statistics[1] > 0
       end.join.html_safe
     end
   end
+
+  def sprint_health_square(info, label)
+    content_tag :div, class: 'sprint-health-square' do
+      safe_concat content_tag :h1, info
+      safe_concat content_tag :span, label
+    end
+  end
+
 end
