@@ -69,6 +69,7 @@ module AgileBoardReportsHelper
       safe_concat sprint_health_by_points_render
       safe_concat sprint_health_by_stories_render
       safe_concat clear_both
+      safe_concat sprint_health_statistics_render
     end
   end
 
@@ -84,8 +85,6 @@ module AgileBoardReportsHelper
     content_tag :div, class: 'splitcontent splitcontentright' do
       safe_concat content_tag :p, t(:text_sprint_health_by_stories), class: 'sprint-health-text'
       safe_concat sprint_health_by_stories_render_content
-      safe_concat sprint_health_square(@sprint_health_by_stories.tasks_count, t(:label_tasks))
-      safe_concat sprint_health_square("#{@sprint_health_by_stories.tasks_progress} %", t(:title_tasks_progress))
     end
   end
 
@@ -93,21 +92,29 @@ module AgileBoardReportsHelper
     content_tag :div, class: 'splitcontent splitcontentleft' do
       safe_concat content_tag :p, t(:text_sprint_health_by_points), class: 'sprint-health-text'
       safe_concat sprint_health_by_points_render_content
-      unit = @sprint_health_by_points.time_elapsed_unit.eql?(:percent) ? '%' : t(:label_plural_day)
-      safe_concat sprint_health_square("#{@sprint_health_by_points.time_elapsed} #{unit}", t(:title_time_elapsed))
-      safe_concat sprint_health_square("#{@sprint_health_by_points.work_complete} %", t(:title_work_complete))
     end
   end
 
   def sprint_health_by_points_render_content
     content_tag :div do
-      @sprint_health_by_points.distribution.any? ? sprint_health_render_distribution(@sprint_health_by_points.distribution) : no_data
+      @sprint_health.points_distribution.any? ? sprint_health_render_distribution(@sprint_health.points_distribution) : no_data
     end
   end
 
   def sprint_health_by_stories_render_content
     content_tag :div do
-      @sprint_health_by_stories.distribution.any? ? sprint_health_render_distribution(@sprint_health_by_stories.distribution) : no_data
+      @sprint_health.stories_distribution.any? ? sprint_health_render_distribution(@sprint_health.stories_distribution) : no_data
+    end
+  end
+
+  def sprint_health_statistics_render
+    content_tag :div, class: 'statistics-bar' do
+      unit = @sprint_health.time_elapsed_unit.eql?(:percent) ? '%' : t(:label_plural_day)
+      safe_concat sprint_health_square("#{@sprint_health.time_elapsed} #{unit}", t(:title_time_elapsed))
+      safe_concat sprint_health_square("#{@sprint_health.work_complete} %", t(:title_work_complete))
+      safe_concat sprint_health_square("#{@sprint_health.scope_change} %", t(:title_scope_change))
+      safe_concat sprint_health_square(@sprint_health.tasks_count, t(:label_tasks))
+      safe_concat sprint_health_square("#{@sprint_health.tasks_progress} %", t(:title_tasks_progress))
     end
   end
 

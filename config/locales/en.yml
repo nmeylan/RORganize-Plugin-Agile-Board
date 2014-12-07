@@ -37,6 +37,7 @@ en:
   title_time_elapsed: Time elapsed
   title_work_complete: Work complete
   title_tasks_progress: Tasks progress
+  title_scope_change: Scope change
 
 
   text_no_agile_board: This project doesn't have agile board yet, do you want to create it?

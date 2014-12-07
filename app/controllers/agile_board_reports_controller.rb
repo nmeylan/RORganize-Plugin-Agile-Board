@@ -3,8 +3,7 @@
 # Encoding: UTF-8
 # File: agile_board_reports.rb
 
-require 'agile_board/view_objects/sprint_health_by_points'
-require 'agile_board/view_objects/sprint_health_by_stories'
+require 'agile_board/view_objects/sprint_health'
 class AgileBoardReportsController < AgileBoardController
   include Rorganize::RichController::GenericCallbacks
   before_filter { |c| c.add_action_alias = {'health' => 'index', 'show_stories' => 'index'} }
@@ -21,16 +20,14 @@ class AgileBoardReportsController < AgileBoardController
     @sessions[:report_menu] ||= :health
 
     if @sprint_decorator
-      @sprint_health_by_points = SprintHealthByPoints.new(@sprint_decorator)
-      @sprint_health_by_stories = SprintHealthByStories.new(@sprint_decorator)
+      @sprint_health = SprintHealth.new(@sprint_decorator)
     end
     generic_index_callback({sprint_hash: @sprint_hash})
   end
 
   def health
     @sessions[:report_menu] = :health
-    @sprint_health_by_points = SprintHealthByPoints.new(@sprint_decorator)
-    @sprint_health_by_stories = SprintHealthByStories.new(@sprint_decorator)
+    @sprint_health = SprintHealth.new(@sprint_decorator)
     generic_index_callback
   end
 

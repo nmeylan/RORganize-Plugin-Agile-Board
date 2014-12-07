@@ -27,9 +27,16 @@ module AgileBoard
         memo[story.status.freeze][0] += block_given? ? yield(story) : content_or_block
         memo
       end
+      distribution_stats_add_percentage_calculation(hash, total)
+    end
+
+    # @param [Hash] hash : {Status => [distribution, 0], Status => [distribution, 0]}
+    # @param [Numeric] total : the total to perform the percentage,
+    # can be number of stories or sum of story points.
+    def distribution_stats_add_percentage_calculation(hash, total)
       hash.each do |status, stats|
         if total > 0
-          hash[status][1] = ((stats[0].to_f / total) * 100.0).truncate
+          hash[status][1] = percentage_calculation(stats[0], total)
         else
           hash.delete(status)
         end
@@ -45,7 +52,7 @@ module AgileBoard
       consumed_days = (today - self.start_date).to_i
       if self.end_date && self.end_date > today
         duration = (self.end_date - self.start_date).to_i
-        return (consumed_days > 0 ? (consumed_days / duration.to_f) * 100 : 0).round(1), :percent
+        return (consumed_days > 0 ? percentage_calculation(consumed_days, duration) : 0).round(1), :percent
       elsif self.end_date && self.end_date <= today
         return 100, :percent
       else
@@ -61,13 +68,14 @@ module AgileBoard
       done_stories = self.stories.select { |story| story.status_id.eql?(done_status_id) }
       done_stories_value = done_stories.inject(0) { |count, story| count + story.value }
       total = self.stories.inject(0) { |count, story| count + story.value }
-      (total > 0 ? (done_stories_value.to_f / total) * 100 : 0).truncate
+      (total > 0 ? percentage_calculation(done_stories_value, total) : 0).truncate
     end
 
     def tasks_count
-      self.stories.inject(0){|count, story| count + story.issues.size}
+      self.stories.inject(0) { |count, story| count + story.issues.size }
     end
 
+    # @return [Numeric] the percentage of tasks, contained by stories, progress.
     def tasks_progress
       total_done = 0
       total_tasks = 0
@@ -78,6 +86,21 @@ module AgileBoard
         end
       end
       total_tasks > 0 ? total_done / total_tasks : 100
+    end
+
+    def scope_change
+      stories = self.stories.joins(:journals).eager_load(journals: :details).
+          where('journals.action_type = ? OR (journals.action_type = ? AND'\
+                    ' journal_details.property_key = ? AND' \
+                    ' journal_details.value = ?)', 'created', 'updated', 'sprint_id', self.name).
+          where('journals.created_at >= ?', self.start_date)
+      total = total_points
+      total > 0 ? percentage_calculation(stories.inject(0) { |count, story| count + story.value }, total) : 0
+    end
+
+
+    def percentage_calculation(numerator, total)
+      ((numerator.to_f / total) * 100.0).truncate
     end
   end
 end
