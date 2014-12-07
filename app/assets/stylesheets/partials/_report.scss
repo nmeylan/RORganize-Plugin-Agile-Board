@@ -112,7 +112,36 @@
         display: inline-block;
       }
     }
+    #statistics-info{
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+    }
 
   }
 
+}
+
+
+#statistics-help{
+  top: 20px !important;
+  .overlayContent{
+    width: 800px !important;
+    .overlayInner{
+      overflow-y: scroll;
+    }
+    table{
+      tr{
+        vertical-align: top;
+        white-space: pre-line;
+        td{
+          padding: 7px 10px;
+        }
+        .title{
+          font-weight: bold;
+        }
+      }
+    }
+
+  }
 }

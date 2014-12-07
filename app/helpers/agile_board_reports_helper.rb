@@ -70,6 +70,8 @@ module AgileBoardReportsHelper
       safe_concat sprint_health_by_stories_render
       safe_concat clear_both
       safe_concat sprint_health_statistics_render
+      safe_concat info_tag(nil, {id: 'statistics-info'})
+
     end
   end
 

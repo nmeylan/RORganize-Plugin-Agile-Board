@@ -15,4 +15,38 @@
 
 
 <%= report_content %>
+<%= overlay_tag 'statistics-help' do %>
+    <h1><%= t(:title_help_stats) %></h1>
+    <table class="detail" style="width:100%">
+      <thead>
+      <tr>
+        <th style="width: 20%"><%= t(:title_field) %></th>
+        <th style="width: 80%"><%= t(:field_description) %></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td class="title"><%= t(:title_work_complete) %></td>
+        <td><%= t(:info_work_complete) %></td>
+      </tr>
+      <tr>
+        <td class="title"><%= t(:title_time_elapsed) %></td>
+        <td><%= t(:info_time_elapsed) %></td>
+      </tr>
+      <tr>
+        <td class="title"><%= t(:title_scope_change) %></td>
+        <td><%= t(:info_scope_change).html_safe %></td>
+      </tr>
+      <tr>
+        <td class="title"><%= t(:label_tasks) %></td>
+        <td><%= t(:info_tasks) %></td>
+      </tr>
+      <tr>
+        <td class="title"><%= t(:title_tasks_progress) %></td>
+        <td><%= t(:info_tasks_progress) %></td>
+      </tr>
+      </tbody>
+    </table>
+
+<% end %>
 <%= clear_both %>

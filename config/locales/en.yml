@@ -38,6 +38,8 @@ en:
   title_work_complete: Work complete
   title_tasks_progress: Tasks progress
   title_scope_change: Scope change
+  title_help_stats: How to read satistics?
+  title_field: Field
 
 
   text_no_agile_board: This project doesn't have agile board yet, do you want to create it?
@@ -81,6 +83,20 @@ en:
 
     The title: key is not mandatory but, if it not specified, value should be placed as the first parameter.
   info_edit_point: If you let the field blank, the point will be destroy.
+  info_work_complete: |
+    This is calculated based on the story points.
+    This is reflected by the last status defined (in Configuration menu), by default it's "Done".
+    For example, if you have 50 story points in a sprint and you have 3 stories with 10 story points that have been the "Done" status (by default) , the 'Work complete' will be 20% (i.e. 10 out of 50 story points).
+  info_time_elapsed: The time elapsed since the sprint was started. A percentage if sprint has an end date, else the number of days elapsed.
+  info_tasks_progress: This is calculated based on done progression ratio of tasks attached to user stories.
+  info_tasks: This field count all tasks attached to stories.
+  info_scope_change: |
+    Adding or removing a story from a sprint, after it has started is considered a change of scope. The percentage is calculated based on the story points.
+
+    For example, if you started a sprint it 50 story points and add an issue with 5 story points, the Sprint Health would show a 10% scope change.
+
+    If you add/remove stories that don't have estimates, the scope change will not be altered.
+
 
   tooltip_points: Story points
   tooltip_view_map: View story map

@@ -42,19 +42,6 @@ module BoardsHelper
     end
   end
 
-  def tooltip_text
-    "SYNTAX: space between filter are interpreted as AND operator. "+
-        "\nSearch is case insensitive."+
-        "\n\nValues can contain spaces until the next key."+
-        "\n---------------------------------------------------------------------------------------\n"+
-        "title:my title\t\t\t\t\t\t     category:my category"+
-        "\ntracker:bug\t\t\t\t\t\t\t\t    epic:an epic"+
-        "\nstatus:to do"+
-        "\n---------------------------------------------------------------------------------------\n"+
-        "\nValid keys are : category, epic, status, title, tracker."+
-        "\n\nThe title: key is not mandatory but, if it not specified, value should be placed as the first parameter."
-  end
-
   def agile_board
     content_tag :div, {id: 'agile-board'} do
       if @board_decorator.nil?
@@ -112,9 +99,9 @@ module BoardsHelper
   def plan_content
     safe_concat clear_both
     safe_concat content_tag :div, class: 'agile-board-plan', &Proc.new {
-                                  sprints_content(@sprints_decorator)
-                                  safe_concat render_sprint(@backlog, "backlog #{'splitcontentright' if split_content?}")
-                                }
+      sprints_content(@sprints_decorator)
+      safe_concat render_sprint(@backlog, "backlog #{'splitcontentright' if split_content?}")
+    }
     safe_concat clear_both
   end
 

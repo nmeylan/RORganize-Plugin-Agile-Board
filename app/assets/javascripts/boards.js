@@ -4,6 +4,8 @@ $(document).ready(function (e) {
     if (gon.controller === "boards") {
         initialize_board();
         bind_user_story_search_field();
+    }else if(gon.controller === 'agile_board_reports'){
+        bind_agile_board_reports();
     }
 });
 
