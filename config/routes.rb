@@ -6,8 +6,10 @@ AgileBoard::Engine.routes.draw do
     resource :boards, only: [:create, :index, :destroy], as: 'agile_board', path: 'agile_board' do
       resource :agile_board_reports, only: [:index], path: '/report', as: 'reports' do
         get :index, path: '/(:sprint_id)'
+        get :health, path: '/:sprint_id/health'
+        get :show_stories, path: '/:sprint_id/stories'
       end
-      constraints(lambda { |req| req.params[:menu].nil? || ['work', 'plan', 'configuration'].include?(req.params[:menu]) }) do
+      constraints(->(req) { req.params[:menu].nil? || ['work', 'plan', 'configuration'].include?(req.params[:menu]) }) do
         get :index, path: '/(:menu)'
       end
     end
@@ -25,6 +27,7 @@ AgileBoard::Engine.routes.draw do
       resources :epics
       resources :sprints do
         put :archive
+        put :restore
       end
       resources :user_stories do
         get :new_task

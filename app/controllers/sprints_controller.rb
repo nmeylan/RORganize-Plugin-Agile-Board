@@ -1,6 +1,6 @@
 class SprintsController < AgileBoardController
   include Rorganize::RichController::GenericCallbacks
-  before_action :set_sprint, only: [:show, :edit, :update, :destroy, :archive]
+  before_action :set_sprint, only: [:show, :edit, :update, :destroy, :archive, :restore]
   before_action :check_permission, except: [:generate_sprint_name]
 
 
@@ -45,6 +45,13 @@ class SprintsController < AgileBoardController
     result = @sprint.save
     error_message =  "#{t(:failure_sprint_archive)} : #{@sprint.errors.messages.to_a.join(' ')}".freeze
     js_callback(result, [t(:success_sprint_archive), error_message], result ? :destroy : nil, {id: @sprint.id})
+  end
+
+  def restore
+    @sprint.is_archived = false
+    result = @sprint.save
+    error_message =  "#{t(:failure_sprint_restore)} : #{@sprint.errors.messages.to_a.join(' ')}".freeze
+    js_callback(result, [t(:success_sprint_restore), error_message], result ? :destroy : nil, {id: @sprint.id})
   end
 
   # DELETE /sprints/1

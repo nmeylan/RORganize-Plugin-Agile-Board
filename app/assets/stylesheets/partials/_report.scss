@@ -5,12 +5,7 @@
     width: 16%;
   }
 
-  .box.sprint-health {
-    .header{
-      margin-bottom: 0;
-      margin: 0;
-      padding: 6px 6px 0px 6px;
-    }
+  .box.sprint-health, .box.sprint.report {
     position:relative;
     float: left;
     width: -moz-calc(84% - 65px);
@@ -22,6 +17,14 @@
     width: calc(84% - 65px);
     margin-left: 40px;
     margin-top: 20px;
+  }
+  .box.sprint-health {
+    .header{
+      margin-bottom: 0;
+      margin: 0;
+      padding: 6px 6px 0px 6px;
+    }
+
     padding: 0;
 
     .sprint-health-bar {

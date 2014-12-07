@@ -69,7 +69,7 @@ module SprintsHelper
   end
 
   def sprint_dropwdown(sprint)
-    actions = [sprint.new_story(false), sprint.edit_link, sprint.archive_link, sprint.delete_link].compact
+    actions = [sprint.new_story(false), sprint.edit_link, sprint.archive_link, sprint.restore_link,sprint.delete_link].compact
     if actions.any?
       dropdown_tag do
         actions.collect{|action| dropdown_row action}.join.html_safe

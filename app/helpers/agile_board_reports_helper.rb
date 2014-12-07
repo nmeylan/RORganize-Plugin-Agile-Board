@@ -4,6 +4,7 @@
 # File: agile_board_reports_helper.rb
 
 module AgileBoardReportsHelper
+  include SprintsHelper
 
   # @param [Hash] sprint_hash a hash with this structure . {opened: [sprint, sprint], archived: [sprint, sprint], running: [sprint, sprint]}.
   # @param [Project] project.
@@ -28,12 +29,10 @@ module AgileBoardReportsHelper
   def left_sidebar_sprint_render
     content_tag :div, class: 'left-sidebar' do
       content_tag :ul, class: 'filter-sidebar' do
-        safe_concat content_tag :li, link_to(glyph(t(:title_sprint_health), 'pulse'), '#',
-                                             class: "filter-item #{'selected' if @sessions[:report_menu].eql?(:health)}")
-        safe_concat content_tag :li, link_to(glyph(t(:title_burndown_chart), 'burndown'), '#',
-                                             class: "filter-item #{'selected' if @sessions[:report_menu].eql?(:burndown)}")
-        safe_concat content_tag :li, link_to(glyph(t(:title_user_stories), 'userstory'), '#',
-                                             class: "filter-item #{'selected' if @sessions[:report_menu].eql?(:stories)}")
+        safe_concat content_tag :li, @sprint_decorator.health_link(@sessions[:report_menu].eql?(:health))
+        # safe_concat content_tag :li, link_to(glyph(t(:title_burndown_chart), 'burndown'), '#',
+        #                                      class: "filter-item #{'selected' if @sessions[:report_menu].eql?(:burndown)}")
+        safe_concat content_tag :li, @sprint_decorator.show_stories_link(@sessions[:report_menu].eql?(:stories))
       end
     end
   end
@@ -41,9 +40,10 @@ module AgileBoardReportsHelper
   def report_content
     if @sprint_decorator
       content_tag :div, {id: 'agile-board'} do
-        content_tag :div, {id: 'agile-board-content'} do
+        content_tag :div, {id: 'agile-board-content', class: 'report'} do
           safe_concat left_sidebar_sprint_render
           safe_concat report_content_body
+          safe_concat clear_both
         end
       end
     else
@@ -58,7 +58,7 @@ module AgileBoardReportsHelper
       when :burndown
 
       when :stories
-
+        render_sprint(@sprint_decorator, 'report')
     end
   end
 

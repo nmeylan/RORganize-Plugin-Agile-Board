@@ -57,6 +57,10 @@ class UserStory < ActiveRecord::Base
     self.status.position
   end
 
+  def archived?
+    self.sprint && self.sprint.archived?
+  end
+
   def tasks_version_id
     version = self.get_sprint.version
     version ? version.id : nil

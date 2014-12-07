@@ -28,7 +28,7 @@ module UserStoriesHelper
       safe_concat story.display_status
       safe_concat story.display_issues_counter if unified_content?
       safe_concat story.display_points
-      safe_concat story_right_dropdown(story) if unified_content?
+      safe_concat story_right_dropdown(story) if unified_content? && !story.archived?
     end
   end
 

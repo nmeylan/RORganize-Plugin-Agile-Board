@@ -22,6 +22,7 @@ en:
   link_unified: Unified
   link_new_task: New task
   link_archive: Archive
+  link_restore: Restore
 
   field_summary: Summary
   field_status: Status
@@ -58,7 +59,10 @@ en:
 
   success_sprint_archive: Sprint has been archived, retrieve it from reports page.
   failure_sprint_archive: Sprint has not been archived.
+  success_sprint_restore: Sprint has been restored, retrieve it from plan page.
+  failure_sprint_restore: Sprint has not been restored.
 
+  confirm_restore_sprint: Are you sure you want to restore this sprint. It will be able from plan and work mode .
   confirm_archive_sprint: Are you sure you want to archive this sprint. It won't be able anymore from plan and work mode.
     You can retrive it, and unarchive it, from the report page.
 
