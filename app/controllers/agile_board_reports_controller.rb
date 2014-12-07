@@ -6,6 +6,7 @@
 require 'agile_board/view_objects/sprint_health_by_points'
 require 'agile_board/view_objects/sprint_health_by_stories'
 class AgileBoardReportsController < AgileBoardController
+  before_filter { |c| c.add_action_alias = {'health' => 'index', 'show_stories' => 'index'} }
   before_filter :check_permission
   before_action :load_sprints_hash, only: [:index]
   before_action :load_sprint
