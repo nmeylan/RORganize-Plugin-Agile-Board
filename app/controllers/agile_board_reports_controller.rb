@@ -6,6 +6,7 @@
 require 'agile_board/view_objects/sprint_health_by_points'
 require 'agile_board/view_objects/sprint_health_by_stories'
 class AgileBoardReportsController < AgileBoardController
+  include Rorganize::RichController::GenericCallbacks
   before_filter { |c| c.add_action_alias = {'health' => 'index', 'show_stories' => 'index'} }
   before_filter :check_permission
   before_action :load_sprints_hash, only: [:index]
@@ -23,28 +24,19 @@ class AgileBoardReportsController < AgileBoardController
       @sprint_health_by_points = SprintHealthByPoints.new(@sprint_decorator)
       @sprint_health_by_stories = SprintHealthByStories.new(@sprint_decorator)
     end
-    respond_to do |format|
-      format.html { render :index, locals: {sprint_hash: @sprint_hash} }
-      format.js { respond_to_js action: 'index' }
-    end
+    generic_index_callback({sprint_hash: @sprint_hash})
   end
 
   def health
     @sessions[:report_menu] = :health
     @sprint_health_by_points = SprintHealthByPoints.new(@sprint_decorator)
     @sprint_health_by_stories = SprintHealthByStories.new(@sprint_decorator)
-    respond_to do |format|
-      format.html { render :index }
-      format.js { respond_to_js action: 'index' }
-    end
+    generic_index_callback
   end
 
   def show_stories
     @sessions[:report_menu] = :stories
-    respond_to do |format|
-      format.html { render :index }
-      format.js { respond_to_js action: 'index' }
-    end
+    generic_index_callback
   end
 
   private
