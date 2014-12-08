@@ -1,27 +1,85 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  title: MyString
+story_001:
+  id: 1
+  title: Story 1
   description: MyText
   status_id: 1
-  points: 1
+  point_id: 10
   position: 1
   author_id: 1
   epic_id: 1
   tracker_id: 1
   sprint_id: 1
-  project_id: 1
+  board_id: 1
   category_id: 1
 
-two:
-  title: MyString
+story_002:
+  id: 2
+  title: Story 2
   description: MyText
   status_id: 1
-  points: 1
+  point_id: 10
   position: 1
   author_id: 1
   epic_id: 1
   tracker_id: 1
   sprint_id: 1
-  project_id: 1
+  board_id: 1
+  category_id: 1
+
+story_003:
+  id: 3
+  title: Story 3
+  description: MyText
+  status_id: 1
+  point_id: 3
+  position: 1
+  author_id: 1
+  epic_id: 1
+  tracker_id: 1
+  sprint_id: 1
+  board_id: 1
+  category_id: 1
+
+story_004:
+  id: 4
+  title: Story 4
+  description: MyText
+  status_id: 1
+  point_id: 4
+  position: 1
+  author_id: 1
+  epic_id: 1
+  tracker_id: 1
+  sprint_id: 1
+  board_id: 1
+  category_id: 1
+
+story_005:
+  id: 5
+  title: Story 5
+  description: MyText
+  status_id: 1
+  point_id: 3
+  position: 1
+  author_id: 1
+  epic_id: 1
+  tracker_id: 1
+  sprint_id: 1
+  board_id: 1
+  category_id: 1
+
+story_006:
+  id: 6
+  title: Story 6
+  description: MyText
+  status_id: 1
+  point_id: 3
+  position: 1
+  author_id: 1
+  epic_id: 1
+  tracker_id: 1
+  sprint_id: 2
+  board_id: 1
   category_id: 1

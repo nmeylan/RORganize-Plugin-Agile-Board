@@ -89,11 +89,12 @@ module AgileBoard
     end
 
     def scope_change
-      stories = self.stories.joins(:journals).eager_load(journals: :details).
-          where('journals.action_type = ? OR (journals.action_type = ? AND'\
+      stories = UserStory.joins(:journals).eager_load(journals: :details).
+          where('(journals.action_type = ? AND user_stories.sprint_id = ?) OR (journals.action_type = ? AND'\
                     ' journal_details.property_key = ? AND' \
-                    ' (journal_details.value = ? OR journal_details.old_value = ?))', 'created', 'updated', 'sprint_id', self.name, self.name).
-          where('journals.created_at >= ?', self.start_date).includes(:points)
+                    ' (journal_details.value = ? OR journal_details.old_value = ?))', 'created', self.id,
+                'updated', 'sprint_id', self.name, self.name).
+          where('journals.created_at >= ?', self.start_date).includes(:points).group('user_stories.id')
       total = total_points
       total > 0 ? percentage_calculation(stories.inject(0) { |count, story| count + story.value }, total) : 0
     end

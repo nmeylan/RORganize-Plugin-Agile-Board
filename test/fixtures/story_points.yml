@@ -1,9 +1,36 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  id: 1
   value: 1
   board_id: 1
 
 two:
-  value: 1
+  id: 2
+  value: 2
+  board_id: 1
+
+three:
+  id: 3
+  value: 3
+  board_id: 1
+
+four:
+  id: 4
+  value: 4
+  board_id: 1
+
+five:
+  id: 5
+  value: 5
+  board_id: 1
+
+ten:
+  id: 10
+  value: 10
+  board_id: 1
+
+fifty:
+  id: 50
+  value: 50
   board_id: 1

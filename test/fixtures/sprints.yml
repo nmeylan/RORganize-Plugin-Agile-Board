@@ -1,13 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  start_date: 2014-10-30
-  end_date: 2014-10-30
+  id: 1
+  name: Sprint1
+  start_date: 2014-08-30
+  end_date: 2014-09-30
   version_id: 1
+  board_id: 1
 
 two:
-  name: MyString
-  start_date: 2014-10-30
+  id: 2
+  name: Sprint2
+  start_date: 2014-11-30
   end_date: 2014-10-30
   version_id: 1
+  board_id: 1

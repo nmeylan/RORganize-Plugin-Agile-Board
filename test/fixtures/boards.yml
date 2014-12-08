@@ -1,7 +1,5 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  velocity: 
-
-two:
-  velocity: 
+  id: 1
+  project_id: 1
