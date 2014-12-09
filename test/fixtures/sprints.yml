@@ -15,3 +15,11 @@ two:
   end_date: 2014-10-30
   version_id: 1
   board_id: 1
+
+three:
+  id: 3
+  name: Sprint1
+  start_date: 2014-11-30
+  end_date: 2014-12-30
+  version_id: 10
+  board_id: 3

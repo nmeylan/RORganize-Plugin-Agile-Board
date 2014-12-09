@@ -94,7 +94,8 @@ module AgileBoard
                     ' journal_details.property_key = ? AND' \
                     ' (journal_details.value = ? OR journal_details.old_value = ?))', 'created', self.id,
                 'updated', 'sprint_id', self.name, self.name).
-          where('journals.created_at >= ?', self.start_date).includes(:points).group('user_stories.id')
+          where('journals.created_at >= ? AND user_stories.board_id = ?', self.start_date, self.board_id).
+          includes(:points).group('user_stories.id')
       total = total_points
       total > 0 ? percentage_calculation(stories.inject(0) { |count, story| count + story.value }, total) : 0
     end
