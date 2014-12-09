@@ -44,22 +44,7 @@ class SprintTest < ActiveSupport::TestCase
   test 'sprint health scope change on addition' do
     sprint_total_points_checker
     # Create a story with 10 points.
-    extra_story = UserStory.new(sprint_id: @sprint.id, point_id: 10, title: 'My story', status_id: 1, tracker_id: 1, board_id: @sprint.board_id)
-    extra_story.save
-    @sprint.reload
-    # Does total points is updated. Sprint should now have 40 points.
-    assert_equal(@total_sprint_points + extra_story.value, @sprint.total_points)
-    # (10 / 40) * 100 = 25
-    assert_equal(25, @sprint.scope_change)
-
-    # Put story to the sprint 2
-    extra_story.sprint = Sprint.find_by_id(2)
-    extra_story.save
-    @sprint.reload
-    # Does total points is updated. Sprint should now have 30 points.
-    assert_equal(@total_sprint_points, @sprint.total_points)
-    # (10 / 30) * 100 = 33.
-    assert_equal(33, @sprint.scope_change)
+    sprint_change_trigger
   end
 
   test 'sprint health scope change on other sprint' do
@@ -76,6 +61,24 @@ class SprintTest < ActiveSupport::TestCase
     sprint_3.reload
     assert_equal(100, sprint_3.scope_change)
 
+    # Perform a sprint change on a sprint of an other board.
+    sprint_change_trigger
+
+  end
+
+  test 'sprint health work complete' do
+    sprint_total_points_checker
+    assert_equal(7, UserStory.where(status_id: 2).inject(0){|sum, story| sum + story.value})
+    assert_equal(23, @sprint.work_complete_calculation)
+  end
+
+  def sprint_total_points_checker
+    # Sprint has 30 points
+    assert_equal(SPRINT_1_TOTAL_POINTS, @total_sprint_points)
+  end
+
+
+  def sprint_change_trigger
     extra_story = UserStory.new(sprint_id: @sprint.id, point_id: 10, title: 'My story', status_id: 1, tracker_id: 1, board_id: @sprint.board_id)
     extra_story.save
     @sprint.reload
@@ -92,17 +95,5 @@ class SprintTest < ActiveSupport::TestCase
     assert_equal(@total_sprint_points, @sprint.total_points)
     # (10 / 30) * 100 = 33.
     assert_equal(33, @sprint.scope_change)
-
-  end
-
-  test 'sprint health work complete' do
-    sprint_total_points_checker
-    assert_equal(7, UserStory.where(status_id: 2).inject(0){|sum, story| sum + story.value})
-    assert_equal(23, @sprint.work_complete_calculation)
-  end
-
-  def sprint_total_points_checker
-    # Sprint has 30 points
-    assert_equal(SPRINT_1_TOTAL_POINTS, @total_sprint_points)
   end
 end
