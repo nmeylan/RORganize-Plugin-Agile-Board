@@ -1,10 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+story_status_001:
   id: 1
-  name: MyString
+  name: To do
   board_id: 1
+  position: 1
 
-two:
-  name: MyString
+story_status_002:
+  id: 2
+  name: Done
   board_id: 1
+  position: 2
