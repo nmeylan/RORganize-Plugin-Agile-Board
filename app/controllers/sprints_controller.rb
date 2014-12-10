@@ -61,8 +61,9 @@ class SprintsController < AgileBoardController
 
 
   def generate_sprint_name
-    count = Sprint.where(version_id: params[:value]).pluck('count(id)')
-    @name = "Sprint #{count.first}"
+    count = Sprint.where(version_id: params[:value], board_id: @board_decorator.id).pluck('count(id)')
+    version = Version.select(:name).find_by_id(params[:value])
+    @name = "Sprint #{count.first} : #{version.name}"
     respond_to do |format|
       format.js { respond_to_js }
     end

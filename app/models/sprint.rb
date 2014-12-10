@@ -61,9 +61,9 @@ class Sprint < ActiveRecord::Base
 
   # Check if sprints name are uniq inside a same version.
   def name_uniqueness
-    other_sprint = Sprint.where(version_id: self.version_id, name: self.name).where.not(id: self.id).count
+    other_sprint = Sprint.where(board_id: self.board_id, name: self.name).where.not(id: self.id).count
     if other_sprint > 0
-      errors.add(:name, 'must be uniq inside a same version.')
+      errors.add(:name, 'must be uniq.')
     end
   end
 

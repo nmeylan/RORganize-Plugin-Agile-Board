@@ -23,3 +23,11 @@ three:
   end_date: 2014-12-30
   version_id: 10
   board_id: 3
+
+one_bis:
+  id: 4
+  name: Sprint1
+  start_date: 2014-11-30
+  end_date: 2014-10-30
+  version_id: 2
+  board_id: 1

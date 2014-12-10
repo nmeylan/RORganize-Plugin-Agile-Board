@@ -47,7 +47,7 @@ class SprintTest < ActiveSupport::TestCase
     sprint_change_trigger
   end
 
-  test 'sprint health scope change on other sprint' do
+  test 'scope change same sprint name different board' do
     sprint_total_points_checker
 
     sprint_3 = Sprint.find_by_id(3)
