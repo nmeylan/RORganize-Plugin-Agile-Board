@@ -97,6 +97,10 @@ class SprintTest < ActiveSupport::TestCase
     assert_equal(33, @sprint.scope_change)
   end
 
+  # This is a test for sprint burndown values calculation.
+  # Here we build a new sprint, and we add to it 10 user stories.
+  # The sprint total value is 35. The sprint run from 2014-12-01 to 2014-12-10.
+  # We simulate user story progress.
   test 'sprint burndown values' do
     sprint = Sprint.new(name: 'Sprint burndown', start_date: '2014-12-01', end_date: '2014-12-10', board_id: 1)
     sprint.save
@@ -116,21 +120,36 @@ class SprintTest < ActiveSupport::TestCase
     sprint.reload
     assert_equal(35, sprint.total_points)
 
-    j1 = Journal.create(journalizable_id: us1.id, journalizable_type: 'UserStory', created_at: Time.new(2014,12,2, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
-    j2 = Journal.create(journalizable_id: us2.id, journalizable_type: 'UserStory', created_at: Time.new(2014,12,2, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
-    j3 = Journal.create(journalizable_id: us3.id, journalizable_type: 'UserStory', created_at: Time.new(2014,12,3, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
-    j4 = Journal.create(journalizable_id: us4.id, journalizable_type: 'UserStory', created_at: Time.new(2014,12,3, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
-    j5 = Journal.create(journalizable_id: us5.id, journalizable_type: 'UserStory', created_at: Time.new(2014,12,3, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
-    j6 = Journal.create(journalizable_id: us6.id, journalizable_type: 'UserStory', created_at: Time.new(2014,12,4, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
-    j7 = Journal.create(journalizable_id: us3.id, journalizable_type: 'UserStory', created_at: Time.new(2014,12,5, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
-    j8 = Journal.create(journalizable_id: us8.id, journalizable_type: 'UserStory', created_at: Time.new(2014,12,5, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
-    j9 = Journal.create(journalizable_id: us9.id, journalizable_type: 'UserStory', created_at: Time.new(2014,12,5, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
-    j10 = Journal.create(journalizable_id: us10.id, journalizable_type: 'UserStory', created_at: Time.new(2014,12,7, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
-    j11 = Journal.create(journalizable_id: us7.id, journalizable_type: 'UserStory', created_at: Time.new(2014,12,7, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
-    j12 = Journal.create(journalizable_id: us5.id, journalizable_type: 'UserStory', created_at: Time.new(2014,12,8, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
-    j13 = Journal.create(journalizable_id: us11.id, journalizable_type: 'UserStory', created_at: Time.new(2014,12,9, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
-    j14 = Journal.create(journalizable_id: us7.id, journalizable_type: 'UserStory', created_at: Time.new(2014,12,9, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
-
+    j1 = Journal.create(journalizable_id: us1.id, journalizable_type: 'UserStory',
+                        created_at: Time.new(2014,12,2, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
+    j2 = Journal.create(journalizable_id: us2.id, journalizable_type: 'UserStory',
+                        created_at: Time.new(2014,12,2, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
+    j3 = Journal.create(journalizable_id: us3.id, journalizable_type: 'UserStory',
+                        created_at: Time.new(2014,12,3, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
+    j4 = Journal.create(journalizable_id: us4.id, journalizable_type: 'UserStory',
+                        created_at: Time.new(2014,12,3, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
+    j5 = Journal.create(journalizable_id: us5.id, journalizable_type: 'UserStory',
+                        created_at: Time.new(2014,12,3, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
+    j6 = Journal.create(journalizable_id: us6.id, journalizable_type: 'UserStory',
+                        created_at: Time.new(2014,12,4, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
+    j7 = Journal.create(journalizable_id: us3.id, journalizable_type: 'UserStory',
+                        created_at: Time.new(2014,12,5, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
+    j8 = Journal.create(journalizable_id: us8.id, journalizable_type: 'UserStory',
+                        created_at: Time.new(2014,12,5, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
+    j9 = Journal.create(journalizable_id: us9.id, journalizable_type: 'UserStory',
+                        created_at: Time.new(2014,12,5, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
+    j10 = Journal.create(journalizable_id: us10.id, journalizable_type: 'UserStory',
+                         created_at: Time.new(2014,12,7, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
+    j11 = Journal.create(journalizable_id: us7.id, journalizable_type: 'UserStory',
+                         created_at: Time.new(2014,12,7, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
+    j12 = Journal.create(journalizable_id: us5.id, journalizable_type: 'UserStory',
+                         created_at: Time.new(2014,12,8, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
+    j13 = Journal.create(journalizable_id: us11.id, journalizable_type: 'UserStory',
+                         created_at: Time.new(2014,12,9, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
+    j14 = Journal.create(journalizable_id: us7.id, journalizable_type: 'UserStory',
+                         created_at: Time.new(2014,12,9, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
+    j15 = Journal.create(journalizable_id: us7.id, journalizable_type: 'UserStory',
+                         created_at: Time.new(2014,12,9, 11,21,0, "+01:00"), action_type: 'updated', user_id: User.current, project_id: sprint.board.project_id)
 
     jd1 = JournalDetail.create(journal_id: j1.id, old_value: 'To do', value: 'Done', property_key: 'status_id', property: 'Status')
     jd2 = JournalDetail.create(journal_id: j2.id, old_value: 'To do', value: 'Done', property_key: 'status_id', property: 'Status')
@@ -146,18 +165,64 @@ class SprintTest < ActiveSupport::TestCase
     jd12 = JournalDetail.create(journal_id: j12.id, old_value: 'Done', value: 'In progress', property_key: 'status_id', property: 'Status')
     jd13 = JournalDetail.create(journal_id: j13.id, old_value: 'In progress', value: 'Done', property_key: 'status_id', property: 'Status')
     jd14 = JournalDetail.create(journal_id: j14.id, old_value: 'Done', value: 'In progress', property_key: 'status_id', property: 'Status')
+    jd15 = JournalDetail.create(journal_id: j15.id, old_value: 'In progress', value: 'To do', property_key: 'status_id', property: 'Status')
 
     expected_result = {
-        '2014-12-01' => 35,
-        '2014-12-02' => 35 - 10,
-        '2014-12-03' => 25 - 12,
-        '2014-12-04' => 13 - 3,
-        '2014-12-05' => 10 + 4 - 3 - 2,
-        '2014-12-06' => 9,
-        '2014-12-07' => 9 - 3 -2,
-        '2014-12-08' => 4 + 4,
-        '2014-12-09' => 8 + 3,
-        '2014-12-10' => 11,
+        '2014-12-01' => {stories: {}, sum: 35},
+        '2014-12-02' => {stories: {us1.id => {object: "#{us1.tracker.caption} ##{us1.id}", variation: -5},
+                                   us2.id => {object: "#{us2.tracker.caption} ##{us2.id}", variation: -5}},
+                         sum: 35 - 10},
+        '2014-12-03' => {stories: {us3.id => {object: "#{us3.tracker.caption} ##{us3.id}", variation: -4},
+                                   us4.id => {object: "#{us4.tracker.caption} ##{us4.id}", variation: -4},
+                                   us5.id => {object: "#{us5.tracker.caption} ##{us5.id}", variation: -4}},
+                         sum: 25 - 12},
+        '2014-12-04' => {stories: {us6.id => {object: "#{us6.tracker.caption} ##{us6.id}", variation: -3}},
+                         sum: 13 - 3},
+        '2014-12-05' => {stories: {us3.id => {object: "#{us3.tracker.caption} ##{us3.id}", variation: 4},
+                                   us8.id => {object: "#{us8.tracker.caption} ##{us8.id}", variation: -3},
+                                   us9.id => {object: "#{us9.tracker.caption} ##{us9.id}", variation: -2}},
+                         sum: 10 + 4 - 3 - 2},
+        '2014-12-06' => {stories: {}, sum: 9},
+        '2014-12-07' => {stories: {us10.id => {object: "#{us10.tracker.caption} ##{us10.id}", variation: -2},
+                                   us7.id => {object: "#{us7.tracker.caption} ##{us7.id}", variation: -3}},
+                         sum: 9 - 3 - 2},
+        '2014-12-08' => {stories: {us5.id => {object: "#{us5.tracker.caption} ##{us5.id}", variation: 4}},
+                         sum: 4 + 4},
+        '2014-12-09' => {stories: {us11.id => {object: "#{us11.tracker.caption} ##{us11.id}", variation: 0},
+                                   us7.id => {object: "#{us7.tracker.caption} ##{us7.id}", variation: 3}},
+                                   sum: 8 + 3},
+        '2014-12-10' => {stories: {}, sum: 11}
+    }
+    assert_equal(expected_result, sprint.burndown_values)
+
+    us1.points = StoryPoint.find_by_id(1)
+    us1.save
+    sprint.reload
+    expected_result = {
+        '2014-12-01' => {stories: {}, sum: 31},
+        '2014-12-02' => {stories: {us1.id => {object: "#{us1.tracker.caption} ##{us1.id}", variation: -1},
+                                   us2.id => {object: "#{us2.tracker.caption} ##{us2.id}", variation: -5}},
+                         sum: 31 - 6},
+        '2014-12-03' => {stories: {us3.id => {object: "#{us3.tracker.caption} ##{us3.id}", variation: -4},
+                                   us4.id => {object: "#{us4.tracker.caption} ##{us4.id}", variation: -4},
+                                   us5.id => {object: "#{us5.tracker.caption} ##{us5.id}", variation: -4}},
+                         sum: 25 - 12},
+        '2014-12-04' => {stories: {us6.id => {object: "#{us6.tracker.caption} ##{us6.id}", variation: -3}},
+                         sum: 13 - 3},
+        '2014-12-05' => {stories: {us3.id => {object: "#{us3.tracker.caption} ##{us3.id}", variation: 4},
+                                   us8.id => {object: "#{us8.tracker.caption} ##{us8.id}", variation: -3},
+                                   us9.id => {object: "#{us9.tracker.caption} ##{us9.id}", variation: -2}},
+                         sum: 10 + 4 - 3 - 2},
+        '2014-12-06' => {stories: {}, sum: 9},
+        '2014-12-07' => {stories: {us10.id => {object: "#{us10.tracker.caption} ##{us10.id}", variation: -2},
+                                   us7.id => {object: "#{us7.tracker.caption} ##{us7.id}", variation: -3}},
+                         sum: 9 - 3 - 2},
+        '2014-12-08' => {stories: {us5.id => {object: "#{us5.tracker.caption} ##{us5.id}", variation: 4}},
+                         sum: 4 + 4},
+        '2014-12-09' => {stories: {us11.id => {object: "#{us11.tracker.caption} ##{us11.id}", variation: 0},
+                                   us7.id => {object: "#{us7.tracker.caption} ##{us7.id}", variation: 3}},
+                         sum: 8 + 3},
+        '2014-12-10' => {stories: {}, sum: 11}
     }
     assert_equal(expected_result, sprint.burndown_values)
   end

@@ -4,11 +4,12 @@
 # File: agile_board_reports.rb
 
 require 'agile_board/view_objects/sprint_health'
+require 'agile_board/view_objects/sprint_burndown'
 class AgileBoardReportsController < AgileBoardController
   include Rorganize::RichController::GenericCallbacks
   before_filter { |c| c.add_action_alias = {'health' => 'index', 'show_stories' => 'index'} }
-  before_filter :check_permission
-  before_action :load_sprints_hash, only: [:index]
+  before_filter :check_permission, except: [:burndown_data]
+  before_action :load_sprints_hash, except: [:burndown_data]
   before_action :load_sprint
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item('boards') }
@@ -18,7 +19,7 @@ class AgileBoardReportsController < AgileBoardController
   def index
     @sessions[:agile_board_menu] = :report
     @sessions[:report_menu] ||= :health
-
+    gon.action = @sessions[:report_menu]
     if @sprint_decorator
       @sprint_health = SprintHealth.new(@sprint_decorator)
     end
@@ -28,24 +29,32 @@ class AgileBoardReportsController < AgileBoardController
   def health
     @sessions[:report_menu] = :health
     @sprint_health = SprintHealth.new(@sprint_decorator)
-    generic_index_callback
+    generic_index_callback({sprint_hash: @sprint_hash})
   end
 
   def show_stories
     @sessions[:report_menu] = :stories
-    generic_index_callback
+    generic_index_callback({sprint_hash: @sprint_hash})
   end
 
   def burndown
     @sessions[:report_menu] = :burndown
-    p @sprint_decorator.burndown_values
-    generic_index_callback
+    generic_index_callback({sprint_hash: @sprint_hash})
+  end
+
+  def burndown_data
+    json = SprintBurndown.new(@sprint_decorator).json
+    respond_to do |format|
+      format.html { render json: json }
+      format.json { render json: json }
+    end
   end
 
   private
   def load_sprints_hash
     @sprint_hash = @board_decorator.hash_group_by_is_archived
   end
+
   def load_sprint
     if params[:sprint_id]
       id = params[:sprint_id]

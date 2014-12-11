@@ -7,6 +7,7 @@
 <%= stylesheet_link_tag 'agile_board_manifest' %>
 <%#= JS Files %>
 <%= javascript_include_tag 'agile_board_manifest' %>
+<%= javascript_include_tag '//cdnjs.cloudflare.com/ajax/libs/d3/3.5.2/d3.min.js' %>
 
 <%= contextual t(:label_agile_board) do %>
     <%= agile_board_menu if @board_decorator %>

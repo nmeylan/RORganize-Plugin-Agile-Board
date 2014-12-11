@@ -20,7 +20,7 @@ module AgileBoardReportsHelper
   def sidebar_sprint_render(sprint, project, selected_sprint)
     tooltipped_class = sprint.version ? ' tooltipped tooltipped-s'.freeze : ''.freeze
     tooltip_caption = sprint.version ? sprint.version.caption : ''.freeze
-    content_tag :li, link_to(resize_text(sprint.caption, 15),
+    content_tag :li, link_to(sprint.caption,
                              agile_board_plugin::agile_board_reports_path(project.slug, sprint.id),
                              class: "#{'selected'.freeze if sprint.id == selected_sprint.id}"),
                 class: tooltipped_class, label: tooltip_caption
@@ -55,7 +55,7 @@ module AgileBoardReportsHelper
       when :health
         sprint_health
       when :burndown
-
+        content_tag :div, nil, {id: 'burndown-chart', 'data-link'=> @sprint_decorator.burndown_data_link}
       when :stories
         render_sprint(@sprint_decorator, 'report')
     end

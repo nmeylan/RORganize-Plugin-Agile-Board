@@ -5,7 +5,7 @@
     width: 16%;
   }
 
-  .box.sprint-health, .box.sprint.report {
+  .box.sprint-health, .box.sprint.report, #burndown-chart {
     position:relative;
     float: left;
     width: -moz-calc(84% - 65px);
@@ -143,5 +143,59 @@
       }
     }
 
+  }
+}
+
+#burndown-chart{
+  position: relative;
+  div.chart-tooltip {
+    position: absolute;
+    text-align: center;
+    width: 300px;
+    padding: 2px;
+    font: 12px sans-serif;
+    opacity: 0;
+    background-color: white;
+    color: $default-color;
+    border: solid 1px $default-border-color;
+    border-radius: 3px;
+    pointer-events: none;
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #d4d4d4;
+    shape-rendering: crispEdges;
+  }
+
+  .y.axis{
+    .tick line{
+      stroke: $default-border-color;
+    }
+  }
+
+  .x.axis{
+    .tick line{
+      stroke: #d1d1d1;
+      stroke-width: 1.5px;
+    }
+
+  }
+  .x.axis:last-child{
+    .tick line{
+      stroke: none;
+    }
+  }
+
+
+  .line {
+    fill: none;
+    stroke: $link-color;
+    stroke-width: 3px;
+  }
+
+  .line.projected{
+    stroke: #d4d4d4;
   }
 }

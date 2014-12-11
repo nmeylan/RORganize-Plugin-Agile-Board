@@ -45,18 +45,22 @@ module SprintDecoratorLink
   def health_link(selected)
     h.link_to(h.glyph(h.t(:title_sprint_health), 'pulse'),
               h.agile_board_plugin::health_agile_board_reports_path(context[:project].slug, model.id),
-              class: "filter-item #{'selected' if selected}", remote: true)
+              class: "filter-item #{'selected' if selected}")
   end
 
   def show_stories_link(selected)
     h.link_to(h.glyph(h.t(:title_user_stories), 'userstory'),
               h.agile_board_plugin::show_stories_agile_board_reports_path(context[:project].slug, model.id),
-              class: "filter-item #{'selected' if selected}", remote: true)
+              class: "filter-item #{'selected' if selected}")
   end
 
   def burndown_link(selected)
     h.link_to(h.glyph(h.t(:title_burndown_chart), 'burndown'),
               h.agile_board_plugin::burndown_agile_board_reports_path(context[:project].slug, model.id),
-              class: "filter-item #{'selected' if selected}", remote: true)
+              class: "filter-item #{'selected' if selected}")
+  end
+
+  def burndown_data_link
+    h.agile_board_plugin::burndown_data_agile_board_reports_path(context[:project].slug, model.id)
   end
 end

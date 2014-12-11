@@ -111,25 +111,36 @@ module AgileBoard
       date_range = self.start_date.to_date..end_date.to_date
       journals = Journal.joins(:details).
           where(journalizable_id: self.stories.collect(&:id), journalizable_type: 'UserStory', action_type: 'updated').
-          where(created_at: date_range).
-          where('journal_details.property_key = ?', 'status_id').preload(:journalizable, :details)
+          where('DATE(journals.created_at) >= ? AND DATE(journals.created_at) <= ?', self.start_date, end_date).
+          where('journal_details.property_key = ?', 'status_id').preload(:details, journalizable: [:points, :tracker])
       date_range.inject({}) do |memo, date|
         memo[date.to_formatted_s] = remaining_points_at(journals.select { |journal| journal.created_at.to_date.eql?(date) })
-        memo[date.to_formatted_s] += memo[(date - 1).to_formatted_s] ? memo[(date - 1).to_formatted_s] : total_points
+        memo[date.to_formatted_s][:sum] += memo[(date - 1).to_formatted_s] ? memo[(date - 1).to_formatted_s][:sum] : total_points
         memo
       end
     end
 
     def remaining_points_at(journals)
-      journals.inject(0) do |sum, journal|
-        sum + journal_points_calculation(journal)
+      journals.inject({stories: {}, sum: 0}) do |memo, journal|
+        story = journal.journalizable.freeze
+        variation = journal_points_calculation(journal, story)
+        memo[:stories][story.id] ||= {object: "#{story.tracker.caption} ##{story.id}"}
+        memo[:stories][story.id][:variation] ||= 0
+        memo[:stories][story.id][:variation] += variation
+        memo[:sum] += variation
+        memo
       end
     end
 
-    def journal_points_calculation(journal)
-      story = journal.journalizable.freeze
+    def journal_points_calculation(journal, story)
       journal.details.inject(0) do |sum, detail|
-        sum + (detail.value.eql?(@done_status) ? -story.value : story.value)
+        if detail.value.eql?(@done_status)
+          sum - story.value
+        elsif detail.old_value.eql?(@done_status)
+          sum + story.value
+        else
+          sum
+        end
       end
     end
   end
