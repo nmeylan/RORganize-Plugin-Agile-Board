@@ -104,5 +104,33 @@ module AgileBoard
     def percentage_calculation(numerator, total)
       ((numerator.to_f / total) * 100.0).truncate
     end
+
+    def burndown_values
+      @done_status = self.board.done_status.name.freeze
+      end_date = self.end_date && self.end_date <= Date.today ? self.end_date : Date.today
+      date_range = self.start_date.to_date..end_date.to_date
+      journals = Journal.joins(:details).
+          where(journalizable_id: self.stories.collect(&:id), journalizable_type: 'UserStory', action_type: 'updated').
+          where(created_at: date_range).
+          where('journal_details.property_key = ?', 'status_id').preload(:journalizable, :details)
+      date_range.inject({}) do |memo, date|
+        memo[date.to_formatted_s] = remaining_points_at(journals.select { |journal| journal.created_at.to_date.eql?(date) })
+        memo[date.to_formatted_s] += memo[(date - 1).to_formatted_s] ? memo[(date - 1).to_formatted_s] : total_points
+        memo
+      end
+    end
+
+    def remaining_points_at(journals)
+      journals.inject(0) do |sum, journal|
+        sum + journal_points_calculation(journal)
+      end
+    end
+
+    def journal_points_calculation(journal)
+      story = journal.journalizable.freeze
+      journal.details.inject(0) do |sum, detail|
+        sum + (detail.value.eql?(@done_status) ? -story.value : story.value)
+      end
+    end
   end
 end

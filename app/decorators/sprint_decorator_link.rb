@@ -53,4 +53,10 @@ module SprintDecoratorLink
               h.agile_board_plugin::show_stories_agile_board_reports_path(context[:project].slug, model.id),
               class: "filter-item #{'selected' if selected}", remote: true)
   end
+
+  def burndown_link(selected)
+    h.link_to(h.glyph(h.t(:title_burndown_chart), 'burndown'),
+              h.agile_board_plugin::burndown_agile_board_reports_path(context[:project].slug, model.id),
+              class: "filter-item #{'selected' if selected}", remote: true)
+  end
 end

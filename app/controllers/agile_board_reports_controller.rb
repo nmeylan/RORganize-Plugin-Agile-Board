@@ -36,6 +36,12 @@ class AgileBoardReportsController < AgileBoardController
     generic_index_callback
   end
 
+  def burndown
+    @sessions[:report_menu] = :burndown
+    p @sprint_decorator.burndown_values
+    generic_index_callback
+  end
+
   private
   def load_sprints_hash
     @sprint_hash = @board_decorator.hash_group_by_is_archived

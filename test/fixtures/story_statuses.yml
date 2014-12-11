@@ -10,4 +10,11 @@ story_status_002:
   id: 2
   name: Done
   board_id: 1
+  position: 3
+
+story_status_003:
+  id: 3
+  name: In progress
+  board_id: 1
   position: 2
+

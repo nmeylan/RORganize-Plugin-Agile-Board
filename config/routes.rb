@@ -7,6 +7,7 @@ AgileBoard::Engine.routes.draw do
       resource :agile_board_reports, only: [:index], path: '/report', as: 'reports' do
         get :index, path: '/(:sprint_id)'
         get :health, path: '/:sprint_id/health'
+        get :burndown, path: '/:sprint_id/burndown'
         get :show_stories, path: '/:sprint_id/stories'
       end
       constraints(->(req) { req.params[:menu].nil? || ['work', 'plan', 'configuration'].include?(req.params[:menu]) }) do

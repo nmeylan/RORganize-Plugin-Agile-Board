@@ -30,8 +30,7 @@ module AgileBoardReportsHelper
     content_tag :div, class: 'left-sidebar' do
       content_tag :ul, class: 'filter-sidebar' do
         safe_concat content_tag :li, @sprint_decorator.health_link(@sessions[:report_menu].eql?(:health))
-        # safe_concat content_tag :li, link_to(glyph(t(:title_burndown_chart), 'burndown'), '#',
-        #                                      class: "filter-item #{'selected' if @sessions[:report_menu].eql?(:burndown)}")
+        safe_concat content_tag :li, @sprint_decorator.burndown_link(@sessions[:report_menu].eql?(:burndown))
         safe_concat content_tag :li, @sprint_decorator.show_stories_link(@sessions[:report_menu].eql?(:stories))
       end
     end

@@ -78,8 +78,8 @@ class UserStory < ActiveRecord::Base
   def update_issues
     issue_ids = self.issues.collect(&:id).to_a
     project = self.board.project
-    update_issues_on_sprint_change(issue_ids, project)
-    update_issues_on_story_change(issue_ids, project)
+    update_issues_on_sprint_change(issue_ids, project) if issue_ids.any?
+    update_issues_on_story_change(issue_ids, project) if issue_ids.any?
   end
 
   def update_issues_on_sprint_change(issue_ids, project)
