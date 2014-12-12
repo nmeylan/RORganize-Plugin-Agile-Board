@@ -69,6 +69,9 @@ module AgileBoard
       end
     end
 
+    # This is calculated based on the story points. This is reflected by the last status defined (in Configuration menu),
+    # by default it's "Done". For example, if you have 50 story points in a sprint and you have 3 stories with 10 story points
+    # that have been the "Done" status (by default) , the 'Work complete' will be 20% (i.e. 10 out of 50 story points).
     # Calculate work complete percentage based on number of stories points with the "Done" status.
     # @return [Numeric] percent of stories with the "Done" status.
     # Done status is the last one.
@@ -80,6 +83,7 @@ module AgileBoard
       (total > 0 ? percentage_calculation(done_stories_value, total) : 0).truncate
     end
 
+    # This is calculated based on done progression ratio of tasks attached to user stories.
     # @return [Numeric] the percentage of tasks, contained by stories, progress.
     def tasks_progress
       total_done = 0
