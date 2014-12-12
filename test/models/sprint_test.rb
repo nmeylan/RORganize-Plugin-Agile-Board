@@ -188,7 +188,7 @@ class SprintTest < ActiveSupport::TestCase
                          sum: 9 - 3 - 2},
         '2014-12-08' => {stories: {us5.id => {object: "#{us5.tracker.caption} ##{us5.id}", variation: 4}},
                          sum: 4 + 4},
-        '2014-12-09' => {stories: {us11.id => {object: "#{us11.tracker.caption} ##{us11.id}", variation: 0},
+        '2014-12-09' => {stories: {
                                    us7.id => {object: "#{us7.tracker.caption} ##{us7.id}", variation: 3}},
                                    sum: 8 + 3},
         '2014-12-10' => {stories: {}, sum: 11}
@@ -219,7 +219,7 @@ class SprintTest < ActiveSupport::TestCase
                          sum: 9 - 3 - 2},
         '2014-12-08' => {stories: {us5.id => {object: "#{us5.tracker.caption} ##{us5.id}", variation: 4}},
                          sum: 4 + 4},
-        '2014-12-09' => {stories: {us11.id => {object: "#{us11.tracker.caption} ##{us11.id}", variation: 0},
+        '2014-12-09' => {stories: {
                                    us7.id => {object: "#{us7.tracker.caption} ##{us7.id}", variation: 3}},
                          sum: 8 + 3},
         '2014-12-10' => {stories: {}, sum: 11}

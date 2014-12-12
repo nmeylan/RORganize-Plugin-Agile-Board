@@ -124,9 +124,11 @@ module AgileBoard
       journals.inject({stories: {}, sum: 0}) do |memo, journal|
         story = journal.journalizable.freeze
         variation = journal_points_calculation(journal, story)
-        memo[:stories][story.id] ||= {object: "#{story.tracker.caption} ##{story.id}"}
-        memo[:stories][story.id][:variation] ||= 0
-        memo[:stories][story.id][:variation] += variation
+        unless variation == 0
+          memo[:stories][story.id] ||= {object: "#{story.tracker.caption} ##{story.id}"}
+          memo[:stories][story.id][:variation] ||= 0
+          memo[:stories][story.id][:variation] += variation
+        end
         memo[:sum] += variation
         memo
       end
