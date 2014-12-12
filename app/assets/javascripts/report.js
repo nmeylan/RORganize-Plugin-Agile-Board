@@ -82,7 +82,7 @@ function draw_burndown_chart(data, el, min_date, max_date) {
             return y(d.values.points);
         });
 
-    var tooltip = d3.select("#burndown-chart")
+    var tooltip = d3.select("body")
         .append("div").attr("class", "chart-tooltip");
 
     var svg = d3.select("#burndown-chart").append("svg")
@@ -121,42 +121,50 @@ function draw_burndown_chart(data, el, min_date, max_date) {
         .attr("d", line);
 
 
-    var actual_circles = data['actual'].filter(function(e){
+    var actual_circles = data['actual'].filter(function (e) {
         return Object.keys(e.values.stories).length > 0;
     });
     svg.selectAll("dot")
         .data(actual_circles)
         .enter().append("circle")
-        .attr("r", 5)
+        .attr('class', 'chart-dot')
+        .attr("r", 3)
         .attr("cx", function (d) {
             return x(d.date);
         })
         .attr("cy", function (d) {
             return y(d.values.points);
         })
-        .on("mouseover", function (d) {
+        .on("click", function (d) {
             tooltip.transition()
                 .duration(200)
                 .style("opacity", 1.0);
             tooltip.html(tooltip_builder(d))
-                .style("left", ( d3.event.offsetX + 20) + "px")
-                .style("top", (d3.event.offsetY + 10 - ($(tooltip[0]).height() / 2)) + "px");
-        })
-        .on("mouseout", function (d) {
+                .style("left", ( d3.event.pageX + 20 ) + "px")
+                .style("top", (d3.event.pageY + 10 - ($(tooltip[0]).height() / 2)) + "px");
+        });
+    $(document).mouseup(function (e) {
+        var container = $(".chart-dot");
+
+        if (!container.is(e.target) // if the target of the click isn't the container...
+            && container.has(e.target).length === 0) // ... nor a descendant of the container
+        {
             tooltip.transition()
                 .duration(200)
                 .style("opacity", 0);
-        });
+        }
+    });
 }
 
-function tooltip_builder(d){
+
+function tooltip_builder(d) {
 
     var formatTime = d3.time.format("%d %B %Y");
     var output = "<div>";
-    output += "<h2>" + d.values.points +" points remaining</h2>";
+    output += "<h2>" + d.values.points + " points remaining</h2>";
     var stories = d.values.stories;
     output += "<table style='margin-bottom:10px'>";
-    for(var key in stories){
+    for (var key in stories) {
         output += "<tr style='vertical-align:middle;'>";
         output += "<td style='font-size:14px; font-weight: bold; text-align: right'>" + stories[key].object + " : </h3></td>";
         output += "<td style='font-size:12px; font-weight: bold; text-align: left'>&Delta; Story points " + stories[key].variation + "</td>";
@@ -164,7 +172,7 @@ function tooltip_builder(d){
     }
     output += "</table>";
 
-    output += "<b>" +formatTime(d.date) + "</b>" ;
+    output += "<b>" + formatTime(d.date) + "</b>";
     output += "</div>";
     return output
 }

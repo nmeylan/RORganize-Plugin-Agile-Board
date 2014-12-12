@@ -146,22 +146,32 @@
   }
 }
 
+div.chart-tooltip {
+  position: absolute;
+  text-align: center;
+  width: 300px;
+  padding: 2px;
+  font: 12px sans-serif;
+  opacity: 0;
+  background-color: white;
+  color: $default-color;
+  border: solid 1px $default-border-color;
+  border-radius: 3px;
+  pointer-events: none;
+}
+
+
 #burndown-chart{
   position: relative;
-  div.chart-tooltip {
-    position: absolute;
-    text-align: center;
-    width: 300px;
-    padding: 2px;
-    font: 12px sans-serif;
-    opacity: 0;
-    background-color: white;
-    color: $default-color;
-    border: solid 1px $default-border-color;
-    border-radius: 3px;
-    pointer-events: none;
-  }
 
+  .chart-dot{
+    fill: $default-background-color;
+    stroke: $default-smooth-color;
+    stroke-width: 1.5px;
+  }
+  .chart-dot:hover{
+    cursor: pointer;
+  }
   .axis path,
   .axis line {
     fill: none;
