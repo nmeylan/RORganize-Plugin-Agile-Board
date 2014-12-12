@@ -4,7 +4,8 @@
 # File: sprint_statistics_calculator.rb
 module AgileBoard
   module SprintStatisticsCalculator
-
+    include AgileBoard::SprintStatistics::Burndown
+    include AgileBoard::SprintStatistics::ScopeChange
 
     def total_points
       self.stories.inject(0) { |count, story| count + story.value }
@@ -16,6 +17,14 @@ module AgileBoard
 
     def stories_distribution
       distribution_stats_by_status(self.stories.count, 1)
+    end
+
+    def tasks_count
+      self.stories.inject(0) { |count, story| count + story.issues.size }
+    end
+
+    def percentage_calculation(numerator, total)
+      ((numerator.to_f / total) * 100.0).truncate
     end
 
     # Return the distribution of something by status.
@@ -71,10 +80,6 @@ module AgileBoard
       (total > 0 ? percentage_calculation(done_stories_value, total) : 0).truncate
     end
 
-    def tasks_count
-      self.stories.inject(0) { |count, story| count + story.issues.size }
-    end
-
     # @return [Numeric] the percentage of tasks, contained by stories, progress.
     def tasks_progress
       total_done = 0
@@ -86,64 +91,6 @@ module AgileBoard
         end
       end
       total_tasks > 0 ? total_done / total_tasks : 100
-    end
-
-    def scope_change
-      stories = UserStory.joins(:journals).eager_load(journals: :details).
-          where('(journals.action_type = ? AND user_stories.sprint_id = ?) OR (journals.action_type = ? AND'\
-                    ' journal_details.property_key = ? AND' \
-                    ' (journal_details.value = ? OR journal_details.old_value = ?))', 'created', self.id,
-                'updated', 'sprint_id', self.name, self.name).
-          where('journals.created_at >= ? AND user_stories.board_id = ?', self.start_date, self.board_id).
-          includes(:points).group('user_stories.id')
-      total = total_points
-      total > 0 ? percentage_calculation(stories.inject(0) { |count, story| count + story.value }, total) : 0
-    end
-
-
-    def percentage_calculation(numerator, total)
-      ((numerator.to_f / total) * 100.0).truncate
-    end
-
-    def burndown_values
-      @done_status = self.board.done_status.name.freeze
-      end_date = self.end_date && self.end_date <= Date.today ? self.end_date : Date.today
-      date_range = self.start_date.to_date..end_date.to_date
-      journals = Journal.joins(:details).
-          where(journalizable_id: self.stories.collect(&:id), journalizable_type: 'UserStory', action_type: 'updated').
-          where('DATE(journals.created_at) >= ? AND DATE(journals.created_at) <= ?', self.start_date, end_date).
-          where('journal_details.property_key = ?', 'status_id').preload(:details, journalizable: [:points, :tracker])
-      date_range.inject({}) do |memo, date|
-        memo[date.to_formatted_s] = remaining_points_at(journals.select { |journal| journal.created_at.to_date.eql?(date) })
-        memo[date.to_formatted_s][:sum] += memo[(date - 1).to_formatted_s] ? memo[(date - 1).to_formatted_s][:sum] : total_points
-        memo
-      end
-    end
-
-    def remaining_points_at(journals)
-      journals.inject({stories: {}, sum: 0}) do |memo, journal|
-        story = journal.journalizable.freeze
-        variation = journal_points_calculation(journal, story)
-        unless variation == 0
-          memo[:stories][story.id] ||= {object: "#{story.tracker.caption} ##{story.id}"}
-          memo[:stories][story.id][:variation] ||= 0
-          memo[:stories][story.id][:variation] += variation
-        end
-        memo[:sum] += variation
-        memo
-      end
-    end
-
-    def journal_points_calculation(journal, story)
-      journal.details.inject(0) do |sum, detail|
-        if detail.value.eql?(@done_status)
-          sum - story.value
-        elsif detail.old_value.eql?(@done_status)
-          sum + story.value
-        else
-          sum
-        end
-      end
     end
   end
 end
