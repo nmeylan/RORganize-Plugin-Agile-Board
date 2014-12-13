@@ -12,7 +12,7 @@ module StoryMapHelper
           safe_concat story_map_render_sprint_map(status_stories_hash, number_cols, sprint_id, sprints, statuses)
         end.join.html_safe
       else
-        no_data
+        no_data(t(:text_no_running_sprint), 'sprint', true)
       end
     end
   end

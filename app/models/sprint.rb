@@ -32,7 +32,7 @@ class Sprint < ActiveRecord::Base
   end
 
   def running?
-    self.end_date.nil? || self.end_date >= Date.today
+    self.start_date <= Date.today && (self.end_date.nil? || self.end_date >= Date.today)
   end
 
   def is_backlog?

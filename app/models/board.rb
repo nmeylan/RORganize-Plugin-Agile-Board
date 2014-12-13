@@ -96,7 +96,7 @@ class Board < ActiveRecord::Base
   end
 
   def hash_group_by_is_archived
-    self.sprints.includes(:version).order(start_date: :desc).inject({ running: [], opened: [], archived: []}) do |memo, sprint|
+    self.sprints.includes(:version).order(start_date: :desc).inject({ running: [], opened: [], archived: [], future: []}) do |memo, sprint|
       hash_group_by_key(sprint)
       memo[hash_group_by_key(sprint)] << sprint
       memo
@@ -108,8 +108,10 @@ class Board < ActiveRecord::Base
       :archived
     elsif sprint.running?
       :running
-    else
+    elsif sprint.start_date <= Date.today
       :opened
+    else
+      :future
     end
   end
 
