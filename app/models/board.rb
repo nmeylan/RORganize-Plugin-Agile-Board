@@ -97,8 +97,8 @@ class Board < ActiveRecord::Base
 
   def hash_group_by_is_archived
     self.sprints.includes(:version).order(start_date: :desc).inject({ running: [], opened: [], archived: [], future: []}) do |memo, sprint|
-      hash_group_by_key(sprint)
-      memo[hash_group_by_key(sprint)] << sprint
+      key = hash_group_by_key(sprint).freeze
+      memo[key] << sprint unless key.eql?(:future)
       memo
     end
   end

@@ -46,7 +46,7 @@ module AgileBoardReportsHelper
         end
       end
     else
-      no_data
+      no_data(t(:text_no_reports), 'sprint', true)
     end
   end
 
