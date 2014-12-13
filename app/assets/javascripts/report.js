@@ -62,18 +62,27 @@ function draw_burndown_chart(data, el, min_date, max_date) {
     var xAxis = d3.svg.axis()
         .scale(x)
         .orient("bottom")
-        .tickSize(-height);
+        .tickSize(-height)
+        .tickPadding(9);
 
     var yAxis = d3.svg.axis()
         .scale(y)
         .orient("left")
-        .tickSize(-width);
+        .tickSize(-width)
+        .tickPadding(9);
 
     x.domain([min_date, max_date]);
 
-    y.domain([0, d3.max(data['actual'], function (d) {
-        return d.values.points;
-    })]);
+    y.domain([0,
+        d3.max([
+            d3.max(data['projected'], function (d) {
+                return d.values.points;
+            }),
+            d3.max(data['actual'], function (d) {
+                return d.values.points;
+            })
+        ])
+    ]);
     var line = d3.svg.line()
         .x(function (d) {
             return x(d.date);
@@ -124,6 +133,7 @@ function draw_burndown_chart(data, el, min_date, max_date) {
     var actual_circles = data['actual'].filter(function (e) {
         return Object.keys(e.values.stories).length > 0;
     });
+
     svg.selectAll("dot")
         .data(actual_circles)
         .enter().append("circle")
