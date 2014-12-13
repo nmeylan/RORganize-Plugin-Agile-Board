@@ -48,6 +48,7 @@ en:
   text_no_sprints: This board doesn't contains any sprints.
   text_no_end_date: Current
   text_no_tasks: This story doesn't have any tasks.
+  text_no_running_sprint: There are no running sprints.
   text_trash_task_placeholder: Here is the trash. Drag tasks you want to remove above.
   text_sprint_health_by_points: Overall sprint progress (Story points)
   text_sprint_health_by_stories: Overall sprint progress (Number of stories)
