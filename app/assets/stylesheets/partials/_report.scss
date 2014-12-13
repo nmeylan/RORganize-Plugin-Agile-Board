@@ -164,6 +164,9 @@ div.chart-tooltip {
 #burndown-chart{
   position: relative;
 
+  text{
+    fill: $default-color;
+  }
   .chart-dot{
     fill: $default-background-color;
     stroke: $default-smooth-color;

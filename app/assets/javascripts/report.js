@@ -33,9 +33,11 @@ function burndown_chart() {
         min_date = d3.min(data['actual'], function (d) {
             return d.date;
         });
-        data['projected'].forEach(function (d) {
-            d.date = parseDate(d.date);
-        });
+        if (data['projected'] !== undefined) {
+            data['projected'].forEach(function (d) {
+                d.date = parseDate(d.date);
+            });
+        }
         json = data;
         draw_burndown_chart(json, el, min_date, max_date);
     });
@@ -72,12 +74,12 @@ function draw_burndown_chart(data, el, min_date, max_date) {
         .tickPadding(9);
 
     x.domain([min_date, max_date]);
-
+    var max_projected = data['projected'] !== undefined ? d3.max(data['projected'], function (d) {
+        return d.values.points;
+    }) : 0;
     y.domain([0,
         d3.max([
-            d3.max(data['projected'], function (d) {
-                return d.values.points;
-            }),
+            max_projected,
             d3.max(data['actual'], function (d) {
                 return d.values.points;
             })
@@ -95,7 +97,7 @@ function draw_burndown_chart(data, el, min_date, max_date) {
         .append("div").attr("class", "chart-tooltip");
 
     var svg = d3.select("#burndown-chart").append("svg")
-        .attr("width", width + margin.left + margin.right)
+        .attr("width", width + margin.left )
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -103,6 +105,7 @@ function draw_burndown_chart(data, el, min_date, max_date) {
 
     svg.append("g")
         .attr("class", "x axis")
+        .attr("width", width + margin.left + margin.right)
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis)
         .attr("dx", ".71em");
@@ -124,11 +127,12 @@ function draw_burndown_chart(data, el, min_date, max_date) {
         .attr("class", "line")
         .attr("d", line);
 
-    svg.append("path")
-        .datum(data['projected'])
-        .attr("class", "line projected")
-        .attr("d", line);
-
+    if (data['projected'] !== undefined) {
+        svg.append("path")
+            .datum(data['projected'])
+            .attr("class", "line projected")
+            .attr("d", line);
+    }
 
     var actual_circles = data['actual'].filter(function (e) {
         return Object.keys(e.values.stories).length > 0;

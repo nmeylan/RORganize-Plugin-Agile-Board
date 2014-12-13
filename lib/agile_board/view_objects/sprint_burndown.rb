@@ -16,8 +16,8 @@ class SprintBurndown
     end
     result[:projected] = [
         {values: {points: @sprint.total_points, stories: {}}, date: @burndown_values.keys.min},
-        {values: {points: 0, stories: {}}, date: @burndown_values.keys.max}
-    ]
+        {values: {points: 0, stories: {}}, date: @sprint.end_date}
+    ] if @sprint.end_date
     result.to_json
   end
 
