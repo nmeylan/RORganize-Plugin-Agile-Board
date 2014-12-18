@@ -176,4 +176,19 @@ class UserStory < ActiveRecord::Base
     self.save
   end
 
+
+  # @param [String] values : is a text that contains issues id.
+  # #34445 #666644. But we have to check that given id represent issues that are
+  # contains in the current project.
+  # We should also exclude trash data.
+  def attach_tasks(values)
+    project = self.board.project_id
+    ids = values.split(/\s/).collect{|chunk| chunk.tr('#', '') if chunk.match(/#\d*/)}.compact
+    issues = Issue.where(project_id: project, id: ids, user_story_id: nil)
+    count = issues.size
+    issues.update_all(user_story_id: self.id)
+    UserStory.update_counters(self.id, issues_count: count)
+
+  end
+
 end

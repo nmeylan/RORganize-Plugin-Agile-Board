@@ -8,7 +8,7 @@ class UserStoriesController < AgileBoardController
   before_filter { |c| c.menu_context :project_menu }
   before_filter { |c| c.menu_item('boards') }
   before_filter { |c| c.top_menu_item('projects') }
-  before_action :set_user_story, only: [:edit, :update, :destroy, :new_task, :create_task, :detach_tasks, :change_sprint, :change_status]
+  before_action :set_user_story, except: [:index, :show, :create, :new]
 
 
   def peek_enabled?
@@ -121,6 +121,11 @@ class UserStoriesController < AgileBoardController
                                                       points: @user_story.points})
   end
 
+  def attach_tasks
+    @user_story.attach_tasks(params[:tasks])
+    show_redirection(t(:successful_update))
+  end
+
   def change_status
     old_status_id = @user_story.status_id
     @user_story.status = StoryStatus.find_by_id_and_board_id(params[:status_id], @board.id)
@@ -148,6 +153,7 @@ class UserStoriesController < AgileBoardController
   def show_redirection(message)
     respond_to do |format|
       flash[:notice] = message
+      format.html {redirect_to agile_board_plugin::user_story_path(@project.slug, @user_story.id)}
       format.js { js_redirect_to(agile_board_plugin::user_story_path(@project.slug, @user_story.id)) }
     end
   end

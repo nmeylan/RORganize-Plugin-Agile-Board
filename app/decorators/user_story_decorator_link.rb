@@ -34,6 +34,13 @@ module UserStoryDecoratorLink
                                context[:project], nil, {class: 'button', remote: true})
   end
 
+  def attach_task_link
+    if user_allowed_to?(:attach_tasks)
+      h.link_to(h.glyph(h.t(:link_attach_task), 'attachment'), '#',
+                {class: 'button', id: 'user-story-attach-tasks'})
+    end
+  end
+
   # @param [String] caption : the caption's link.
   # @param [Boolean] fast : do we render a fast link or not?
   # @param [String] action : action name use to call the right method : link_to_"action".

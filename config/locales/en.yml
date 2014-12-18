@@ -23,6 +23,7 @@ en:
   link_new_task: New task
   link_archive: Archive
   link_restore: Restore
+  link_attach_task: Attach task
 
   field_summary: Summary
   field_status: Status
@@ -40,6 +41,7 @@ en:
   title_scope_change: Scope change
   title_help_stats: How to read satistics?
   title_field: Field
+  title_attach_task: Attach existing issues
 
 
   text_no_agile_board: This project doesn't have agile board yet, do you want to create it?

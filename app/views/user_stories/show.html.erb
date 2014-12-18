@@ -10,6 +10,7 @@
 
 <%= contextual "#{t(:label_story)} : ##{@user_story_decorator.id}" do %>
     <%= @user_story_decorator.new_task_link %>
+    <%= @user_story_decorator.attach_task_link %>
     <%= @user_story_decorator.new_comment_link %>
     <%= @user_story_decorator.display_watch_button %>
     <%= @user_story_decorator.edit_link(true, {from: :show}) %>
@@ -22,4 +23,4 @@
 
 <%= editor_overlay('story', t(:link_new_story))%>
 <%= story_task_editor_overlay %>
-
+<%= story_attach_tasks_overlay %>

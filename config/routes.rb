@@ -14,6 +14,7 @@ AgileBoard::Engine.routes.draw do
       constraints(->(req) { req.params[:menu].nil? || ['work', 'plan', 'configuration'].include?(req.params[:menu]) }) do
         get :index, path: '/(:menu)'
       end
+      get :tasks_completion
     end
     scope 'agile_board' do
       resources :story_statuses do
@@ -32,6 +33,7 @@ AgileBoard::Engine.routes.draw do
         put :restore
       end
       resources :user_stories do
+        post :attach_tasks
         get :new_task
         post :create_task
         post :detach_tasks

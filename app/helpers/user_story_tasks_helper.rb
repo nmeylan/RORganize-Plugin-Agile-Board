@@ -10,6 +10,20 @@ module UserStoryTasksHelper
     end
   end
 
+  def story_attach_tasks_overlay
+    overlay_tag('story-attach-task-overlay') do
+      safe_concat content_tag :h1, t(:title_attach_task)
+      safe_concat story_attach_tasks_form
+    end
+  end
+
+  def story_attach_tasks_form
+    form_tag agile_board_plugin::user_story_attach_tasks_path(@project.slug, @user_story_decorator.id), {class: 'form'} do
+      safe_concat text_area_tag 'tasks', nil, {placeholder: '#45531 #45438', rows: 12, id: 'story-attach-tasks-textarea'}
+      safe_concat submit_tag t(:button_submit)
+    end
+  end
+
   def story_task_form(model, path, method)
     overlay_form(model, path, method) do |f|
       safe_concat f.hidden_field(:tracker_id, value: model.tracker_id)
@@ -58,7 +72,7 @@ module UserStoryTasksHelper
 
   def render_story_task_left_content(issue)
     content_tag :span, class: 'story-task-left-content' do
-      concat_span_tag issue.tracker_str, class: 'story-task-tracker'
+      concat_span_tag "#{issue.tracker_str} ##{issue.id}", class: 'story-task-tracker'
       safe_concat issue.show_link
     end
   end
