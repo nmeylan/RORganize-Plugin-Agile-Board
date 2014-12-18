@@ -8,8 +8,8 @@ Gem::Specification.new do |s|
   s.name        = "agile_board"
   s.version     = AgileBoard::VERSION
   s.authors     = ["Nicolas Meylan"]
-  s.email       = ["TODO: Your email"]
-  s.homepage    = "TODO"
+  s.email       = [""]
+  s.homepage    = "https://github.com/nmeylan/RORganize-Plugin-Agile-Board"
   s.summary     = "An agile board plugin for RORganize app."
   s.description = "This agile board allow projects' members to write user stories, define sprint, link user stories with issues, group stories into epics..."
   s.license     = "MIT"
