@@ -1,6 +1,7 @@
 require 'shared/history'
 class UserStoriesController < AgileBoardController
   include Rorganize::RichController::GenericCallbacks
+  include AgileBoard::Controllers::UserStoriesTasksCallback
   helper SprintsHelper
   before_filter :find_project_with_dependencies, only: [:new_task]
   before_filter {|c| c.add_action_alias={'create_task' => 'new_task'}}
@@ -80,37 +81,6 @@ class UserStoriesController < AgileBoardController
     end
   end
 
-  # GET /user_stories/:user_story_id/new_task
-  def new_task
-    @issue = Issue.new(category_id: @user_story.category_id,
-                       tracker_id: @user_story.tracker_id,
-                       version_id: @user_story.tasks_version_id,
-                       status_id: @user_story.tasks_status_id,
-                       project_id: @project.id
-    )
-    @members = @project.real_members
-    agile_board_form_callback(agile_board_plugin::user_story_create_task_path(@project.slug, @user_story.id), :post, 'new_task')
-  end
-
-  # POST /user_stories/:user_story_id/create_task
-  def create_task
-    @issue = Issue.new(issue_params)
-    @issue.author = User.current
-    @issue.project = @project
-    @user_story.issues << @issue
-    if @issue.save && @user_story.save
-      show_redirection(t(:successful_creation))
-    else
-      simple_js_callback(false, :create, @issue)
-    end
-  end
-
-  # POST /user_stories/:user_story_id/detach_tasks
-  def detach_tasks
-    @user_story.detach_tasks(params[:ids])
-    show_redirection(t(:successful_update))
-  end
-
   def change_sprint
     old_sprint = @user_story.sprint_id
     @user_story.sprint = Sprint.find_by_id_and_board_id(params[:sprint_id], @board.id)
@@ -119,11 +89,6 @@ class UserStoriesController < AgileBoardController
     simple_js_callback(result, :update, @user_story, {old_sprint_id: old_sprint,
                                                       sprint_id: @user_story.get_sprint(true).id,
                                                       points: @user_story.points})
-  end
-
-  def attach_tasks
-    @user_story.attach_tasks(params[:tasks])
-    show_redirection(t(:successful_update))
   end
 
   def change_status
