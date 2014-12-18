@@ -4,6 +4,7 @@
 # File: agile_board_reports_helper.rb
 
 module AgileBoardReportsHelper
+  include SprintHealthReportHelper
   include SprintsHelper
 
   # @param [Hash] sprint_hash a hash with this structure . {opened: [sprint, sprint], archived: [sprint, sprint], running: [sprint, sprint]}.
@@ -29,11 +30,19 @@ module AgileBoardReportsHelper
   def left_sidebar_sprint_render
     content_tag :div, class: 'left-sidebar' do
       content_tag :ul, class: 'filter-sidebar' do
-        safe_concat content_tag :li, @sprint_decorator.health_link(@sessions[:report_menu].eql?(:health))
-        safe_concat content_tag :li, @sprint_decorator.burndown_link(@sessions[:report_menu].eql?(:burndown))
-        safe_concat content_tag :li, @sprint_decorator.show_stories_link(@sessions[:report_menu].eql?(:stories))
+        left_sidebar_content
       end
     end
+  end
+
+  def left_sidebar_content
+    safe_concat content_tag :li, @sprint_decorator.health_link(is_left_sidebar_item_active?(:health))
+    safe_concat content_tag :li, @sprint_decorator.burndown_link(is_left_sidebar_item_active?(:burndown))
+    safe_concat content_tag :li, @sprint_decorator.show_stories_link(is_left_sidebar_item_active?(:stories))
+  end
+
+  def is_left_sidebar_item_active?(item)
+    @sessions[:report_menu].eql?(item)
   end
 
   def report_content
@@ -53,89 +62,11 @@ module AgileBoardReportsHelper
   def report_content_body
     case @sessions[:report_menu]
       when :health
-        sprint_health
+        sprint_health # @see sprint_health_reports
       when :burndown
         content_tag :div, nil, {id: 'burndown-chart', 'data-link'=> @sprint_decorator.burndown_data_link}
       when :stories
-        render_sprint(@sprint_decorator, 'report')
+        render_sprint(@sprint_decorator, 'report') # @see sprints_helper
     end
   end
-
-  def sprint_health
-    content_tag :div, class: 'box sprint-health' do
-      safe_concat content_tag :div, content_tag(:h2, t(:title_sprint_health)), class: 'header header-left'
-      safe_concat sprint_info
-      safe_concat sprint_health_by_points_render
-      safe_concat sprint_health_by_stories_render
-      safe_concat clear_both
-      safe_concat sprint_health_statistics_render
-      safe_concat info_tag(nil, {id: 'statistics-info'})
-
-    end
-  end
-
-  def sprint_info
-    content_tag :div, class: 'sprint-info-text' do
-      safe_concat content_tag :h2, @sprint_decorator.show_link
-      safe_concat @sprint_decorator.display_days_left
-      safe_concat @sprint_decorator.display_info_text
-    end
-  end
-
-  def sprint_health_by_stories_render
-    content_tag :div, class: 'splitcontent splitcontentright' do
-      safe_concat content_tag :p, t(:text_sprint_health_by_stories), class: 'sprint-health-text'
-      safe_concat sprint_health_by_stories_render_content
-    end
-  end
-
-  def sprint_health_by_points_render
-    content_tag :div, class: 'splitcontent splitcontentleft' do
-      safe_concat content_tag :p, t(:text_sprint_health_by_points), class: 'sprint-health-text'
-      safe_concat sprint_health_by_points_render_content
-    end
-  end
-
-  def sprint_health_by_points_render_content
-    content_tag :div do
-      @sprint_health.points_distribution.any? ? sprint_health_render_distribution(@sprint_health.points_distribution) : no_data
-    end
-  end
-
-  def sprint_health_by_stories_render_content
-    content_tag :div do
-      @sprint_health.stories_distribution.any? ? sprint_health_render_distribution(@sprint_health.stories_distribution) : no_data
-    end
-  end
-
-  def sprint_health_statistics_render
-    content_tag :div, class: 'statistics-bar' do
-      unit = @sprint_health.time_elapsed_unit.eql?(:percent) ? '%' : t(:label_plural_day)
-      safe_concat sprint_health_square("#{@sprint_health.time_elapsed} #{unit}", t(:title_time_elapsed))
-      safe_concat sprint_health_square("#{@sprint_health.work_complete} %", t(:title_work_complete))
-      safe_concat sprint_health_square("#{@sprint_health.scope_change} %", t(:title_scope_change))
-      safe_concat sprint_health_square(@sprint_health.tasks_count, t(:label_tasks))
-      safe_concat sprint_health_square("#{@sprint_health.tasks_progress} %", t(:title_tasks_progress))
-    end
-  end
-
-  def sprint_health_render_distribution(distribution_hash)
-    content_tag :div, class: 'sprint-health-bar' do
-      distribution_hash.collect do |status, statistics|
-        content_tag :span, statistics[0],
-                    {class: "sprint-health-percent tooltipped tooltipped-s",
-                     style: "#{style_background_color(status.color)}; width:#{statistics[1]}%; ",
-                     label: "#{status.caption} : #{statistics[1]}%"
-                    } if statistics[1] > 0
-      end.join.html_safe
-    end
-  end
-
-  def sprint_health_square(info, label)
-    content_tag :div, class: 'sprint-health-square' do
-      safe_concat content_tag :h1, info
-      safe_concat content_tag :span, label
-    end
-  end
-
 end

@@ -28,7 +28,7 @@ module AgileBoard
     end
 
     # Return the distribution of something by status.
-    # @return [Hash] will this structure : {Status => [distribution, percent], Status => [distribution, percent]}
+    # @return [Hash] with this structure : {Status => [distribution, percent], Status => [distribution, percent]}
     # Key is a StoryStatus (a frozen complex object). Value is an array of size 2 [Numeric, Numeric].
     def distribution_stats_by_status(total, content_or_block = nil)
       hash = self.stories.sort_by(&:status_position).inject({}) do |memo, story|
