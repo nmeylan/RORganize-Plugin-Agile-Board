@@ -7,13 +7,13 @@ require 'agile_board/view_objects/sprint_health'
 require 'agile_board/view_objects/sprint_burndown'
 class AgileBoardReportsController < AgileBoardController
   include Rorganize::RichController::GenericCallbacks
-  before_filter { |c| c.add_action_alias = {'health' => 'index', 'show_stories' => 'index', 'burndown' => 'index'} }
-  before_filter :check_permission, except: [:burndown_data]
+  before_action { |c| c.add_action_alias = {'health' => 'index', 'show_stories' => 'index', 'burndown' => 'index'} }
+  before_action :check_permission, except: [:burndown_data]
   before_action :load_sprints_hash, except: [:burndown_data]
   before_action :load_sprint
-  before_filter { |c| c.menu_context :project_menu }
-  before_filter { |c| c.menu_item('boards') }
-  before_filter { |c| c.top_menu_item('projects') }
+  before_action { |c| c.menu_context :project_menu }
+  before_action { |c| c.menu_item('boards') }
+  before_action { |c| c.top_menu_item('projects') }
   helper BoardsHelper
 
   def index
