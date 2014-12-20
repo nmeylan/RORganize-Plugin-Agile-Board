@@ -61,7 +61,7 @@ module AgileBoard
       consumed_days = (today - self.start_date).to_i
       if self.end_date && self.end_date > today
         duration = (self.end_date - self.start_date).to_i
-        return (consumed_days > 0 ? percentage_calculation(consumed_days, duration) : 0).round(1), :percent
+        return (consumed_days > 0 ? percentage_calculation(consumed_days, duration) : 0).truncate, :percent
       elsif self.end_date && self.end_date <= today
         return 100, :percent
       else
