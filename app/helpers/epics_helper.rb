@@ -19,24 +19,24 @@ module EpicsHelper
 
   def epics_list_row(epic)
     content_tag :li, class: "fancy-list-item epic", id: "epic-#{epic.id}" do
-      safe_concat epic.display_caption
+      concat epic.display_caption
       concat_span_tag resize_text(epic.description, 150), class: 'epic-summary'
-      safe_concat agile_board_list_button(epic)
+      concat agile_board_list_button(epic)
     end
   end
 
   def epic_form(model, path, method)
     overlay_form(model, path, method) do |f|
-      safe_concat required_form_text_field(f, :name, t(:field_name))
-      safe_concat agile_board_form_color_field(f)
-      safe_concat epic_form_description_field(f)
+      concat required_form_text_field(f, :name, t(:field_name))
+      concat agile_board_form_color_field(f)
+      concat epic_form_description_field(f)
     end
   end
 
   def epic_form_description_field(f)
     content_tag :p do
-      safe_concat f.label :description, t(:field_description)
-      safe_concat f.text_area :description, rows: 5
+      concat f.label :description, t(:field_description)
+      concat f.text_area :description, rows: 5
     end
   end
 end

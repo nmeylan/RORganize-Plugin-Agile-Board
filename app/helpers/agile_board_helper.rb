@@ -22,31 +22,31 @@ module AgileBoardHelper
   # @param [Symbol] method : :put or :post.
   def overlay_form(model, path, method)
     form_for model, url: path, html: {class: 'form', remote: true, method: method} do |f|
-      safe_concat content_tag :div, class: 'box', &Proc.new {
+      concat content_tag :div, class: 'box', &Proc.new {
         yield f
       }
-      safe_concat submit_tag t(:button_submit)
+      concat submit_tag t(:button_submit)
     end
   end
 
   def agile_board_form_description_field(f)
     content_tag :p do
-      safe_concat f.label :description, t(:field_description)
-      safe_concat f.text_area :description, {class: 'fancyEditor', rows: 10}
+      concat f.label :description, t(:field_description)
+      concat f.text_area :description, {class: 'fancyEditor', rows: 10}
     end
   end
 
   def required_form_text_field(f, attr_name, label, options = {size: 25, maxLength: 255})
     content_tag :p do
-      safe_concat required_form_label(f, attr_name, label)
-      safe_concat f.text_field attr_name, options
+      concat required_form_label(f, attr_name, label)
+      concat f.text_field attr_name, options
     end
   end
 
   def agile_board_form_color_field(f)
     content_tag :p do
-      safe_concat f.label :color, t(:label_color)
-      safe_concat color_field_tag f, :color, {size: 26}
+      concat f.label :color, t(:label_color)
+      concat color_field_tag f, :color, {size: 26}
     end
   end
 
@@ -54,8 +54,8 @@ module AgileBoardHelper
     overlay_tag(overlay_id, 'width:835px') do
       if model
         t = model.new_record? ? title : resize_text(model.caption, 70)
-        safe_concat(content_tag(:h1, t))
-        safe_concat yield
+        concat(content_tag(:h1, t))
+        concat yield
       end
     end
   end
@@ -70,11 +70,11 @@ module AgileBoardHelper
   # @param [Boolean] required : does the field is mandatory?
   def agile_board_select_field(f, attr_name, label, model, required = false)
     content_tag :div, class: 'autocomplete-combobox' do
-      safe_concat(required ? required_form_label(f, attr_name, label) : f.label(attr_name, label))
+      concat(required ? required_form_label(f, attr_name, label) : f.label(attr_name, label))
       if block_given?
-        safe_concat yield
+        concat yield
       else
-        safe_concat f.select "#{attr_name}_id",
+        concat f.select "#{attr_name}_id",
                              model.send("#{attr_name}_options"),
                              {include_blank: !required}, {class: "chzn-select#{'-deselect' unless required}  cbb-medium search"}
       end

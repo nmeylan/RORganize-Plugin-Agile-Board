@@ -13,8 +13,8 @@ module AgileBoardReportsHelper
   # @param [String] block_title
   def sidebar_block(sprint_hash, project, block_identifier, block_title, selected_sprint)
     if sprint_hash[block_identifier].any?
-      safe_concat content_tag :h2, block_title, class: 'agile-board-report-sidebar-title'.freeze
-      safe_concat content_tag :ul, sprint_hash[block_identifier].collect { |sprint| sidebar_sprint_render(sprint, project, selected_sprint) }.join.html_safe
+      concat content_tag :h2, block_title, class: 'agile-board-report-sidebar-title'.freeze
+      concat content_tag :ul, sprint_hash[block_identifier].collect { |sprint| sidebar_sprint_render(sprint, project, selected_sprint) }.join.html_safe
     end
   end
 
@@ -36,9 +36,9 @@ module AgileBoardReportsHelper
   end
 
   def left_sidebar_content
-    safe_concat content_tag :li, @sprint_decorator.health_link(is_left_sidebar_item_active?(:health))
-    safe_concat content_tag :li, @sprint_decorator.burndown_link(is_left_sidebar_item_active?(:burndown))
-    safe_concat content_tag :li, @sprint_decorator.show_stories_link(is_left_sidebar_item_active?(:stories))
+    concat content_tag :li, @sprint_decorator.health_link(is_left_sidebar_item_active?(:health))
+    concat content_tag :li, @sprint_decorator.burndown_link(is_left_sidebar_item_active?(:burndown))
+    concat content_tag :li, @sprint_decorator.show_stories_link(is_left_sidebar_item_active?(:stories))
   end
 
   def is_left_sidebar_item_active?(item)
@@ -49,9 +49,9 @@ module AgileBoardReportsHelper
     if @sprint_decorator
       content_tag :div, {id: 'agile-board'} do
         content_tag :div, {id: 'agile-board-content', class: 'report'} do
-          safe_concat left_sidebar_sprint_render
-          safe_concat report_content_body
-          safe_concat clear_both
+          concat left_sidebar_sprint_render
+          concat report_content_body
+          concat clear_both
         end
       end
     else

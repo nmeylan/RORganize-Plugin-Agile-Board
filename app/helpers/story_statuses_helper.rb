@@ -23,16 +23,16 @@ module StoryStatusesHelper
 
   def statuses_list_row(status)
     content_tag :li, class: "fancy-list-item status", id: "status-#{status.id}" do
-      safe_concat status.display_caption
-      safe_concat agile_board_list_button(status)
+      concat status.display_caption
+      concat agile_board_list_button(status)
     end
   end
 
   def status_form(model, path, method)
     overlay_form(model, path, method) do |f|
-      safe_concat required_form_text_field(f, :name, t(:field_name))
-      safe_concat status_form_issues_status_field(f, model)
-      safe_concat agile_board_form_color_field(f)
+      concat required_form_text_field(f, :name, t(:field_name))
+      concat status_form_issues_status_field(f, model)
+      concat agile_board_form_color_field(f)
     end
   end
 

@@ -9,7 +9,7 @@ module StoryMapHelper
       number_cols = statuses.size
       if sprints.any?
         stories_hash.collect do |sprint_id, status_stories_hash|
-          safe_concat story_map_render_sprint_map(status_stories_hash, number_cols, sprint_id, sprints, statuses)
+          concat story_map_render_sprint_map(status_stories_hash, number_cols, sprint_id, sprints, statuses)
         end.join.html_safe
       else
         no_data(t(:text_no_running_sprint), 'sprint', true)
@@ -20,23 +20,23 @@ module StoryMapHelper
   def story_map_render_sprint_map(status_stories_hash, number_cols, sprint_id, sprints, statuses)
     sprint = sprints.detect { |sprint| sprint.id.eql?(sprint_id) }
     content_tag :div, id: "sprint-#{sprint_id}", class: 'sprint' do
-      safe_concat story_map_sprint_header(sprint)
-      safe_concat story_map_render_sprint_content_map(status_stories_hash, number_cols, statuses)
-      safe_concat clear_both
+      concat story_map_sprint_header(sprint)
+      concat story_map_render_sprint_content_map(status_stories_hash, number_cols, statuses)
+      concat clear_both
     end
   end
 
   def story_map_sprint_header(sprint)
     content_tag :div, class: 'story-map-sprint-header' do
-      safe_concat content_tag :h1, sprint.name, class: 'story-map-sprint-name sprint'
-      safe_concat story_map_sprint_header_info(sprint) unless sprint.is_backlog?
+      concat content_tag :h1, sprint.name, class: 'story-map-sprint-name sprint'
+      concat story_map_sprint_header_info(sprint) unless sprint.is_backlog?
     end
   end
 
   def story_map_sprint_header_info(sprint)
     content_tag :div, class: 'story-map-sprint-header-info' do
-      safe_concat sprint.display_info_text
-      safe_concat clear_both
+      concat sprint.display_info_text
+      concat clear_both
     end
   end
 
@@ -53,16 +53,16 @@ module StoryMapHelper
 
   def story_map_column_render(total_stories_count, status, stories, number_cols)
     content_tag :div, {class: 'story-map-column status', id: "status-#{status.id}", style: "width:#{100 / number_cols}%"} do
-      safe_concat story_map_column_header(total_stories_count, status, stories.size)
-      safe_concat story_map_stories_render(stories)
+      concat story_map_column_header(total_stories_count, status, stories.size)
+      concat story_map_stories_render(stories)
     end
   end
 
   def story_map_column_header(total_stories_count, status, stories_count)
     content_tag :div, {class: 'story-map-column-header'} do
       concat_span_tag "#{status.caption} ", class: 'status-caption'
-      safe_concat story_map_column_header_stories_count(total_stories_count, status, stories_count)
-      safe_concat content_tag :div, nil, class: 'story-map-column status-color', style: "#{style_background_color(status.color)}"
+      concat story_map_column_header_stories_count(total_stories_count, status, stories_count)
+      concat content_tag :div, nil, class: 'story-map-column status-color', style: "#{style_background_color(status.color)}"
     end
   end
 
@@ -85,22 +85,22 @@ module StoryMapHelper
 
   def story_map_story_render(story)
     content_tag :li, {class: 'story', id: "story-#{story.id}", 'data-link' => story.change_status_link} do
-      safe_concat story_map_story_header_render(story)
+      concat story_map_story_header_render(story)
       concat_span_tag story.show_link(story.resized_caption(200), true), class: 'story-title'
     end
   end
 
   def story_map_story_header_render(story)
     content_tag :div, class: 'story-header' do
-      safe_concat story_map_story_header_left(story)
-      safe_concat story_map_story_header_right(story)
-      safe_concat clear_both
+      concat story_map_story_header_left(story)
+      concat story_map_story_header_right(story)
+      concat clear_both
     end
   end
 
   def story_map_story_header_right(story)
     content_tag :div, {class: 'story-right-content'} do
-      safe_concat story.display_issues_counter
+      concat story.display_issues_counter
       concat_span_tag story.display_points.html_safe, class: 'story-points'
     end
   end

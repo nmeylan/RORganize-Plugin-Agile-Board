@@ -44,20 +44,20 @@ class SprintDecorator < AgileBoardDecorator
 
   def display_info_text
     h.content_tag :div, {class: 'sprint-date-range'} do
-      h.safe_concat "#{h.t(:text_running).capitalize} #{h.t(:text_from)} "
-      h.safe_concat content_tag :span, self.display_start_date
-      h.safe_concat " #{h.t(:text_to)} "
-      h.safe_concat content_tag :span, self.display_target_date
+      h.concat "#{h.t(:text_running).capitalize} #{h.t(:text_from)} "
+      h.concat content_tag :span, self.display_start_date
+      h.concat " #{h.t(:text_to)} "
+      h.concat content_tag :span, self.display_target_date
       display_target_phase_text
     end
   end
 
   def display_target_phase_text
     if self.version
-      h.safe_concat ", #{h.t(:text_with)} #{h.t(:field_version)} "
-      h.safe_concat self.display_version
+      h.concat ", #{h.t(:text_with)} #{h.t(:field_version)} "
+      h.concat self.display_version
     end
-    h.safe_concat '.'
+    h.concat '.'
   end
 
   def sorted_stories

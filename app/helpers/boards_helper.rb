@@ -9,7 +9,7 @@ module BoardsHelper
   # Render a subnav tag to choose the menu.
   def agile_board_menu
     content_tag :div do
-      safe_concat subnav_tag('agile-board-menu', 'agile-board-menu',
+      concat subnav_tag('agile-board-menu', 'agile-board-menu',
                              @board_decorator.plan_menu_item(nav_item_selected?(:plan)),
                              @board_decorator.work_menu_item(nav_item_selected?(:work)),
                              @board_decorator.report_menu_item(nav_item_selected?(:report)),
@@ -24,9 +24,9 @@ module BoardsHelper
   # Render a button group tag to choose the display mode.
   def display_mode_menu
     if @sessions[:agile_board_menu].eql?(:plan)
-      safe_concat group_button_tag(@board_decorator.unified_display_mode(unified_content?),
+      concat group_button_tag(@board_decorator.unified_display_mode(unified_content?),
                                    @board_decorator.split_display_mode(split_content?))
-      safe_concat agile_board_search_input
+      concat agile_board_search_input
       concat_span_tag glyph('', 'info'), {label: t(:info_filter_syntax),
                                           class: 'tooltipped tooltipped-multiline tooltipped-multiline-pre tooltipped-s'}
     end
@@ -34,22 +34,22 @@ module BoardsHelper
 
   def agile_board_search_input
     content_tag :div, class: 'subnav-search user-stories-search' do
-      safe_concat text_field_tag :user_story_search, nil, {id: 'user-stories-search',
+      concat text_field_tag :user_story_search, nil, {id: 'user-stories-search',
                                                            placeholder: t(:placeholder_search_stories),
                                                            class: 'search-input'}
-      safe_concat content_tag :span, nil, class: 'octicon octicon-search search-input-icon'
-      safe_concat content_tag :span, nil, class: 'octicon octicon-x clear-input-icon'
+      concat content_tag :span, nil, class: 'octicon octicon-search search-input-icon'
+      concat content_tag :span, nil, class: 'octicon octicon-x clear-input-icon'
     end
   end
 
   def agile_board
     content_tag :div, {id: 'agile-board'} do
       if @board_decorator.nil?
-        safe_concat t(:text_no_agile_board)
-        safe_concat create_link
+        concat t(:text_no_agile_board)
+        concat create_link
       else
         display_mode_menu
-        safe_concat agile_board_content
+        concat agile_board_content
       end
     end
   end
@@ -78,11 +78,11 @@ module BoardsHelper
     tabs << {name: 'epics-tab', element: medium_glyph(t(:link_epics), 'sword')} if User.current.allowed_to?('index', 'Epics', @project)
     tabs << {name: 'statuses-tab', element: glyph(t(:link_story_statuses), 'dashboard')} if User.current.allowed_to?('index', 'Story_statuses', @project)
     tabs << {name: 'points-tab', element: glyph(t(:link_story_points), 'coin')} if User.current.allowed_to?('index', 'Story_points', @project)
-    safe_concat @board_decorator.delete_link
-    safe_concat horizontal_tabs('configuration-tab', tabs) unless tabs.empty?
-    safe_concat points_content
-    safe_concat statuses_content
-    safe_concat epics_content
+    concat @board_decorator.delete_link
+    concat horizontal_tabs('configuration-tab', tabs) unless tabs.empty?
+    concat points_content
+    concat statuses_content
+    concat epics_content
   end
 
   def create_link
@@ -92,17 +92,17 @@ module BoardsHelper
   end
 
   def work_content
-    safe_concat clear_both
-    safe_concat story_map_render(@statuses, @sprints, @stories_hash)
+    concat clear_both
+    concat story_map_render(@statuses, @sprints, @stories_hash)
   end
 
   def plan_content
-    safe_concat clear_both
-    safe_concat content_tag :div, class: 'agile-board-plan', &Proc.new {
+    concat clear_both
+    concat content_tag :div, class: 'agile-board-plan', &Proc.new {
       sprints_content(@sprints_decorator)
-      safe_concat render_sprint(@backlog, "backlog #{'splitcontentright' if split_content?}")
+      concat render_sprint(@backlog, "backlog #{'splitcontentright' if split_content?}")
     }
-    safe_concat clear_both
+    concat clear_both
   end
 
 

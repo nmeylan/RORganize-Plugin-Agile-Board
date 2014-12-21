@@ -31,20 +31,20 @@ class UserStoryDecorator < AgileBoardDecorator
 
   def display_points
     points = self.points ? self.points.value : '-'.freeze
-    "<span class='counter total-entries story-points tooltipped tooltipped-s' label='#{POINTS_LABEL}'>#{points}</span>".freeze
+    "<span class='counter total-entries story-points tooltipped tooltipped-s' label='#{POINTS_LABEL}'>#{points}</span>".html_safe
   end
 
   def display_status
     "<span class='issue-status filter-link' data-filtertype='status' style='#{h.style_background_color(model.status.color)}'>
       #{self.status_caption}
-    </span>".freeze
+    </span>".html_safe
   end
 
   def display_epic
     "<span class='info-square epic-caption filter-link' data-filtertype='epic' style='#{h.style_background_color(model.epic.color)}'>
           <span class='octicon octicon-sword'></span>
           #{self.epic_caption}
-    </span>".freeze if self.epic_caption
+    </span>".html_safe if self.epic_caption
   end
 
   def display_tracker
@@ -56,16 +56,16 @@ class UserStoryDecorator < AgileBoardDecorator
   end
 
   def display_tracker_id
-    "<span class='story-tracker filter-link' data-filtertype='tracker'>#{self.display_tracker} #{self.display_id}</span>".freeze
+    "<span class='story-tracker filter-link' data-filtertype='tracker'>#{self.display_tracker} #{self.display_id}</span>".html_safe
   end
 
   def display_issues_counter
     count = model.issues_count ? model.issues_count : '0'.freeze
-    "<span class='counter total-entries story-issues-count tooltipped tooltipped-s' label='#{TASK_LABEL}'>#{count}</span>".freeze
+    "<span class='counter total-entries story-issues-count tooltipped tooltipped-s' label='#{TASK_LABEL}'>#{count}</span>".html_safe
   end
 
   def display_category
-    "<span class='info-square filter-link' data-filtertype='category'><span class='octicon octicon-tag'></span>#{self.category_caption}</span>".freeze if self.category_caption
+    "<span class='info-square filter-link' data-filtertype='category'><span class='octicon octicon-tag'></span>#{self.category_caption}</span>".html_safe if self.category_caption
   end
 
   def display_sprint_dates
@@ -121,7 +121,7 @@ class UserStoryDecorator < AgileBoardDecorator
   end
 
   def display_object_type(project)
-    h.safe_concat h.content_tag :b, "#{h.t(:label_user_story)} "
+    h.concat h.content_tag :b, "#{h.t(:label_user_story)} "
     "<a href='/projects/#{project.slug}/agile_board/user_stories/#{self.id}'>#{resized_caption}</a>".html_safe
   end
 

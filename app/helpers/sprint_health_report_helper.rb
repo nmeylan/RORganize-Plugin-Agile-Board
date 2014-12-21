@@ -6,13 +6,13 @@ module SprintHealthReportHelper
   # Then display the statistics bar.
   def sprint_health
     content_tag :div, class: 'box sprint-health' do
-      safe_concat content_tag :div, content_tag(:h2, t(:title_sprint_health)), class: 'header header-left'
-      safe_concat sprint_info
-      safe_concat sprint_health_fragment_render('left', 'points')
-      safe_concat sprint_health_fragment_render('right', 'stories')
-      safe_concat clear_both
-      safe_concat sprint_health_statistics_render
-      safe_concat info_tag(nil, {id: 'statistics-info'})
+      concat content_tag :div, content_tag(:h2, t(:title_sprint_health)), class: 'header header-left'
+      concat sprint_info
+      concat sprint_health_fragment_render('left', 'points')
+      concat sprint_health_fragment_render('right', 'stories')
+      concat clear_both
+      concat sprint_health_statistics_render
+      concat info_tag(nil, {id: 'statistics-info'})
     end
   end
 
@@ -21,8 +21,8 @@ module SprintHealthReportHelper
   # @param [String] label : legend.
   def sprint_health_square(info, label)
     content_tag :div, class: 'sprint-health-square' do
-      safe_concat content_tag :h1, info
-      safe_concat content_tag :span, label
+      concat content_tag :h1, info
+      concat content_tag :span, label
     end
   end
 
@@ -45,11 +45,11 @@ module SprintHealthReportHelper
   def sprint_health_statistics_render
     content_tag :div, class: 'statistics-bar' do
       unit = @sprint_health.time_elapsed_unit.eql?(:percent) ? '%' : t(:label_plural_day)
-      safe_concat sprint_health_square("#{@sprint_health.time_elapsed} #{unit}", t(:title_time_elapsed))
-      safe_concat sprint_health_square("#{@sprint_health.work_complete} %", t(:title_work_complete))
-      safe_concat sprint_health_square("#{@sprint_health.scope_change} %", t(:title_scope_change))
-      safe_concat sprint_health_square(@sprint_health.tasks_count, t(:label_tasks))
-      safe_concat sprint_health_square("#{@sprint_health.tasks_progress} %", t(:title_tasks_progress))
+      concat sprint_health_square("#{@sprint_health.time_elapsed} #{unit}", t(:title_time_elapsed))
+      concat sprint_health_square("#{@sprint_health.work_complete} %", t(:title_work_complete))
+      concat sprint_health_square("#{@sprint_health.scope_change} %", t(:title_scope_change))
+      concat sprint_health_square(@sprint_health.tasks_count, t(:label_tasks))
+      concat sprint_health_square("#{@sprint_health.tasks_progress} %", t(:title_tasks_progress))
     end
   end
 
@@ -70,17 +70,17 @@ module SprintHealthReportHelper
   # @param [String] group_by : stories or points.
   def sprint_health_fragment_render(float_position, group_by)
     content_tag :div, class: "splitcontent splitcontent#{float_position}" do
-      safe_concat content_tag :p, t("text_sprint_health_by_#{group_by}".to_sym), class: 'sprint-health-text'
-      safe_concat send("sprint_health_by_#{group_by}_render_content")
+      concat content_tag :p, t("text_sprint_health_by_#{group_by}".to_sym), class: 'sprint-health-text'
+      concat send("sprint_health_by_#{group_by}_render_content")
     end
   end
 
   # Render a sprint info text. Including sprint name, days left, start and end date, version.
   def sprint_info
     content_tag :div, class: 'sprint-info-text' do
-      safe_concat content_tag :h2, @sprint_decorator.show_link
-      safe_concat @sprint_decorator.display_days_left
-      safe_concat @sprint_decorator.display_info_text
+      concat content_tag :h2, @sprint_decorator.show_link
+      concat @sprint_decorator.display_days_left
+      concat @sprint_decorator.display_info_text
     end
   end
 end

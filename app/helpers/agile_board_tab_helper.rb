@@ -6,17 +6,17 @@
 module AgileBoardTabHelper
   def agile_board_list_button(model)
     content_tag :span, class: 'fancy-list right-content-list' do
-      safe_concat model.edit_link(@project)
-      safe_concat model.delete_link(@project)
+      concat model.edit_link(@project)
+      concat model.delete_link(@project)
     end
   end
 
 
   def tab_content(tab_name)
     content_tag :div, {id: "#{tab_name}-tab", class: 'box', style: 'display:none'} do
-      safe_concat send("#{tab_name}_list_header")
-      safe_concat send("#{tab_name}_list")
-      safe_concat editor_overlay("#{tab_name.singularize}", t(:link_new_status))
+      concat send("#{tab_name}_list_header")
+      concat send("#{tab_name}_list")
+      concat editor_overlay("#{tab_name.singularize}", t(:link_new_status))
     end
   end
 end
