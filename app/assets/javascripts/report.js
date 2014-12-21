@@ -97,7 +97,7 @@ function draw_burndown_chart(data, el, min_date, max_date) {
         .append("div").attr("class", "chart-tooltip");
 
     var svg = d3.select("#burndown-chart").append("svg")
-        .attr("width", width + margin.left )
+        .attr("width", width + margin.left + 3 )
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
