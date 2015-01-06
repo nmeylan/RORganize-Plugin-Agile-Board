@@ -1,0 +1,82 @@
+---
+enumerations_001:
+  id: 1
+  opt: ISTS
+  name: New
+  position: 2
+enumerations_002:
+  id: 2
+  opt: ISTS
+  name: In progress
+  position: 7
+enumerations_003:
+  id: 3
+  opt: ISTS
+  name: Closed
+  position: 3
+enumerations_004:
+  id: 4
+  opt: ISTS
+  name: Fixed to test
+  position: 1
+enumerations_005:
+  id: 5
+  opt: ISTS
+  name: Tested to be delivered
+  position: 6
+enumerations_006:
+  id: 6
+  opt: ISTS
+  name: Not satisfying
+  position: 4
+enumerations_007:
+  id: 7
+  opt: ISTS
+  name: Redo
+  position: 5
+enumerations_008:
+  id: 8
+  opt: CLIS
+  name: New
+  position: 1
+enumerations_009:
+  id: 9
+  opt: CLIS
+  name: Started
+  position: 2
+enumerations_010:
+  id: 10
+  opt: CLIS
+  name: Finish
+  position: 3
+enumerations_011:
+  id: 11
+  opt: SCAC
+  name: Administrator
+  position: 1
+enumerations_012:
+  id: 12
+  opt: SCAC
+  name: User
+  position: 2
+
+enumerations_013:
+  id: 13
+  opt: PRNO
+  name: notification_watcher_email
+  position: 1
+enumerations_014:
+  id: 14
+  opt: PRNO
+  name: notification_watcher_in_app
+  position: 2
+enumerations_015:
+  id: 15
+  opt: PRNO
+  name: notification_participant_email
+  position: 3
+enumerations_016:
+  id: 16
+  opt: PRNO
+  name: notification_participant_in_app
+  position: 4
