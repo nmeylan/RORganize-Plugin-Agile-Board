@@ -17,5 +17,11 @@ Rorganize::Managers::PluginManager.register :agile_board do |plugin|
       {controller: 'agile_board_reports', action: 'index'},
       {controller: 'epics', action: 'index'}])
 
+  plugin.add_controllers_groups([
+                                    Rorganize::Managers::PermissionManager::ControllerGroup.new(:agile, 'Agile', 'scrum',
+                                      %w(story_points story_statuses user_stories sprints agile_board_reports epics boards)
+                                    )
+                                ])
+
   Rorganize::ACTION_ICON.merge!({epic_id: 'sword', point_id: 'coin', sprint_id: 'sprint'})
 end
