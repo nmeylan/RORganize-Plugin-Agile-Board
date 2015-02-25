@@ -7,7 +7,7 @@ class CreateSprints < ActiveRecord::Migration
       t.integer :version_id
       t.integer :board_id
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

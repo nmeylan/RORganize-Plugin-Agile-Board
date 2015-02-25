@@ -6,7 +6,7 @@ class CreateEpics < ActiveRecord::Migration
       t.integer :board_id
       t.string :color
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

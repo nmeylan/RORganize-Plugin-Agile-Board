@@ -4,7 +4,7 @@ class CreateBoards < ActiveRecord::Migration
       t.integer :velocity
       t.integer :project_id
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

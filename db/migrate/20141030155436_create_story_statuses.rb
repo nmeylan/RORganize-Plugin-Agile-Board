@@ -7,7 +7,7 @@ class CreateStoryStatuses < ActiveRecord::Migration
       t.string :color
       t.integer :issues_status_id
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

@@ -13,7 +13,7 @@ class CreateUserStories < ActiveRecord::Migration
       t.integer :board_id
       t.integer :category_id
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

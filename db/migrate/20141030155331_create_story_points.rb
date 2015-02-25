@@ -4,7 +4,7 @@ class CreateStoryPoints < ActiveRecord::Migration
       t.integer :value
       t.integer :board_id
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end
