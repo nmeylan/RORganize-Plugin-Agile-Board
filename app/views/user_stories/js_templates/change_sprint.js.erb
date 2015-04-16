@@ -5,7 +5,11 @@
  %>
 var old_id = <%= old_sprint_id ? old_sprint_id : -1 %>;
 var new_id = <%= sprint_id %>;
-if(old_id !== new_id){
- update_sprint_info(new_id, '+', <%= points ? points.value : 0 %>);
- update_sprint_info(old_id, '-', <%= points ? points.value : 0 %>);
+if (old_id !== new_id) {
+    update_sprint_info(new_id, '+', <%= points ? points.value : 0 %>);
+    update_sprint_info(old_id, '-', <%= points ? points.value : 0 %>);
 }
+
+
+$('.sprint ').find('.fancy-list-item.story:visible').css('border-bottom', '').css('margin-bottom', '');
+$('.sprint ').find('.fancy-list-item.story:visible:last').css('border-bottom', 'inherit').css('margin-bottom', '-6px');
