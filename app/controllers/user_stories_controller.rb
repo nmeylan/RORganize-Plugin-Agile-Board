@@ -41,7 +41,7 @@ class UserStoriesController < AgileBoardController
   # GET /user_stories/1/edit
   def edit
     @user_story = @user_story.decorate(context: form_context)
-    agile_board_form_callback(agile_board_plugin::user_story_path(@project.slug, @user_story.id, from: params[:from]), :put)
+    agile_board_form_callback(agile_board_plugin::user_story_path(@project.slug, @user_story, from: params[:from]), :put)
   end
 
   # POST /user_stories
@@ -100,11 +100,11 @@ class UserStoriesController < AgileBoardController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_user_story
-    @user_story = UserStory.find(params[:id] || params[:user_story_id])
+    @user_story = @board.user_stories.find_by_sequence_id!(params[:id] || params[:user_story_id])
   end
 
   def decorate_user_story
-    UserStory.fetch_dependencies.fetch_issues_dependencies.find(params[:id] || params[:user_story_id]).decorate(context: {project: @project})
+    @board.user_stories.fetch_dependencies.fetch_issues_dependencies.find_by_sequence_id!(params[:id] || params[:user_story_id]).decorate(context: {project: @project})
   end
 
   def form_context
@@ -118,8 +118,8 @@ class UserStoriesController < AgileBoardController
   def show_redirection(message)
     respond_to do |format|
       flash[:notice] = message
-      format.html {redirect_to agile_board_plugin::user_story_path(@project.slug, @user_story.id)}
-      format.js { js_redirect_to(agile_board_plugin::user_story_path(@project.slug, @user_story.id)) }
+      format.html {redirect_to agile_board_plugin::user_story_path(@project.slug, @user_story)}
+      format.js { js_redirect_to(agile_board_plugin::user_story_path(@project.slug, @user_story)) }
     end
   end
 

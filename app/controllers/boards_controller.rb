@@ -48,7 +48,7 @@ class BoardsController < AgileBoardController
   end
 
   def tasks_completion
-    issues = Issue.where(project_id: @project.id, user_story_id: nil).order('issues.id ASC').pluck('issues.id, issues.subject')
+    issues = @project.issues.where(user_story_id: nil).order('issues.sequence_id ASC').pluck('issues.sequence_id, issues.subject')
     respond_to do |format|
       format.json { render json: issues }
     end

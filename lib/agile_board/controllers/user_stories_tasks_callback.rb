@@ -15,7 +15,7 @@ module AgileBoard
                            project_id: @project.id
         )
         @members = @project.real_members
-        agile_board_form_callback(agile_board_plugin::user_story_create_task_path(@project.slug, @user_story.id), :post, 'new_task')
+        agile_board_form_callback(agile_board_plugin::user_story_create_task_path(@project.slug, @user_story), :post, 'new_task')
       end
 
       # POST /user_stories/:user_story_id/create_task

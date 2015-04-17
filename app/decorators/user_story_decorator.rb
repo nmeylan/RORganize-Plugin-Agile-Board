@@ -52,7 +52,7 @@ class UserStoryDecorator < AgileBoardDecorator
   end
 
   def display_id
-    "##{self.id}".freeze
+    "##{self.sequence_id}".freeze
   end
 
   def display_tracker_id
@@ -122,7 +122,7 @@ class UserStoryDecorator < AgileBoardDecorator
 
   def display_object_type(project)
     h.concat h.content_tag :b, "#{h.t(:label_user_story)} "
-    "<a href='/projects/#{project.slug}/agile_board/user_stories/#{self.id}'>#{resized_caption}</a>".html_safe
+    "<a href='/projects/#{project.slug}/agile_board/user_stories/#{self.sequence_id}'>#{resized_caption}</a>".html_safe
   end
 
 

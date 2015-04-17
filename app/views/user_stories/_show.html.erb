@@ -4,7 +4,7 @@
  * Time: 07:50
 %>
 
-<div id="story-<%= @user_story_decorator.id %>">
+<div id="story-<%= @user_story_decorator.to_param %>">
   <h2><%= @user_story_decorator.title %></h2>
   <%= @user_story_decorator.creation_info %>
 

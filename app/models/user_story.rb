@@ -27,9 +27,19 @@ class UserStory < ActiveRecord::Base
   validates :title, presence: true, length: {maximum: 255}
 
   before_save :set_backlog_id
-  before_create :update_position
+  before_create :update_position, :populate_sequence_id
   after_update :update_issues
   after_destroy :dec_position_on_destroy
+
+  def populate_sequence_id
+    sequence_name = "#{self.class.table_name}_sequence".to_sym
+    board.update_column(sequence_name, board.send(sequence_name) + 1)
+    self.sequence_id = board.send(sequence_name)
+  end
+
+  def to_param
+    self.sequence_id.to_s
+  end
 
   def caption
     self.title
@@ -77,7 +87,7 @@ class UserStory < ActiveRecord::Base
   end
 
   def update_issues
-    issue_ids = self.issues.collect(&:id).to_a
+    issue_ids = self.issues.collect(&:sequence_id).to_a
     project = self.board.project
     update_issues_on_sprint_change(issue_ids, project) if issue_ids.any?
     update_issues_on_story_change(issue_ids, project) if issue_ids.any?
@@ -106,7 +116,7 @@ class UserStory < ActiveRecord::Base
 
 
   def detach_tasks(ids)
-    issues_to_remove = self.issues.collect { |issue| issue if ids.include?(issue.id.to_s) }.compact
+    issues_to_remove = self.issues.collect { |issue| issue if ids.include?(issue.sequence_id.to_s) }.compact
     self.issues.delete(issues_to_remove)
     self.save
   end
@@ -119,7 +129,7 @@ class UserStory < ActiveRecord::Base
   def attach_tasks(values)
     project = self.board.project_id
     ids = values.split(/\s/).collect{|chunk| chunk.tr('#', '') if chunk.match(/#\d*/)}.compact
-    issues = Issue.where(project_id: project, id: ids, user_story_id: nil)
+    issues = Issue.where(project_id: project, sequence_id: ids, user_story_id: nil)
     count = issues.size
     issues.update_all(user_story_id: self.id)
     UserStory.update_counters(self.id, issues_count: count)

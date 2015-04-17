@@ -8,7 +8,7 @@
 <%#= JS Files %>
 <%= javascript_include_tag 'agile_board_manifest' %>
 
-<%= contextual "#{t(:label_story)} : ##{@user_story_decorator.id}" do %>
+<%= contextual "#{t(:label_story)} : ##{@user_story_decorator.to_param}" do %>
     <%= @user_story_decorator.new_task_link %>
     <%= @user_story_decorator.attach_task_link %>
     <%= @user_story_decorator.new_comment_link %>

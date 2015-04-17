@@ -18,7 +18,7 @@ module UserStoryTasksHelper
   end
 
   def story_attach_tasks_form
-    form_tag agile_board_plugin::user_story_attach_tasks_path(@project.slug, @user_story_decorator.id), {class: 'form'} do
+    form_tag agile_board_plugin::user_story_attach_tasks_path(@project.slug, @user_story_decorator), {class: 'form'} do
       concat text_area_tag 'tasks', nil, {placeholder: '#45531 #45438', rows: 12, id: 'story-attach-tasks-textarea'}
       concat submit_tag t(:button_submit)
     end
@@ -63,7 +63,7 @@ module UserStoryTasksHelper
   end
 
   def render_task(issue)
-    content_tag :li, class: "fancy-list-item story", id: "task-#{issue.id}" do
+    content_tag :li, class: "fancy-list-item story", id: "task-#{issue.sequence_id}" do
       concat render_story_task_left_content(issue)
       concat render_story_task_right_content(issue)
       concat clear_both
@@ -72,7 +72,7 @@ module UserStoryTasksHelper
 
   def render_story_task_left_content(issue)
     content_tag :span, class: 'story-task-left-content' do
-      concat_span_tag "#{issue.tracker_str} ##{issue.id}", class: 'story-task-tracker'
+      concat_span_tag "#{issue.tracker_str} ##{issue.sequence_id}", class: 'story-task-tracker'
       concat issue.show_link
     end
   end
