@@ -19,6 +19,7 @@ class UserStory < ActiveRecord::Base
   has_many :issues, dependent: :nullify
   belongs_to :author, class_name: 'User'
   belongs_to :board
+  belongs_to :project
 
   scope :fetch_dependencies, -> { includes(:status, :points, :tracker, :category, sprint: :version) }
   scope :fetch_issues_dependencies, -> { includes(issues: [:tracker, :category, :version, :assigned_to, status: :enumeration]) }

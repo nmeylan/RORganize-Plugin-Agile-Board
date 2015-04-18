@@ -46,9 +46,9 @@ class UserStoriesController < AgileBoardController
 
   # POST /user_stories
   def create
-    @user_story = UserStory.new(user_story_params)
+    @user_story = @board.user_stories.new(user_story_params)
     @user_story.author = User.current
-    @user_story.board = @board
+    @user_story.project = @project
     result = @user_story.save
     @user_story = @user_story.decorate(context: {project: @project})
     simple_js_callback(result, :create, @user_story)
