@@ -77,7 +77,7 @@ class UserStoriesController < AgileBoardController
         format.js { js_redirect_to(agile_board_plugin::agile_board_path(@project.slug)) }
       end
     else
-      simple_js_callback(result, :delete, @user_story, {id: params[:id], sprint_id: @user_story.sprint_id})
+      simple_js_callback(result, :delete, @user_story, {id: @user_story.id, sprint_id: @user_story.sprint_id})
     end
   end
 
