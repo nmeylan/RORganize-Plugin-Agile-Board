@@ -1,6 +1,6 @@
 require 'shared/history'
 class UserStoriesController < AgileBoardController
-  include Rorganize::RichController::GenericCallbacks
+  include GenericCallbacks
   include AgileBoard::Controllers::UserStoriesTasksCallback
   helper SprintsHelper
   before_action :find_project_with_dependencies, only: [:new_task]

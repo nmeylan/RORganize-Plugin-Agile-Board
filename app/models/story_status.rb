@@ -1,5 +1,5 @@
 class StoryStatus < ActiveRecord::Base
-  include Rorganize::Models::SmartRecords
+  include SmartRecords
   belongs_to :board
   belongs_to :issues_status
   before_create :set_position

@@ -2,7 +2,7 @@ class BoardsController < AgileBoardController
   # before_action :set_board, only: [:index, :add_points, :destroy]
   # before_action :check_permission
   # before_action :custom_check_permission
-  include Rorganize::RichController::ProjectContext
+  include ProjectContext
   # GET /boards
   def index
     @sessions[:agile_board_menu] ||= :work

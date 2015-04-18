@@ -1,9 +1,9 @@
 class UserStory < ActiveRecord::Base
-  include Rorganize::Models::SmartRecords
-  include Rorganize::Models::Journalizable
-  include Rorganize::Models::Commentable
-  include Rorganize::Models::Notifiable
-  include Rorganize::Models::Watchable
+  include SmartRecords
+  include Journalizable
+  include Commentable
+  include Notifiable
+  include Watchable
   include AgileBoard::Models::StoryChangePositionLogic
 
   exclude_attributes_from_journal(:description)

@@ -1,5 +1,5 @@
 class EpicsController < AgileBoardController
-  include Rorganize::RichController::GenericCallbacks
+  include GenericCallbacks
   before_action :set_epic, only: [:show, :edit, :update, :destroy]
   before_action :check_permission
 

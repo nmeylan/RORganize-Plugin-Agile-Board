@@ -1,5 +1,5 @@
 class Sprint < ActiveRecord::Base
-  include Rorganize::Models::SmartRecords
+  include SmartRecords
   include AgileBoard::SprintStatisticsCalculator
   has_many :stories, class_name: 'UserStory', dependent: :nullify
   belongs_to :version

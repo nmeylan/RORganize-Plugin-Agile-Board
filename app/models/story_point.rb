@@ -1,5 +1,5 @@
 class StoryPoint < ActiveRecord::Base
-  include Rorganize::Models::SmartRecords
+  include SmartRecords
   belongs_to :board
 
   def caption
