@@ -21,7 +21,7 @@ module StoryMapHelper
     sprint = sprints.detect { |sprint| sprint.id.eql?(sprint_id) }
     content_tag :div, id: "sprint-#{sprint_id}", class: 'sprint' do
       concat story_map_sprint_header(sprint)
-      concat story_map_render_sprint_content_map(status_stories_hash, number_cols, statuses)
+      concat content_tag(:div, story_map_render_sprint_content_map(status_stories_hash, number_cols, statuses), class: "sprint-map")
       concat clear_both
     end
   end

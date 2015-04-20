@@ -1,32 +1,39 @@
 @import 'utilities/variables';
 
 .story-map {
-  position: relative;
   margin-top: 5px;
   width: 100%;
   .sprint {
-    position: relative;
     height: 100%;
   }
-
+  .sprint-map{
+    width: 100%;
+    display: table;
+    height: 100%;
+    margin-bottom: 40px;
+  }
   .ui-state-highlight {
     height: 105px;
     margin-bottom: 10px;
     margin-top: 5px;
   }
+  .ui-sortable-helper{
+    -ms-transform: rotate(5deg);
+    -webkit-transform: rotate(5deg);
+    transform: rotate(5deg);
+  }
   .story-map-sprint-header {
     margin-bottom: 30px;
   }
   .story-map-column {
-    position: relative;
-    float: left;
     height: 100%;
+    display: table-cell;
 
     .status-color {
       height: 10px;
       width: 100%;
-      margin-bottom: 10px;
       margin-top: 10px;
+      display: block;
     }
 
     .story-map-column-header {
@@ -42,15 +49,15 @@
     }
 
     .story-map-stories:empty {
-      border: dashed 3px $default-border-color;
-      height: 85px;
-      margin: 25px 10px 0 10px;
+      margin: 10px 10px 0 10px;
     }
 
     .story-map-stories {
-      margin: 10px 0 0 0;
+      margin: 0;
       padding: 10px;
-
+      height: 100%;
+      display: block;
+      
       .story {
         margin: 0 0 10px 0;
         padding: 5px;
@@ -58,7 +65,7 @@
         overflow: hidden;
         border: solid 1px $default-border-color;
         border-radius: 3px;
-
+        background-color: white;
         div > span {
           margin-right: 5px;
         }
