@@ -19,7 +19,7 @@ class AgileBoardController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_board
-    @board = Board.find_by_project_id!(@project.id)
+    @board = Board.find_by_project_id(@project.id)
     @board_decorator = @board.decorate(context: {project: @project}) if @board
   end
 
