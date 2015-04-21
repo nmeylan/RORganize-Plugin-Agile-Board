@@ -57,7 +57,7 @@ module AgileBoard
           story = journal.journalizable.freeze
           variation = journal_points_variation_calculation(journal, story)
           unless variation == 0
-            memo[:stories][story.id] ||= {object: "#{story.tracker.caption} ##{story.id}"}
+            memo[:stories][story.id] ||= {object: "#{story.tracker.caption} ##{story.sequence_id}"}
             memo[:stories][story.id][:variation] ||= 0
             memo[:stories][story.id][:variation] += variation
           end
