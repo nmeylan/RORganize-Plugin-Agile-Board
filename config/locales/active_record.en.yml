@@ -1,0 +1,53 @@
+en:
+  activerecord:
+    models:
+      epic: Epic
+      board: Board
+      sprint: Sprint
+      story_point: Story point
+      stoty_status: Story status
+      user_story: User story
+      created_at: Created at
+      updated_at: Updated at
+    attributes:
+      epic:
+        name: Name
+        description: Description
+        color: Couleur
+        board_id: Board
+        created_at: Created at
+        updated_at: Updated at
+      sprint:
+        name: Name
+        start_date: Start date
+        end_date: End date
+        version_id: Version
+        board_id: Board
+        is_archived: Is archived
+        created_at: Created at
+        updated_at: Updated at
+      story_points:
+        value: Value
+        board_id: Board
+        created_at: Created at
+        updated_at: Updated at
+      stoty_status:
+        name: name
+        board_id: Board
+        position: Position
+        issues_status_id: Issue status
+        created_at: Created at
+        updated_at: Updated at
+      user_stories:
+        title: Title
+        description: Description
+        status_id: Status
+        point_id: Point
+        position: Position
+        author_id: Author
+        epic_id: Epic
+        sprint_id: Sprint
+        tracker_id: Tracker
+        category_id: Category
+        created_at: Created at
+        updated_at: Updated at
