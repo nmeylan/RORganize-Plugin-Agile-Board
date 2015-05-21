@@ -4,6 +4,7 @@ class UserStory < ActiveRecord::Base
   include Commentable
   include Notifiable
   include Watchable
+  include HasTaskList
   include AgileBoard::Models::StoryChangePositionLogic
 
   exclude_attributes_from_journal(:description)
