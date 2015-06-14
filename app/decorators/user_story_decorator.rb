@@ -104,7 +104,7 @@ class UserStoryDecorator < AgileBoardDecorator
     context[:sprint_id]
   end
 
-  def point_options
+  def points_options
     context[:points].collect { |point| [point.caption, point.id] }
   end
 

@@ -21,26 +21,20 @@ module AgileBoardHelper
   # @param [String] path : url for the form.
   # @param [Symbol] method : :put or :post.
   def overlay_form(model, path, method)
-    form_for model, url: path, html: {class: 'form', remote: true, method: method} do |f|
-      concat content_tag :div, class: 'box', &Proc.new {
-        yield f
-      }
-      concat submit_tag t(:button_submit)
+    rorganize_form_for model, url: path, wrapper: :modal_horizontal_form, html: {class: 'form-horizontal', remote: true, method: method} do |f|
+      concat content_tag :div, &Proc.new {
+                               yield f
+                             }
+      concat f.button :submit
     end
   end
 
   def agile_board_form_description_field(f)
-    content_tag :p do
-      concat f.label :description, t(:field_description)
-      concat f.text_area :description, {class: 'fancyEditor', rows: 10}
-    end
+    f.input :description, as: :text, input_html: {class: 'fancyEditor', rows: 10}
   end
 
   def required_form_text_field(f, attr_name, label, options = {size: 25, maxLength: 255})
-    content_tag :p do
-      concat required_form_label(f, attr_name, label)
-      concat f.text_field attr_name, options
-    end
+    f.input attr_name, options
   end
 
   def agile_board_form_color_field(f)
@@ -65,23 +59,18 @@ module AgileBoardHelper
   # Else, try to build a select for the given attr_name.
   # @param [FormFor] f : the form.
   # @param [Symbol] attr_name : the attribute name.
-  # @param [String] label : label of the field.
   # @param [ActiveRecordBase] model : a decorated(draper) model.
   # @param [Boolean] required : does the field is mandatory?
-  def agile_board_select_field(f, attr_name, label, model, required = false)
-    content_tag :div, class: 'autocomplete-combobox' do
-      concat(required ? required_form_label(f, attr_name, label) : f.label(attr_name, label))
-      if block_given?
-        concat yield
-      else
-        concat f.select "#{attr_name}_id",
-                             model.send("#{attr_name}_options"),
-                             {include_blank: !required}, {class: "chzn-select#{'-deselect' unless required}  cbb-medium search"}
-      end
+  def agile_board_select_field(f, attr_name, model, required = false)
+    if block_given?
+      yield
+    else
+      f.input attr_name, collection: model.send("#{attr_name}_options"), include_blank: !required,
+              my_wrapper_html: {class: "col-sm-8"},
+              label_html: {class: "col-sm-4"},
+              input_html: {class: "chzn-select#{'-deselect' unless required}  cbb-medium search"}
     end
   end
-
-
 
 
   def split_content?

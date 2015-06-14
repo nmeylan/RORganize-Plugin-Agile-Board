@@ -53,20 +53,20 @@ module UserStoriesHelper
       concat story_form_left_content(f, model)
       concat story_form_right_content(f, model)
       concat clear_both
-      concat required_form_text_field(f, :title, t(:field_title), {size: 80, maxLength: 255})
-      concat agile_board_form_description_field(f)
+      concat f.input :title, my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}, input_html: {maxLength: 255}
+      concat f.input :description, as: :text, my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}, input_html: {class: 'fancyEditor', rows: 10}
     end
   end
 
   def story_form_left_content(f, model)
-    content_tag :div, class: 'splitcontentleft' do
+    content_tag :div, class: 'col-sm-6' do
       concat story_form_status_field(f, model)
       concat story_form_tracker_field(f, model)
     end
   end
 
   def story_form_right_content(f, model)
-    content_tag :div, class: 'splitcontentright' do
+    content_tag :div, class: 'col-sm-6' do
       concat story_form_point_field(f, model)
       concat story_form_epic_field(f, model)
       concat story_form_category_field(f, model)
@@ -74,23 +74,23 @@ module UserStoriesHelper
   end
 
   def story_form_status_field(f, model)
-    agile_board_select_field(f, :status, t(:field_status), model, true)
+    agile_board_select_field(f, :status, model, true)
   end
 
   def story_form_epic_field(f, model)
-    agile_board_select_field(f, :epic, t(:field_epic), model)
+    agile_board_select_field(f, :epic, model)
   end
 
   def story_form_category_field(f, model)
-    agile_board_select_field(f, :category, t(:field_category), model)
+    agile_board_select_field(f, :category, model)
   end
 
   def story_form_tracker_field(f, model)
-    agile_board_select_field(f, :tracker, t(:field_tracker), model, true)
+    agile_board_select_field(f, :tracker, model, true)
   end
 
   def story_form_point_field(f, model)
-    agile_board_select_field(f, :point, t(:link_story_points), model)
+    agile_board_select_field(f, :points, model)
   end
 
   def caption_sized

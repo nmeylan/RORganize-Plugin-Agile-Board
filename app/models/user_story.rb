@@ -25,7 +25,7 @@ class UserStory < ActiveRecord::Base
   scope :fetch_dependencies, -> { includes(:status, :points, :tracker, :category, sprint: :version) }
   scope :fetch_issues_dependencies, -> { includes(issues: [:tracker, :category, :version, :assigned_to, status: :enumeration]) }
 
-  validates :tracker_id, :status_id, :board_id, presence: true
+  validates :tracker, :status, :board_id, presence: true
   validates :title, presence: true, length: {maximum: 255}
 
   before_save :set_backlog_id
