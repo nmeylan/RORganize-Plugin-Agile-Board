@@ -19,7 +19,7 @@ module UserStoryTasksHelper
 
   def story_attach_tasks_form
     form_tag agile_board_plugin::user_story_attach_tasks_path(@project.slug, @user_story_decorator), {class: 'form'} do
-      concat text_area_tag 'tasks', nil, {placeholder: '#45531 #45438', rows: 12, id: 'story-attach-tasks-textarea'}
+      concat text_area_tag 'tasks', nil, {placeholder: '#45531 #45438', rows: 12, id: 'story-attach-tasks-textarea', class: "form-control"}
       concat submit_tag t(:button_submit)
     end
   end
@@ -30,17 +30,10 @@ module UserStoryTasksHelper
       concat f.hidden_field(:category_id, value: model.category_id)
       concat f.hidden_field(:status_id, value: model.status_id)
       concat f.hidden_field(:version_id, value: model.version_id)
-      concat story_task_form_assigned_field(f, model)
-      concat required_form_text_field(f, :subject, t(:field_subject), {size: 80})
-      concat agile_board_form_description_field(f)
-    end
-  end
-
-
-  def story_task_form_assigned_field(f, model)
-    agile_board_select_field(f, :assigned_to, t(:field_assigned_to), model) do
-      f.select :assigned_to_id, @members.collect { |member| [member.user.name, member.user.id] },
-               {include_blank: true}, {class: 'chzn-select-deselect cbb-medium search'}
+      concat f.input :assigned_to_id, collection: @members.collect { |member| [member.user.name, member.user.id] },
+                     include_blank: true, input_html: {class: 'chzn-select-deselect cbb-medium search'}, my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}
+      concat f.input :subject, my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}
+      concat f.input :description, as: :text, input_html: {rows: 5}, my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}
     end
   end
 

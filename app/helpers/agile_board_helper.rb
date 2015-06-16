@@ -29,18 +29,10 @@ module AgileBoardHelper
     end
   end
 
-  def agile_board_form_description_field(f)
-    f.input :description, as: :text, input_html: {class: 'fancyEditor', rows: 10}
-  end
-
-  def required_form_text_field(f, attr_name, label, options = {size: 25, maxLength: 255})
-    f.input attr_name, options
-  end
-
   def agile_board_form_color_field(f)
-    content_tag :p do
-      concat f.label :color, t(:label_color)
-      concat color_field_tag f, :color, {size: 26}
+    content_tag :div, class: "form-group required" do
+      concat f.label :color, t(:label_color), class: "col-sm-2 control-label"
+      concat content_tag :div, color_field_tag(f, :color, class: "form-control"), class: "col-sm-10"
     end
   end
 

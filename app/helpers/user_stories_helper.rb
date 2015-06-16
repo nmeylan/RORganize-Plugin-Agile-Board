@@ -60,37 +60,17 @@ module UserStoriesHelper
 
   def story_form_left_content(f, model)
     content_tag :div, class: 'col-sm-6' do
-      concat story_form_status_field(f, model)
-      concat story_form_tracker_field(f, model)
+      concat agile_board_select_field(f, :status, model, true)
+      concat agile_board_select_field(f, :tracker, model, true)
     end
   end
 
   def story_form_right_content(f, model)
     content_tag :div, class: 'col-sm-6' do
-      concat story_form_point_field(f, model)
-      concat story_form_epic_field(f, model)
-      concat story_form_category_field(f, model)
+      concat agile_board_select_field(f, :points, model)
+      concat agile_board_select_field(f, :epic, model)
+      concat agile_board_select_field(f, :category, model)
     end
-  end
-
-  def story_form_status_field(f, model)
-    agile_board_select_field(f, :status, model, true)
-  end
-
-  def story_form_epic_field(f, model)
-    agile_board_select_field(f, :epic, model)
-  end
-
-  def story_form_category_field(f, model)
-    agile_board_select_field(f, :category, model)
-  end
-
-  def story_form_tracker_field(f, model)
-    agile_board_select_field(f, :tracker, model, true)
-  end
-
-  def story_form_point_field(f, model)
-    agile_board_select_field(f, :points, model)
   end
 
   def caption_sized

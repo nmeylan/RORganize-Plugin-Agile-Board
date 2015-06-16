@@ -101,25 +101,12 @@ module SprintsHelper
 
   def sprint_form(model, path, method)
     overlay_form(model, path, method) do |f|
-      concat sprint_form_version_field(model, f)
-      concat required_form_text_field(f, :name, t(:field_name))
-      concat sprint_date_field(f, :start_date, t(:field_start_date))
-      concat sprint_date_field(f, :end_date, t(:field_target_date), false)
-    end
-  end
-
-  def sprint_form_version_field(model, f)
-    agile_board_select_field(f, :version_id, t(:field_version), model) do
-      select_tag_versions(@project.versions, 'sprint_version_id', 'sprint[version_id]', model.version_id,
-                          {'data-link' => agile_board_plugin::generate_sprint_name_path(@project.slug)})
-    end
-  end
-
-
-  def sprint_date_field(f, field, text, required = true)
-    content_tag :p do
-      concat required ? required_form_label(f, field, text) : f.label(field, text)
-      concat f.date_field field, size: 6
+      concat f.input :version_id, collection: @project.active_versions, input_html: {data: {link: agile_board_plugin::generate_sprint_name_path(@project.slug)},
+                                                                                    class: 'chzn-select-deselect  cbb-medium search'},
+                     my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}
+      concat f.input :name, my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}
+      concat f.input :start_date, as: :date, html5: true, my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}
+      concat f.input :end_date, as: :date, html5: true, my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}
     end
   end
 end

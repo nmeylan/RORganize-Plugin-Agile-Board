@@ -30,14 +30,13 @@ module StoryStatusesHelper
 
   def status_form(model, path, method)
     overlay_form(model, path, method) do |f|
-      concat required_form_text_field(f, :name, t(:field_name))
-      concat status_form_issues_status_field(f, model)
+      concat f.input :name, my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}
+      concat f.input :issues_status, collection: model.issues_status_options, include_blank: true,
+                      my_wrapper_html: {class: "col-sm-10"},
+                      label_html: {class: "col-sm-2"},
+                      input_html: {class: "chzn-select cbb-medium search"}
       concat agile_board_form_color_field(f)
     end
-  end
-
-  def status_form_issues_status_field(f, model)
-    agile_board_select_field(f, :issues_status, t(:label_issues_status), model, true)
   end
 
 end

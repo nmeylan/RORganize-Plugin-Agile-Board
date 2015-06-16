@@ -27,16 +27,9 @@ module EpicsHelper
 
   def epic_form(model, path, method)
     overlay_form(model, path, method) do |f|
-      concat required_form_text_field(f, :name, t(:field_name))
+      concat f.input :name, my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}
       concat agile_board_form_color_field(f)
-      concat epic_form_description_field(f)
-    end
-  end
-
-  def epic_form_description_field(f)
-    content_tag :p do
-      concat f.label :description, t(:field_description)
-      concat f.text_area :description, rows: 5
+      concat f.input :description, input_html: {rows: 5}, my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}
     end
   end
 end
