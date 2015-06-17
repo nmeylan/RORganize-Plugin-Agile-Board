@@ -63,7 +63,7 @@ class BoardDecorator < AgileBoardDecorator
   def agile_board_menu_nav_item(label, glyph, path, selected)
     {caption: h.glyph(label, glyph),
      path: path,
-     options: {class: "#{'selected' if selected} subnav-item", remote: false}}
+     options: {class: "#{'active' if selected} btn btn-default", remote: false}}
   end
 
   def delete_link

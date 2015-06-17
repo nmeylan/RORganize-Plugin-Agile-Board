@@ -54,7 +54,7 @@
     }
 
     .sprint-info-text{
-      border-bottom: solid 1px $default-border-color;
+      border-bottom: solid 1px $gray-lighter;
       padding: 15px;
       h2{
         margin-left: 0;
@@ -74,7 +74,7 @@
     }
     .splitcontentleft{
       float:left;
-      border-right: solid 1px $default-border-color;
+      border-right: solid 1px $gray-lighter;
     }
     .splitcontentright{
       float:right;
@@ -98,7 +98,7 @@
 
     }
     .statistics-bar{
-      border-top: solid 1px $default-border-color;
+      border-top: solid 1px $gray-lighter;
       padding: 30px 0 0 30px;
       text-align: center;
       .sprint-health-square{
@@ -155,7 +155,7 @@ div.chart-tooltip {
   opacity: 0;
   background-color: white;
   color: $default-color;
-  border: solid 1px $default-border-color;
+  border: solid 1px $gray-lighter;
   border-radius: 3px;
   pointer-events: none;
 }
@@ -184,7 +184,7 @@ div.chart-tooltip {
 
   .y.axis{
     .tick line{
-      stroke: $default-border-color;
+      stroke: $gray-lighter;
     }
   }
 

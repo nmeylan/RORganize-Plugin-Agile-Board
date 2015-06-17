@@ -1,7 +1,7 @@
 @import 'utilities/variables';
 
 .stories-list:empty {
-  border: dashed 1px #e4e4e4;
+  border: dashed 1px $gray-lighter;
   margin: 1px;
 }
 
@@ -68,7 +68,7 @@
 }
 
 #trash-story-tasks.box {
-  border: dashed 3px $default-border-color;
+  border: dashed 3px $gray-lighter;
   margin-top: 50px;
   .trash-placeholder {
     text-align: center;
