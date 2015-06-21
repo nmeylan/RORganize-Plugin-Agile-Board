@@ -27,8 +27,7 @@ module BoardsHelper
       concat group_button_tag(@board_decorator.unified_display_mode(unified_content?),
                                    @board_decorator.split_display_mode(split_content?))
       concat agile_board_search_input
-      concat_span_tag glyph('', 'info'), {label: t(:info_filter_syntax),
-                                          class: 'tooltipped tooltipped-multiline tooltipped-multiline-pre tooltipped-s'}
+      concat_span_tag glyph('', 'info'), {data: {content: t(:info_filter_syntax), toggle: "popover", trigger: "focus"}}
     end
   end
 

@@ -39,7 +39,7 @@ module SprintDecoratorLink
 
   def show_link
     h.link_to self.resized_caption(25), h.agile_board_plugin::agile_board_path(context[:project].slug, :work, sprint_id: model.id),
-              {class: 'sprint-show tooltipped tooltipped-s', label: h.t(:tooltip_view_map)}
+              {class: 'sprint-show', data: {toggle: "tooltip", title: h.t(:tooltip_view_map)}}
   end
 
   def health_link(selected)

@@ -41,7 +41,7 @@
     </tr>
     <tr>
       <th style="width:15%"><%= t(:progression) %> :</th>
-      <td style="width:30%" class="tooltipped tooltipped-w" label="<%= @user_story_decorator.total_progress %>%">
+      <td style="width:30%" data-toggle="tooltip" data-placement="left" data-title="<%= @user_story_decorator.total_progress %>%">
         <%= @user_story_decorator.total_progress_bar %>
       </td>
     </tr>

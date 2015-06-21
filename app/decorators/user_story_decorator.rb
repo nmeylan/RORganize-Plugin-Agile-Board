@@ -31,7 +31,7 @@ class UserStoryDecorator < AgileBoardDecorator
 
   def display_points
     points = self.points ? self.points.value : '-'.freeze
-    "<span class='counter total-entries story-points tooltipped tooltipped-s' label='#{POINTS_LABEL}'>#{points}</span>".html_safe
+    "<span class='counter total-entries story-points' data-toggle='tooltip' data-title='#{POINTS_LABEL}'>#{points}</span>".html_safe
   end
 
   def display_status
@@ -61,7 +61,7 @@ class UserStoryDecorator < AgileBoardDecorator
 
   def display_issues_counter
     count = model.issues_count ? model.issues_count : '0'.freeze
-    "<span class='counter total-entries story-issues-count tooltipped tooltipped-s' label='#{TASK_LABEL}'>#{count}</span>".html_safe
+    "<span class='counter total-entries story-issues-count' data-toggle='tooltip' data-title='#{TASK_LABEL}'>#{count}</span>".html_safe
   end
 
   def display_category

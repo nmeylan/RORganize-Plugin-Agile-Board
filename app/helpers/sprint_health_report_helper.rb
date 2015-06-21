@@ -33,9 +33,9 @@ module SprintHealthReportHelper
     content_tag :div, class: 'sprint-health-bar' do
       distribution_hash.collect do |status, statistics|
         content_tag :span, statistics[0],
-                    {class: "sprint-health-percent tooltipped tooltipped-s",
+                    {class: "sprint-health-percent",
                      style: "#{style_background_color(status.color)}; width:#{statistics[1]}%; ",
-                     label: "#{status.caption} : #{statistics[1]}%"
+                     data: {toggle: "tooltip", title: "#{status.caption} : #{statistics[1]}%"}
                     } if statistics[1] > 0
       end.join.html_safe
     end

@@ -68,7 +68,7 @@ module StoryMapHelper
 
   def story_map_column_header_stories_count(total_stories_count, status, stories_count)
     percent = ((stories_count.to_f / total_stories_count) * 100).truncate
-    content_tag :span, id: "status-bar-id-#{status.id}", class: 'story-count tooltipped tooltipped-s', label: "#{percent}%" do
+    content_tag :span, id: "status-bar-id-#{status.id}", class: 'story-count', data: {toggle: "tooltip", title: "#{percent}%"} do
       concat_span_tag stories_count, class: 'total-entries status-stories-counter'
       concat_span_tag "#{t(:text_of)} #{total_stories_count}"
     end
