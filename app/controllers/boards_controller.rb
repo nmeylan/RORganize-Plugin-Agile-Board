@@ -12,14 +12,14 @@ class BoardsController < AgileBoardController
     select_menu
     respond_to do |format|
       format.html { render :index }
-      format.js { js_redirect_to agile_board_plugin::agile_board_path(@project.slug) }
+      format.js { js_redirect_to agile_board_plugin::project_project_agile_board_path(@project.slug) }
     end
   end
 
   def create
     @board_decorator = Board.create(project_id: @project.id).decorate(context: {project: @project})
     respond_to do |format|
-      format.js { js_redirect_to agile_board_plugin::agile_board_path(@project.slug) }
+      format.js { js_redirect_to agile_board_plugin::project_project_agile_board_path(@project.slug) }
     end
   end
 
@@ -43,7 +43,7 @@ class BoardsController < AgileBoardController
     @board_decorator.destroy
     respond_to do |format|
       flash[:notice] = 'Board was successfully destroyed.'
-      format.js { js_redirect_to (agile_board_plugin::agile_board_path(@project.slug)) }
+      format.js { js_redirect_to (agile_board_plugin::project_agile_board_path(@project.slug)) }
     end
   end
 

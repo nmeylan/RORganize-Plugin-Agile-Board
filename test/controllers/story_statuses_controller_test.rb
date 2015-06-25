@@ -21,7 +21,7 @@ class StoryStatusesControllerTest < ActionController::TestCase
       post :create, story_status: { board_id: @story_status.board_id, name: @story_status.name }
     end
 
-    assert_redirected_to story_status_path(assigns(:story_status))
+    assert_redirected_to project_story_status_path(assigns(:story_status))
   end
 
   test "should show story_status" do
@@ -36,7 +36,7 @@ class StoryStatusesControllerTest < ActionController::TestCase
 
   test "should update story_status" do
     patch :update, id: @story_status, story_status: { board_id: @story_status.board_id, name: @story_status.name }
-    assert_redirected_to story_status_path(assigns(:story_status))
+    assert_redirected_to project_story_status_path(assigns(:story_status))
   end
 
   test "should destroy story_status" do
@@ -44,6 +44,6 @@ class StoryStatusesControllerTest < ActionController::TestCase
       delete :destroy, id: @story_status
     end
 
-    assert_redirected_to story_statuses_path
+    assert_redirected_to project_story_statuses_path
   end
 end

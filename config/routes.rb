@@ -2,7 +2,7 @@ AgileBoard::Engine.routes.draw do
   RORganize::Application.routes.draw do
     mount AgileBoard::Engine => '/', as: 'agile_board_plugin'
   end
-  scope 'projects/:project_id/' do
+  resources :projects do
     resource :boards, only: [:create, :index, :destroy], as: 'agile_board', path: 'agile_board' do
       resource :agile_board_reports, only: [:index], path: '/report', as: 'reports' do
         get :index, path: '/(:sprint_id)'

@@ -10,13 +10,13 @@ class StoryStatusesController < AgileBoardController
   # GET /story_statuses/new
   def new
     @story_status = StoryStatus.new(color: '#6cc644').decorate(context: {issues_statuses: IssuesStatus.all.includes(:enumeration)})
-    agile_board_form_callback(agile_board_plugin::story_statuses_path(@project.slug), :post)
+    agile_board_form_callback(agile_board_plugin::project_story_statuses_path(@project.slug), :post)
   end
 
   # GET /story_statuses/1/edit
   def edit
     @story_status.context = {issues_statuses: IssuesStatus.all.includes(:enumeration)}
-    agile_board_form_callback(agile_board_plugin::story_status_path(@project.slug, @story_status.id), :put)
+    agile_board_form_callback(agile_board_plugin::project_story_status_path(@project.slug, @story_status.id), :put)
   end
 
   # POST /story_statuses

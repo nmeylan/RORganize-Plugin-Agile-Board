@@ -7,11 +7,11 @@ class EpicDecorator < AgileBoardDecorator
   delegate_all
 
   def edit_link(project, path = nil)
-    super(project, h.agile_board_plugin::edit_epic_path(project.slug, model.id))
+    super(project, h.agile_board_plugin::edit_project_epic_path(project.slug, model.id))
   end
 
   def delete_link(project, path = nil)
-    super(project, h.agile_board_plugin::epic_path(project.slug, model.id))
+    super(project, h.agile_board_plugin::project_epic_path(project.slug, model.id))
   end
 
   def display_caption

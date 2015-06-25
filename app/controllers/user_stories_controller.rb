@@ -34,14 +34,14 @@ class UserStoriesController < AgileBoardController
   # GET /user_stories/new
   def new
     @user_story = UserStory.new(sprint_id: params[:sprint_id]).decorate(context: form_context)
-    agile_board_form_callback(agile_board_plugin::user_stories_path(@project.slug), :post)
+    render partial: "form"
   end
 
 
   # GET /user_stories/1/edit
   def edit
     @user_story = @user_story.decorate(context: form_context)
-    agile_board_form_callback(agile_board_plugin::user_story_path(@project.slug, @user_story, from: params[:from]), :put)
+    agile_board_form_callback(agile_board_plugin::project_user_story_path(@project.slug, @user_story, from: params[:from]), :put)
   end
 
   # POST /user_stories
@@ -74,7 +74,7 @@ class UserStoriesController < AgileBoardController
     if params[:from]
       respond_to do |format|
         flash[:notice] = t(:successful_deletion)
-        format.js { js_redirect_to(agile_board_plugin::agile_board_path(@project.slug)) }
+        format.js { js_redirect_to(agile_board_plugin::project_agile_board_path(@project.slug)) }
       end
     else
       simple_js_callback(result, :delete, @user_story, {id: @user_story.id, sprint_id: @user_story.sprint_id})
@@ -118,8 +118,8 @@ class UserStoriesController < AgileBoardController
   def show_redirection(message)
     respond_to do |format|
       flash[:notice] = message
-      format.html {redirect_to agile_board_plugin::user_story_path(@project.slug, @user_story)}
-      format.js { js_redirect_to(agile_board_plugin::user_story_path(@project.slug, @user_story)) }
+      format.html {redirect_to agile_board_plugin::project_user_story_path(@project.slug, @user_story)}
+      format.js { js_redirect_to(agile_board_plugin::project_user_story_path(@project.slug, @user_story)) }
     end
   end
 

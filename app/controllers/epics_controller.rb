@@ -15,12 +15,12 @@ class EpicsController < AgileBoardController
   # GET /epics/new
   def new
     @epic = Epic.new(color: '#6cc644')
-    agile_board_form_callback(agile_board_plugin::epics_path(@project.slug), :post)
+    agile_board_form_callback(agile_board_plugin::project_epics_path(@project.slug), :post)
   end
 
   # GET /epics/1/edit
   def edit
-    agile_board_form_callback(agile_board_plugin::epic_path(@project.slug, @epic.id), :put)
+    agile_board_form_callback(agile_board_plugin::project_epic_path(@project.slug, @epic.id), :put)
   end
 
   # POST /epics

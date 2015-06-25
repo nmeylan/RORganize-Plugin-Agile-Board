@@ -7,23 +7,23 @@ module SprintDecoratorLink
 
   def new_story(render_button = true)
     h.link_to_with_permissions(h.glyph(h.t(:link_new_story), 'tasks'),
-                               h.agile_board_plugin::new_user_story_path(context[:project].slug, sprint_id: model.id),
+                               h.agile_board_plugin::new_project_user_story_path(context[:project].slug, sprint_id: model.id),
                                context[:project], nil,
-                               {remote: true, class: "#{button_class(render_button)}", method: :get}
+                               {data: {toggle: "dynamic-modal", class: "modal-lg"}, class: "#{button_class(render_button)}"}
     ) unless model.archived?
   end
 
   def edit_link
-    super(context[:project], h.agile_board_plugin::edit_sprint_path(context[:project].slug, model.id), false) unless model.archived?
+    super(context[:project], h.agile_board_plugin::edit_project_sprint_path(context[:project].slug, model.id), false) unless model.archived?
   end
 
   def delete_link
-    super(context[:project], h.agile_board_plugin::sprint_path(context[:project].slug, model.id), false)
+    super(context[:project], h.agile_board_plugin::project_sprint_path(context[:project].slug, model.id), false)
   end
 
   def archive_link
     h.link_to_with_permissions(h.glyph(h.t(:link_archive), 'lock'),
-                               h.agile_board_plugin::sprint_archive_path(context[:project].slug, model.id),
+                               h.agile_board_plugin::project_sprint_archive_path(context[:project].slug, model.id),
                                context[:project], nil,
                                {remote: true, 'data-confirm' => h.t(:confirm_archive_sprint), method: :put}
     ) unless model.archived?
@@ -38,7 +38,7 @@ module SprintDecoratorLink
   end
 
   def show_link
-    h.link_to self.resized_caption(25), h.agile_board_plugin::agile_board_path(context[:project].slug, :work, sprint_id: model.id),
+    h.link_to self.resized_caption(25), h.agile_board_plugin::project_agile_board_path(context[:project].slug, :work, sprint_id: model.id),
               {class: 'sprint-show', data: {toggle: "tooltip", title: h.t(:tooltip_view_map)}}
   end
 

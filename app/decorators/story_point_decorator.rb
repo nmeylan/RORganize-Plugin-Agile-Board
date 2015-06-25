@@ -8,7 +8,7 @@ class StoryPointDecorator < AgileBoardDecorator
 
   def point_edit_link(project)
     link = h.link_to_with_permissions(model.value,
-                             h.agile_board_plugin::edit_story_point_path(project.slug, model.id),
+                             h.agile_board_plugin::edit_project_story_point_path(project.slug, model.id),
                              project, nil,
                              {remote: true, method: :get, id: "edit-point-#{model.id}"})
     link ? link : model.value

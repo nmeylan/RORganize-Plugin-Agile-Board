@@ -3,9 +3,7 @@ module SprintsHelper
   include AgileBoardHelper
 
   def sprints_content(sprints)
-    concat render_sprints(sprints)
-    concat editor_overlay('sprint', t(:link_new_sprint))
-    concat editor_overlay('story', t(:link_new_story))
+    render_sprints(sprints)
   end
 
   def render_sprints(sprints)

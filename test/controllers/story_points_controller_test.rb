@@ -21,7 +21,7 @@ class StoryPointsControllerTest < ActionController::TestCase
       post :create, story_point: { board_id: @story_point.board_id, value: @story_point.value }
     end
 
-    assert_redirected_to story_point_path(assigns(:story_point))
+    assert_redirected_to project_story_point_path(assigns(:story_point))
   end
 
   test "should show story_point" do
@@ -36,7 +36,7 @@ class StoryPointsControllerTest < ActionController::TestCase
 
   test "should update story_point" do
     patch :update, id: @story_point, story_point: { board_id: @story_point.board_id, value: @story_point.value }
-    assert_redirected_to story_point_path(assigns(:story_point))
+    assert_redirected_to project_story_point_path(assigns(:story_point))
   end
 
   test "should destroy story_point" do
@@ -44,6 +44,6 @@ class StoryPointsControllerTest < ActionController::TestCase
       delete :destroy, id: @story_point
     end
 
-    assert_redirected_to story_points_path
+    assert_redirected_to project_story_points_path
   end
 end

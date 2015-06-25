@@ -16,12 +16,12 @@ class SprintsController < AgileBoardController
   # GET /sprints/new
   def new
     @sprint = Sprint.new
-    agile_board_form_callback(agile_board_plugin::sprints_path(@project.slug), :post)
+    agile_board_form_callback(agile_board_plugin::project_sprints_path(@project.slug), :post)
   end
 
   # GET /sprints/1/edit
   def edit
-    agile_board_form_callback(agile_board_plugin::sprint_path(@project.slug, @sprint.id), :put)
+    agile_board_form_callback(agile_board_plugin::project_sprint_path(@project.slug, @sprint.id), :put)
   end
 
   # POST /sprints

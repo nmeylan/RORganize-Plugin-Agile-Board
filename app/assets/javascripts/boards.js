@@ -10,10 +10,8 @@ $(document).ready(function (e) {
 });
 
 function initialize_board() {
-    bind_tab_nav('configuration-tab');
     bind_stories_sortable();
     bind_story_map_sortable();
-    multi_toogle('.sprint-expand');
     jQuery(".story-statuses-list.sortable").sortable({
         update: function (event, ui) {
             var el = $(this);

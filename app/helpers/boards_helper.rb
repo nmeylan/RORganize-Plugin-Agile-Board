@@ -10,10 +10,10 @@ module BoardsHelper
   def agile_board_menu
     content_tag :div do
       concat subnav_tag('agile-board-menu', 'agile-board-menu',
-                             @board_decorator.plan_menu_item(nav_item_selected?(:plan)),
-                             @board_decorator.work_menu_item(nav_item_selected?(:work)),
-                             @board_decorator.report_menu_item(nav_item_selected?(:report)),
-                             @board_decorator.configuration_menu_item(nav_item_selected?(:configuration)))
+                        @board_decorator.plan_menu_item(nav_item_selected?(:plan)),
+                        @board_decorator.work_menu_item(nav_item_selected?(:work)),
+                        @board_decorator.report_menu_item(nav_item_selected?(:report)),
+                        @board_decorator.configuration_menu_item(nav_item_selected?(:configuration)))
     end
   end
 
@@ -24,8 +24,10 @@ module BoardsHelper
   # Render a button group tag to choose the display mode.
   def display_mode_menu
     if @sessions[:agile_board_menu].eql?(:plan)
-      concat group_button_tag(@board_decorator.unified_display_mode(unified_content?),
-                                   @board_decorator.split_display_mode(split_content?))
+      concat content_tag :div, class: "btn-group", &Proc.new {
+                               concat @board_decorator.unified_display_mode(unified_content?)
+                               concat @board_decorator.split_display_mode(split_content?)
+                             }
       concat agile_board_search_input
       concat_span_tag glyph('', 'info'), {data: {content: t(:info_filter_syntax), toggle: "popover", trigger: "focus"}}
     end
@@ -34,8 +36,8 @@ module BoardsHelper
   def agile_board_search_input
     content_tag :div, class: 'subnav-search user-stories-search' do
       concat text_field_tag :user_story_search, nil, {id: 'user-stories-search',
-                                                           placeholder: t(:placeholder_search_stories),
-                                                           class: 'search-input'}
+                                                      placeholder: t(:placeholder_search_stories),
+                                                      class: 'search-input'}
       concat content_tag :span, nil, class: 'octicon octicon-search search-input-icon'
       concat content_tag :span, nil, class: 'octicon octicon-x clear-input-icon'
     end
@@ -86,7 +88,7 @@ module BoardsHelper
 
   def create_link
     link_to_with_permissions(t(:label_create),
-                             agile_board_plugin::agile_board_path(@project.slug),
+                             agile_board_plugin::project_agile_board_path(@project.slug),
                              @project, nil, {remote: true, class: 'button', method: :post})
   end
 
@@ -98,9 +100,9 @@ module BoardsHelper
   def plan_content
     concat clear_both
     concat content_tag :div, class: 'agile-board-plan', &Proc.new {
-      sprints_content(@sprints_decorator)
-      concat render_sprint(@backlog, "backlog #{'splitcontentright' if split_content?}")
-    }
+                             sprints_content(@sprints_decorator)
+                             concat render_sprint(@backlog, "backlog #{'splitcontentright' if split_content?}")
+                           }
     concat clear_both
   end
 

@@ -1,0 +1,15 @@
+<%= render layout: "shared/modal_content", locals: {title: "TODO"} do %>
+    <%= rorganize_form_for @user_story.model, url: agile_board_plugin::project_user_stories_path(@project), wrapper: :modal_horizontal_form, html: {class: 'form-horizontal', remote: true} do |f| %>
+
+        <%= f.hidden_field(:sprint_id, value: @user_story.sprint_id) %>
+        <%= story_form_left_content(f, @user_story) %>
+        <%= story_form_right_content(f, @user_story) %>
+        <%= clear_both %>
+        <%= f.input :title, my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}, input_html: {maxLength: 255} %>
+        <%= f.input :description, as: :text, my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}, input_html: {class: 'fancyEditor', rows: 10} %>
+
+        <%= render layout: "shared/modal_footer" do %>
+            <%= f.button :submit %>
+        <% end %>
+    <% end %>
+<% end %>

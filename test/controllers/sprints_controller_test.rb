@@ -21,7 +21,7 @@ class SprintsControllerTest < ActionController::TestCase
       post :create, sprint: { end_date: @sprint.end_date, name: @sprint.name, start_date: @sprint.start_date, version_id: @sprint.version_id }
     end
 
-    assert_redirected_to sprint_path(assigns(:sprint))
+    assert_redirected_to project_sprint_path(assigns(:sprint))
   end
 
   test "should show sprint" do
@@ -36,7 +36,7 @@ class SprintsControllerTest < ActionController::TestCase
 
   test "should update sprint" do
     patch :update, id: @sprint, sprint: { end_date: @sprint.end_date, name: @sprint.name, start_date: @sprint.start_date, version_id: @sprint.version_id }
-    assert_redirected_to sprint_path(assigns(:sprint))
+    assert_redirected_to project_sprint_path(assigns(:sprint))
   end
 
   test "should destroy sprint" do
@@ -44,6 +44,6 @@ class SprintsControllerTest < ActionController::TestCase
       delete :destroy, id: @sprint
     end
 
-    assert_redirected_to sprints_path
+    assert_redirected_to project_sprints_path
   end
 end

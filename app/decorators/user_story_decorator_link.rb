@@ -65,7 +65,7 @@ module UserStoryDecoratorLink
   end
 
   def link_to_show(caption)
-    h.link_to(caption, h.agile_board_plugin::user_story_path(context[:project].slug, model.to_param))
+    h.link_to(caption, h.agile_board_plugin::project_user_story_path(context[:project].slug, model.to_param))
   end
 
   # Render a link to delete the current story. If user isn't allowed, render nothing.
@@ -82,7 +82,7 @@ module UserStoryDecoratorLink
   # @param [Hash] path_params : extra path params.
   def link_to_delete(button, path_params)
     h.link_to h.glyph(h.t(:link_delete), 'trashcan'),
-              h.agile_board_plugin::user_story_path(context[:project].slug, model.to_param, path_params),
+              h.agile_board_plugin::project_user_story_path(context[:project].slug, model.to_param, path_params),
               {remote: true, method: :delete, class: "danger danger-dropdown #{button_class(button)}",
                'data-confirm' => h.t(:text_delete_item)}
   end
@@ -101,7 +101,7 @@ module UserStoryDecoratorLink
   # @param [Hash] path_params : extra path params.
   def link_to_edit(button, path_params)
     h.link_to(h.glyph(h.t(:link_edit), 'pencil'),
-              h.agile_board_plugin::edit_user_story_path(context[:project].slug, model.to_param, path_params),
+              h.agile_board_plugin::edit_project_user_story_path(context[:project].slug, model.to_param, path_params),
               {remote: true, method: :get, class: "#{button_class(button)}"})
   end
 

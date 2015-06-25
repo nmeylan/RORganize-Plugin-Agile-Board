@@ -49,12 +49,7 @@ module UserStoriesHelper
 
   def story_form(model, path, method)
     overlay_form(model, path, method) do |f|
-      concat f.hidden_field(:sprint_id, value: model.sprint_id)
-      concat story_form_left_content(f, model)
-      concat story_form_right_content(f, model)
-      concat clear_both
-      concat f.input :title, my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}, input_html: {maxLength: 255}
-      concat f.input :description, as: :text, my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}, input_html: {class: 'fancyEditor', rows: 10}
+
     end
   end
 

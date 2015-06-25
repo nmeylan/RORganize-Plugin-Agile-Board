@@ -21,7 +21,7 @@ class UserStoriesControllerTest < ActionController::TestCase
       post :create, user_story: { author_id: @user_story.author_id, category_id: @user_story.category_id, description: @user_story.description, epic_id: @user_story.epic_id, points: @user_story.points, position: @user_story.position, project_id: @user_story.project_id, sprint_id: @user_story.sprint_id, status_id: @user_story.status_id, title: @user_story.title, tracker_id: @user_story.tracker_id }
     end
 
-    assert_redirected_to user_story_path(assigns(:user_story))
+    assert_redirected_to project_user_story_path(assigns(:user_story))
   end
 
   test "should show user_story" do
@@ -36,7 +36,7 @@ class UserStoriesControllerTest < ActionController::TestCase
 
   test "should update user_story" do
     patch :update, id: @user_story, user_story: { author_id: @user_story.author_id, category_id: @user_story.category_id, description: @user_story.description, epic_id: @user_story.epic_id, points: @user_story.points, position: @user_story.position, project_id: @user_story.project_id, sprint_id: @user_story.sprint_id, status_id: @user_story.status_id, title: @user_story.title, tracker_id: @user_story.tracker_id }
-    assert_redirected_to user_story_path(assigns(:user_story))
+    assert_redirected_to project_user_story_path(assigns(:user_story))
   end
 
   test "should destroy user_story" do
@@ -44,6 +44,6 @@ class UserStoriesControllerTest < ActionController::TestCase
       delete :destroy, id: @user_story
     end
 
-    assert_redirected_to user_stories_path
+    assert_redirected_to project_user_stories_path
   end
 end

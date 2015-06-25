@@ -21,7 +21,7 @@ class EpicsControllerTest < ActionController::TestCase
       post :create, epic: { description: @epic.description, name: @epic.name }
     end
 
-    assert_redirected_to epic_path(assigns(:epic))
+    assert_redirected_to project_epic_path(assigns(:epic))
   end
 
   test "should show epic" do
@@ -36,7 +36,7 @@ class EpicsControllerTest < ActionController::TestCase
 
   test "should update epic" do
     patch :update, id: @epic, epic: { description: @epic.description, name: @epic.name }
-    assert_redirected_to epic_path(assigns(:epic))
+    assert_redirected_to project_epic_path(assigns(:epic))
   end
 
   test "should destroy epic" do
@@ -44,6 +44,6 @@ class EpicsControllerTest < ActionController::TestCase
       delete :destroy, id: @epic
     end
 
-    assert_redirected_to epics_path
+    assert_redirected_to project_epics_path
   end
 end
