@@ -16,32 +16,35 @@ AgileBoard::Engine.routes.draw do
       end
       get :tasks_completion
     end
-    scope 'agile_board' do
-      resources :story_statuses do
-        post :change_position
-      end
 
-      resources :story_points, only: [:edit, :update] do
-        collection do
-          get :add_points
-          post :add_points
+    nested do
+      scope 'agile_board' do
+        resources :story_statuses do
+          post :change_position
         end
-      end
-      resources :epics
-      resources :sprints do
-        put :archive
-        put :restore
-      end
-      resources :user_stories do
-        post :attach_tasks
-        get :new_task
-        post :create_task
-        post :detach_tasks
-        post :change_sprint
-        post :change_status
-      end
 
-      get :generate_sprint_name, controller: 'sprints'
+        resources :story_points, only: [:edit, :update] do
+          collection do
+            get :add_points
+            post :add_points
+          end
+        end
+        resources :epics
+        resources :sprints do
+          put :archive
+          put :restore
+        end
+        resources :user_stories do
+          post :attach_tasks
+          get :new_task
+          post :create_task
+          post :detach_tasks
+          post :change_sprint
+          post :change_status
+        end
+
+        get :generate_sprint_name, controller: 'sprints'
+      end
     end
   end
 end
