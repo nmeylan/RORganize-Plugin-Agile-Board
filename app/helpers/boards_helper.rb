@@ -44,7 +44,7 @@ module BoardsHelper
   end
 
   def agile_board
-    content_tag :div, {id: 'agile-board'} do
+    content_tag :div, {id: 'agile-board', data: {role: "board-plan"}} do
       if @board_decorator.nil?
         concat t(:text_no_agile_board)
         concat create_link
@@ -100,7 +100,7 @@ module BoardsHelper
   def plan_content
     concat clear_both
     concat content_tag :div, class: 'agile-board-plan', &Proc.new {
-                             sprints_content(@sprints_decorator)
+                             concat sprints_content(@sprints_decorator)
                              concat render_sprint(@backlog, "backlog #{'splitcontentright' if split_content?}")
                            }
     concat clear_both

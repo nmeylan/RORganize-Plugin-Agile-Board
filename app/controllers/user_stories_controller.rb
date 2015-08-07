@@ -4,7 +4,7 @@ class UserStoriesController < AgileBoardController
   include AgileBoard::Controllers::UserStoriesTasksCallback
   helper SprintsHelper
   before_action :find_project_with_dependencies, only: [:new_task]
-  before_action {|c| c.add_action_alias={'create_task' => 'new_task'}}
+  before_action { |c| c.add_action_alias={'create_task' => 'new_task'} }
   before_action :check_permission
   before_action { |c| c.menu_context :project_menu }
   before_action { |c| c.menu_item('boards') }
@@ -41,7 +41,8 @@ class UserStoriesController < AgileBoardController
   # GET /user_stories/1/edit
   def edit
     @user_story = @user_story.decorate(context: form_context)
-    agile_board_form_callback(agile_board_plugin::project_user_story_path(@project.slug, @user_story, from: params[:from]), :put)
+    @from = params[:from]
+    render partial: "form"
   end
 
   # POST /user_stories
@@ -49,9 +50,13 @@ class UserStoriesController < AgileBoardController
     @user_story = @board.user_stories.new(user_story_params)
     @user_story.author = User.current
     @user_story.project = @project
-    result = @user_story.save
-    @user_story = @user_story.decorate(context: {project: @project})
-    simple_js_callback(result, :create, @user_story)
+    if @user_story.save
+      @user_story = @user_story.decorate(context: {project: @project})
+      simple_js_callback(true, :create, @user_story, sprint_id: @user_story.sprint_id ? @user_story.sprint_id : -1, story: view_context.render_story(@user_story), action: "create")
+    else
+      @user_story = @user_story.decorate(context: form_context)
+      render partial: "form", status: :unprocessable_entity
+    end
   end
 
   # PATCH/PUT /user_stories/1
@@ -59,13 +64,17 @@ class UserStoriesController < AgileBoardController
     @user_story.attributes = user_story_params
     result = @user_story.save
     @user_story_decorator = decorate_user_story
-    if params[:from]
-      locals = {history: History.new(Journal.journalizable_activities(@user_story_decorator.id, 'UserStory'))}
+    if result
+      if params[:from]
+        simple_js_callback(true, :update, @user_story, story_content: render_to_string(partial: 'user_stories/show',
+                                                                          locals: {history: History.new(Journal.journalizable_activities(@user_story_decorator.id, 'UserStory'))}))
+      else
+        simple_js_callback(true, :update, @user_story, sprint_id: @user_story.sprint_id ? @user_story.sprint_id : -1, story: view_context.render_story(@user_story_decorator), action: "update", story_id: @user_story.id)
+      end
     else
-      locals = {}
-      @from = :plan
+      @user_story = @user_story.decorate(context: form_context)
+      render partial: "form", status: :unprocessable_entity
     end
-    simple_js_callback(result, :update, @user_story, locals)
   end
 
   # DELETE /user_stories/1
@@ -118,7 +127,7 @@ class UserStoriesController < AgileBoardController
   def show_redirection(message)
     respond_to do |format|
       flash[:notice] = message
-      format.html {redirect_to agile_board_plugin::project_user_story_path(@project.slug, @user_story)}
+      format.html { redirect_to agile_board_plugin::project_user_story_path(@project.slug, @user_story) }
       format.js { js_redirect_to(agile_board_plugin::project_user_story_path(@project.slug, @user_story)) }
     end
   end

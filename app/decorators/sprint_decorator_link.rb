@@ -9,7 +9,7 @@ module SprintDecoratorLink
     h.link_to_with_permissions(h.glyph(h.t(:link_new_story), 'tasks'),
                                h.agile_board_plugin::new_project_user_story_path(context[:project].slug, sprint_id: model.id),
                                context[:project], nil,
-                               {data: {toggle: "dynamic-modal", class: "modal-lg"}, class: "#{button_class(render_button)}"}
+                               {data: {toggle: "dynamic-modal-story", class: "modal-lg"}, class: "#{button_class(render_button)}"}
     ) unless model.archived?
   end
 

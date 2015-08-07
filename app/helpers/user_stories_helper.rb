@@ -36,7 +36,7 @@ module UserStoriesHelper
     actions = [story.edit_link(false, {}, true), story.delete_link(false, {}, true)].compact
     if actions.any?
       dropdown_tag do
-        actions.collect { |action| dropdown_row  action }.join.html_safe
+        actions.collect { |action| dropdown_row(action) }.join.html_safe
       end
     end
   end
@@ -62,7 +62,7 @@ module UserStoriesHelper
 
   def story_form_right_content(f, model)
     content_tag :div, class: 'col-sm-6' do
-      concat agile_board_select_field(f, :points, model)
+      concat agile_board_select_field(f, :point, model)
       concat agile_board_select_field(f, :epic, model)
       concat agile_board_select_field(f, :category, model)
     end

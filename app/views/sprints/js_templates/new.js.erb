@@ -1,9 +1,0 @@
-<%#=
- * User: nmeylan
- * Date: 31.10.14
- * Time: 14:31
- %>
-    jQuery("#sprint-editor-overlay").replaceWith("<%= escape_javascript editor_overlay('sprint', t(:link_new_sprint), @sprint, path, method) %>");
-    createOverlay("#sprint-editor-overlay", 150);
-    ajax_trigger('#sprint_version_id', 'change', 'get');
-    jQuery('#sprint-editor-overlay').overlay().load();

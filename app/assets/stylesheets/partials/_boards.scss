@@ -40,15 +40,6 @@
   }
 }
 
-.sprints, .backlog {
-  .dropdown-menu {
-    width: 120px;
-    > li > a {
-      padding: 4px 0px 4px 0px;
-    }
-  }
-}
-
 .sprint .header, .backlog .header {
   > span > span, > div > span {
     margin-right: 5px;
@@ -57,6 +48,16 @@
     background-color: white;
   }
 
+}
+
+.sprints, .backlog {
+  .dropdown-menu {
+    width: 120px;
+    margin-left: -80px;
+    > li > a {
+      padding: 4px 0px 4px 0px;
+    }
+  }
 }
 
 .sprint-dates-header.info-square {
@@ -103,8 +104,8 @@
     overflow: hidden;
   }
   .fancy-list .fancy-list-item .right-content-list li {
-    float: inherit;
-    margin-left: 0px;
+    float: none;
+    margin-left: 0;
   }
   .story-title {
     overflow: hidden;

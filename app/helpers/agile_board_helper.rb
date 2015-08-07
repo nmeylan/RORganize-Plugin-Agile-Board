@@ -57,7 +57,7 @@ module AgileBoardHelper
     if block_given?
       yield
     else
-      f.input attr_name, collection: model.send("#{attr_name}_options"), include_blank: !required,
+      f.input "#{attr_name}_id", collection: model.send("#{attr_name}_options"), include_blank: !required,
               my_wrapper_html: {class: "col-sm-8"},
               label_html: {class: "col-sm-4"},
               input_html: {class: "chzn-select#{'-deselect' unless required}  cbb-medium search"}

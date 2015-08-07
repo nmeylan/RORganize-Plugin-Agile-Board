@@ -16,7 +16,7 @@ class SprintsController < AgileBoardController
   # GET /sprints/new
   def new
     @sprint = Sprint.new
-    agile_board_form_callback(agile_board_plugin::project_sprints_path(@project.slug), :post)
+    render partial: "form"
   end
 
   # GET /sprints/1/edit
@@ -28,9 +28,12 @@ class SprintsController < AgileBoardController
   def create
     @sprint = Sprint.new(sprint_params)
     @sprint.board = @board
-    result = @sprint.save
-    set_sprints
-    simple_js_callback(result, :create, @sprint, {new: false})
+    if @sprint.save
+      set_sprints
+      simple_js_callback(true, :create, @sprint, sprints: view_context.render_sprints(@sprints_decorator))
+    else
+      render partial: "form", status: :unprocessable_entity
+    end
   end
 
   # PATCH/PUT /sprints/1
@@ -63,10 +66,8 @@ class SprintsController < AgileBoardController
   def generate_sprint_name
     count = Sprint.where(version_id: params[:value], board_id: @board_decorator.id).pluck('count(id)')
     version = Version.select(:name).find_by_id(params[:value])
-    @name = "Sprint #{count.first} : #{version.name}"
-    respond_to do |format|
-      format.js { respond_to_js }
-    end
+    @name = "Sprint #{count.first} #{ ": #{version.name}" if version}"
+    render json: {name: @name}
   end
 
   private

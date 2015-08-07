@@ -2,9 +2,9 @@
 // All this logic will automatically be available in application.js.
 $(document).ready(function (e) {
     if (gon.controller === "user_stories" && gon.action === "show") {
-        bind_apply_detach_task_button();
+        //bind_apply_detach_task_button();
         bind_story_task_sortable();
-        bind_attach_task_button();
+        //bind_attach_task_button();
     }
 });
 function bind_story_task_sortable() {

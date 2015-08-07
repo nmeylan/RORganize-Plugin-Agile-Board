@@ -22,7 +22,7 @@ module UserStoryDecoratorLink
   def detach_tasks_link
     if user_allowed_to?(:detach_tasks)
       h.link_to h.t(:button_apply),
-                h.agile_board_plugin::user_story_detach_tasks_path(context[:project].slug, model.to_param),
+                h.agile_board_plugin::project_user_story_detach_tasks_path(context[:project].slug, model.to_param),
                 {class: 'button', id: 'user-story-detach-tasks'}
     end
   end
@@ -30,7 +30,7 @@ module UserStoryDecoratorLink
   # Build a new task link.
   def new_task_link
     h.link_to_with_permissions(h.glyph(h.t(:link_new_task), 'plus'),
-                               h.agile_board_plugin::user_story_new_task_path(context[:project].slug, model.to_param),
+                               h.agile_board_plugin::project_user_story_new_task_path(context[:project].slug, model.to_param),
                                context[:project], nil, {class: 'button', remote: true})
   end
 
@@ -93,7 +93,13 @@ module UserStoryDecoratorLink
   # @param [Boolean] fast : should we render the link fast or not. Fast is used when we display a huge amount of link.
   def edit_link(button = false, path_params = {}, fast = false)
     if user_allowed_to?(:edit)
-      generic_link_chooser(ApplicationDecorator::EDIT_LINK, fast, 'edit'.freeze, button, path_params)
+      if fast
+        generic_link_chooser(ApplicationDecorator::EDIT_LINK, fast, 'edit'.freeze, button, path_params)
+      else
+        link_to h.glyph(h.t(:link_edit), "pencil"),
+                h.agile_board_plugin::edit_project_user_story_path(context[:project].slug, model.to_param, path_params),
+                {class: "btn btn-default", data: {toggle: "dynamic-modal-story", class: "modal-lg"}}
+      end
     end
   end
 
@@ -138,7 +144,7 @@ module UserStoryDecoratorLink
   # This link is faster than classical link_to when we have to render over 1k items.
   # To remove the day when rails link_to will come faster.
   def fast_story_edit_link(project, story_id, caption)
-    "<a class=\"\" data-method=\"get\" data-remote=\"true\"
+    "<a class=\"\" data-toggle=\"dynamic-modal-story\" data-class=\"modal-lg\"
         href=\"/projects/#{project.slug}/agile_board/user_stories/#{story_id}/edit\">
           <span class=\"octicon-pencil octicon\"></span>
           #{caption}

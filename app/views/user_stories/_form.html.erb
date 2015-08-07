@@ -1,5 +1,6 @@
 <%= render layout: "shared/modal_content", locals: {title: "TODO"} do %>
-    <%= rorganize_form_for @user_story.model, url: agile_board_plugin::project_user_stories_path(@project), wrapper: :modal_horizontal_form, html: {class: 'form-horizontal', remote: true} do |f| %>
+    <% url = @user_story.new_record? ? agile_board_plugin::project_user_stories_path(@project) : agile_board_plugin::project_user_story_path(@project, @user_story, from: @from) %>
+    <%= rorganize_form_for @user_story, url: url, wrapper: :modal_horizontal_form, html: {class: 'form-horizontal', remote: true} do |f| %>
 
         <%= f.hidden_field(:sprint_id, value: @user_story.sprint_id) %>
         <%= story_form_left_content(f, @user_story) %>

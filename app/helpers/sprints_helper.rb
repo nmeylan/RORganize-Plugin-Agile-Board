@@ -7,7 +7,7 @@ module SprintsHelper
   end
 
   def render_sprints(sprints)
-    sprints_options = {class: "sprints #{'splitcontentleft' if split_content?}", id: 'sprints-list'}
+    sprints_options = {class: "sprints #{'splitcontentleft' if split_content?}", id: 'sprints-list', data: {role: "sprints-list"}}
     content_tag :div, sprints_options do
       if sprints.any?
         sprints.collect { |sprint| render_sprint(sprint) }.join.html_safe
@@ -20,14 +20,14 @@ module SprintsHelper
   def render_no_sprints
     content_tag :div, {class: "box"} do
       concat box_header_tag t(:label_agile_board_sprints), 'header header-left', &Proc.new {
-        @board_decorator.new_sprint
-      }
+                                                           @board_decorator.new_sprint
+                                                         }
       concat no_data(t(:text_no_sprints), 'sprint', true)
     end
   end
 
   def render_sprint(sprint, class_css = '')
-    content_tag :div, {class: "box sprint #{class_css}", id: "sprint-#{sprint.id}"} do
+    content_tag :div, {class: "box sprint #{class_css}", id: "sprint-#{sprint.id}", data: {role: "sprint", id: sprint.id}} do
       concat render_sprint_header(sprint, class_css)
       concat render_sprint_content(sprint, class_css)
     end
@@ -67,10 +67,10 @@ module SprintsHelper
   end
 
   def sprint_dropwdown(sprint)
-    actions = [sprint.new_story(false), sprint.edit_link, sprint.archive_link, sprint.restore_link,sprint.delete_link].compact
+    actions = [sprint.new_story(false), sprint.edit_link, sprint.archive_link, sprint.restore_link, sprint.delete_link].compact
     if actions.any?
       dropdown_tag do
-        actions.collect{|action| dropdown_row action}.join.html_safe
+        actions.collect { |action| dropdown_row action }.join.html_safe
       end
     end
   end
@@ -90,21 +90,10 @@ module SprintsHelper
 
   def render_sprint_body(sprint)
     sortable = 'sortable' if User.current.allowed_to?('change_sprint', 'User_stories', @project)
-    content_tag :ul, {class: "fancy-list fancy-list-mini stories-list #{sortable}"} do
+    content_tag :ul, {class: "fancy-list fancy-list-mini stories-list #{sortable}", data: {role: "stories-list"}} do
       sprint.sorted_stories.collect do |story|
         render_story(story)
       end.join.html_safe
-    end
-  end
-
-  def sprint_form(model, path, method)
-    overlay_form(model, path, method) do |f|
-      concat f.input :version_id, collection: @project.active_versions, input_html: {data: {link: agile_board_plugin::generate_sprint_name_path(@project.slug)},
-                                                                                    class: 'chzn-select-deselect  cbb-medium search'},
-                     my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}
-      concat f.input :name, my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}
-      concat f.input :start_date, as: :date, html5: true, my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}
-      concat f.input :end_date, as: :date, html5: true, my_wrapper_html: {class: "col-sm-10"}, label_html: {class: "col-sm-2"}
     end
   end
 end

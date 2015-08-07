@@ -76,7 +76,8 @@ class BoardDecorator < AgileBoardDecorator
   end
 
   def new_sprint
-    agile_board_new_link(h.t(:link_new_sprint), 'sprint', h.agile_board_plugin::new_project_sprint_path(context[:project].slug))
+    h.link_to_with_permissions(h.glyph(h.t(:link_new_sprint), "sprint"), h.agile_board_plugin::new_project_sprint_path(context[:project].slug), context[:project],
+                               nil, {class: 'button', data: {toggle: "dynamic-modal-sprint"}})
   end
 
   def new_epic_link
